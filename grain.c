@@ -1,20 +1,26 @@
 /* Compute olivine grain growth in pallasites based on [Solferino et al., Geochim. Cosmochim. Acta, 162, 259-275, 2015] */
-/* written by Greg (last updated: 30/07/2015) */
+/* written by Greg (last updated: 13/05/2016) */
 int grain()
 {
 	long int mm1;
 	/**/
-	/* Olivine grain growth parameters [Solferino et al., Geochim. Cosmochim. Acta, 2015] */
-	double n_grain=2.415;          /* Olivine grain growth exponent [non-dim.] */
-	double E_grain=2.88683e+5;     /* Activation energy [J/mol] */
-	double k0_grain=9.434e+6;      /* Olivine grain growth constant [mum^n/s] */
+	/* Old olivine grain growth parameters [Solferino et al., Geochim. Cosmochim. Acta, 2015] */
+	/* double n_grain=2.415; */          /* Olivine grain growth exponent [non-dim.] */
+	/* double E_grain=2.88683e+5; */     /* Activation energy [J/mol] */
+	/* double k0_grain=9.434e+6; */      /* Olivine grain growth constant [mum^n/s] */
+	/**/
+	/* New olivine grain growth parameters */
+	double n_grain=3.70;         /* Olivine grain growth exponent [non-dim.] */
+	double E_grain=1.0098e+5;    /* Activation energy [J/mol] */
+	double k0_grain=3.2033;      /* Olivine grain growth constant [mum^n/s] */
+	/**/
 	double pall_gr1,pall_gr2,pall_gr3;
 	/**/
 	/* Check all markers */
 	for (mm1=0;mm1<marknum;mm1++)
 		{
 		/* Olivine grain growth only activated after impact event */
-		if(((timesum+timestep)>=(impact_time[1]*1.000e+6*365.250*24.000*3600.000)) && ((timesum+timestep)<=(impact_time[2]*1.000e+6*365.250*24.000*3600.000)))
+		if((timesum+timestep)>=(impact_time[1]*1.000e+6*365.250*24.000*3600.000))
 			{
 			/* Olivine grains can only grow efficiently as long as (i) temperature is below olivine liquidus and (ii) Fe-Ni-S is still liquid [Solferino et al., Geochim. Cosmochim. Acta, 2015] */
 			/* Olivine is solid, but Fe-Ni-S melting temperature is reached [Clark and Kullerud, 1963; Waldner and Pelton, 2004] */

@@ -218,12 +218,6 @@ double grain_orig=1.000e-6;    /* Assumed grain size [m] [Henke et al., Astronom
 double pivalue=3.141592654;    /* Define Pi */
 double r_gas=1.9872;           /* Define universal gas constant [cal/(K mol)], for Schwenn & Goetze (1978) calculation */
 /**/
-/* Olivine grain growth parameters [Solferino et al., Geochim. Cosmochim. Acta, 2015] */
-double n_grain=2.415;          /* Olivine grain growth exponent [non-dim.] */
-double E_grain=2.88683e+5;     /* Activation energy [J/mol] */
-double k0_grain=9.434e+6;      /* Olivine grain growth constant [mum^n/s] */
-double pall_gr1,pall_gr2,pall_gr3;
-/**/
 double m_mars=6.4185e+23;      /* Present-day mass of Mars: 6.4185e23 kg [Lodders & Fegley, Planetary Scientist's Companion (1998)] */
 /**/
 /* RO, NU equations var */
@@ -626,40 +620,6 @@ if(markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky[
 	if(mkt>=k_cutoff)
 		{
 		mkt = k_cutoff;
-		}
-	/**/
-	/**/
-	/* Compute olivine grain growth in pallasites based on [Solferino et al., Geochim. Cosmochim. Acta, 2015] */
-	/* added by Greg (last modified: 29/07/2015) */
-	/**/
-	/* Negligible grain size for sticky air and iron material */
-	if(mm2==0 || mm2==7 || mm2==8 || mm2==9 || mm2==10 || mm2==17 || mm2==18 || mm2==19)
-		{
-		markgr[mm1] = (float)(gr_init/1.000e+4);
-		}
-	/**/
-	/* Olivine grains can only grow efficiently as long as (i) temperature is below olivine liquidus and (ii) Fe-Ni-S is still liquid [Solferino et al., Geochim. Cosmochim. Acta, 2015] */
-	/* Olivine is solid, but Fe-Ni-S melting temperature is reached [Clark and Kullerud, 1963; Waldner and Pelton, 2004] */
-	if((mm2==5 || mm2==6) && mtk>=1073.000)
-		{
-		pall_gr1    = pow(((double)(markgr[mm1])),n_grain);
-		pall_gr2    = k0_grain*exp(-E_grain/(8.3145*mtk))*timestep;
-		pall_gr3    = pow((pall_gr1+pall_gr2),(1.000/n_grain));
-		markgr[mm1] = (float)(pall_gr3);
-		}
-	/* Partial silicate melt, but still beneath olivine liquidus */
-	if((mm2==25 || mm2==26) && mtk<2103.000)
-		{
-		pall_gr1    = pow(((double)(markgr[mm1])),n_grain);
-		pall_gr2    = k0_grain*exp(-E_grain/(8.3145*mtk))*timestep;
-		pall_gr3    = pow((pall_gr1+pall_gr2),(1.000/n_grain));
-		markgr[mm1] = (float)(pall_gr3);				
-		}
-	/**/
-	/* Grain size is reset to start value in case temperature rises above olivine liquidus */
-	if((mm2==25 || mm2==26) && mtk>=2103.000)
-		{
-		markgr[mm1] = (float)(gr_init);	
 		}
 	/**/
 	/**/

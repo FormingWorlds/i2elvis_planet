@@ -16,6 +16,7 @@
 #include"heatmart.c"
 #include"impact.c"
 #include"core.c"
+#include"grain.c"
 /* --------------------- INCLUDE PARTS --------------------- */
 
 
@@ -166,6 +167,9 @@ saver(f0+1,n0-1);
 /**/
 /* Check core evolution (Greg addition) */
 core();
+/**/
+/* Check grain site evolution (Greg addition) */
+grain();
 /**/
 /* Save impact and core history */
 impactsave();
