@@ -298,14 +298,14 @@ if(markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky[
 		/* No impact-induced atmosphere, T is set to equilibrium temperature of fast rotating body at current Mars distance */
                 /* Using assumptions: */
 		/* Present day mean surface temperature [K] [Lodders & Fegley, The Planetary Scientist's Companion (1998)] */
-		if(mm2<2) mtk=markk[mm1]=150.000;
+		if(mm2<2) mtk=markk[mm1]=290.000;
 		}
 	if((M_init+M_acc)>(0.100*m_mars))
 		{
 		/* Impact-induced atmosphere when M>0.1*M_mars [Tyburczy et al., EPSL, 80, 201-207 (1986) (Fig. 3)] */
 		/* Estimation of temperature of impact atmosphere [Abe, Earth Moon Planets, 108, 9-14 (2011) (Fig. 1)] */
         	/* if(mm2<2) mtk=markk[mm1]=2000.000; */
-		if(mm2<2) mtk=markk[mm1]=150.000;
+		if(mm2<2) mtk=markk[mm1]=290.000;
 		}
 	/**/
 	/* Marker Properties */
