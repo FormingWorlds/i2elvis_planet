@@ -1,5 +1,5 @@
-/* Compute pure olivine grain growth [Karato, 1989] and growth of olivine in partially/fully molten FeS in pallasites [Solferino et al., Geochim. Cosmochim. Acta, 162, 259-275, 2015] */
-/* written by Gregor J. Golabek (last updated: 01/08/2016) */
+/* Compute pure olivine grain growth [Karato, 1989] and growth of olivine in partially/fully molten FeS in pallasites [Solferino et al., Geochim. Cosmochim. Acta, 162, 259-275, 2015; Solferino et al., unpublished data] */
+/* written by Gregor J. Golabek (last updated: 03/08/2016) */
 int grain()
 {
 	long int mm1;
@@ -32,23 +32,25 @@ int grain()
 	for (mm1=0;mm1<marknum;mm1++)
 		{
 		/* Reset marker type in sector of circle after first impact event */
-        	if((timesum+timestep)>=(impact_time[1]*1.000e+6*365.250*24.000*3600.000) && (timesum+timestep)<((impact_time[1]+0.014)*1.000e+6*365.250*24.000*3600.000))
+        	if(((timesum+timestep)>=(impact_time[1]*1.000e+6*365.250*24.000*3600.000)) && ((timesum+timestep)<=((impact_time[1]+0.015)*1.000e+6*365.250*24.000*3600.000)))
 			{
+			printf("Impact event! Emplacing pallasite material \n");
+			/**/
 			/* Relative coordinates [m] */
-			dist_x    = markx[mm1]-xsize/2.000;
-			dist_y    = marky[mm1]-ysize/2.000;
+			dist_x    = markx[mm1]-(xsize/2.000);
+			dist_y    = marky[mm1]-(ysize/2.000);
 			/**/
 			/* Compute distance from planetesimal center [m] */
 			distancee = pow((dist_x*dist_x+dist_y*dist_y),0.500);
 			/**/
-			/* Only markers inside the mantle will be reset */
-			if(distancee>=radius_core && distancee<=radius_planet)
+			/* Only markers inside a certain mantle sector will be reset */
+			if(distancee>=radius_core && distancee<=radius_planet && dist_x>0.000 && dist_y<0.000)
 				{
 				/* Compute angle of marker relative to center of planetesimal [degrees] */
 				curr_angle = asin(dist_x/distancee)/pival*180.000;
 				/**/
 				/* Reset marker type in sector of interest */
-				if(curr_angle>=ref_angle-dev_angle && curr_angle<=ref_angle+dev_angle && dist_x>0.000 && dist_y<0.000)
+				if(curr_angle>=ref_angle-dev_angle && curr_angle<=ref_angle+dev_angle)
 					{
 					if(markt[mm1]==6)
 						{
