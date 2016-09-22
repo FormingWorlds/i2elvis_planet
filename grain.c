@@ -1,5 +1,5 @@
 /* Compute pure olivine grain growth [Karato, 1989] and growth of olivine in partially/fully molten FeS in pallasites [Solferino et al., Geochim. Cosmochim. Acta, 162, 259-275, 2015; Solferino et al., unpublished data] */
-/* written by Gregor J. Golabek (last updated: 03/08/2016) */
+/* written by Gregor J. Golabek (last updated: 21/09/2016) */
 int grain()
 {
 	long int mm1;
@@ -32,10 +32,8 @@ int grain()
 	for (mm1=0;mm1<marknum;mm1++)
 		{
 		/* Reset marker type in sector of circle after first impact event */
-        	if(((timesum+timestep)>=(impact_time[1]*1.000e+6*365.250*24.000*3600.000)) && ((timesum+timestep)<=((impact_time[1]+0.015)*1.000e+6*365.250*24.000*3600.000)))
+        	if(((timesum+timestep)>=(impact_time[1]*1.000e+6*365.250*24.000*3600.000)) && ((timesum+timestep)<=((impact_time[1]+0.05)*1.000e+6*365.250*24.000*3600.000)))
 			{
-			printf("Impact event! Emplacing pallasite material \n");
-			/**/
 			/* Relative coordinates [m] */
 			dist_x    = markx[mm1]-(xsize/2.000);
 			dist_y    = marky[mm1]-(ysize/2.000);
@@ -52,6 +50,8 @@ int grain()
 				/* Reset marker type in sector of interest */
 				if(curr_angle>=ref_angle-dev_angle && curr_angle<=ref_angle+dev_angle)
 					{
+					printf("Impact event! Emplacing pallasite material \n");
+					/**/
 					if(markt[mm1]==6)
 						{
 						markt[mm1]=5;
