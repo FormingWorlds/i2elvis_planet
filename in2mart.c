@@ -90,6 +90,7 @@ ffscanf1();fe6056_init=atof(sa)*1e-8;
 ffscanf1();timesum=atof(sa)*3.15576e+7;
 ffscanf1();nonstab=atoi(sa);
 /**/
+printf("Initial 26Al/27Al and 60Fe/56Fe = %e, %e \n",al2627_init,fe6056_init);
 /* Regular Nonstability Read */
 if(nonstab<0)
 	{
