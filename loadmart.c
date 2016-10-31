@@ -262,6 +262,8 @@ if(fl1itp==0)
 	ffscanf();pkf[3]=atof(sa);
 	ffscanf();GXKOEF=atof(sa);
 	ffscanf();GYKOEF=atof(sa);
+	ffscanf1();al2627_init=atof(sa)*1.0e-5;
+        ffscanf1();fe6056_init=atof(sa)*1.0e-8;
 	ffscanf();rocknum=atoi(sa);
 	ffscanf();bondnum=atoi(sa);
 	ffscanf();
@@ -418,6 +420,8 @@ else
 	fread(pkf,szdouble,4,fl);
 	fread(&GXKOEF,szdouble,1,fl);
 	fread(&GYKOEF,szdouble,1,fl);
+	fread(&al2627_init,szdouble,1,fl);al2627_init*=1.0e-5;
+        fread(&fe6056_init,szdouble,1,fl);fe6056_init*=1.0e-8;
 	fread(&rocknum,szint,1,fl);
 	fread(&bondnum,szlong,1,fl);
 	fread(&n1,szint,1,fl);
@@ -582,6 +586,8 @@ if (fl1otp==0)
 	fprintf(fl,"% 9.8e-pxy\n",pkf[3]);
 	fprintf(fl,"% 9.8e-GXKOEF\n",GXKOEF);
 	fprintf(fl,"% 9.8e-GYKOEF\n",GYKOEF);
+	fprintf(fl,"% 9.8e-al2627_init",al2627_init*1.0e+5);
+	fprintf(fl,"% 9.8e-fe6056_init",fe6056_init*1.0e+8);
 	fprintf(fl,"%d-rocknum\n",rocknum);
 	fprintf(fl,"%ld-bondnum\n",bondnum);
 	fprintf(fl,"%d-n0cycle\n",n0+1);
@@ -681,6 +687,8 @@ else
 	fwrite(pkf,szdouble,4,fl);
 	fwrite(&GXKOEF,szdouble,1,fl);
 	fwrite(&GYKOEF,szdouble,1,fl);
+	ival1=al2627_init*1.0e+5;fwrite(&ival1,szdouble,1,fl);
+	ival1=fe6056_init*1.0e+8;fwrite(&ival1,szdouble,1,fl);
 	fwrite(&rocknum,szint,1,fl);
 	fwrite(&bondnum,szlong,1,fl);
 	fwrite(&n0,szint,1,fl);

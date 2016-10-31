@@ -727,26 +727,27 @@ if(markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky[
 		}
 	/**/
 	/* Calculate time-dependent radiogenic heating, values taken from [Barr & Canup, Icarus, 198, 163-177 (2008)] */
-	/* (last updated: 22/11/2011) */
+	/* (last updated: 31/10/2016) by Tim */
+	/* 26Al estimates updated with information from [Castillo-Rogez et al. (2009)] and [Moskovitz & Gaidos (2011)] */
 	/**/
 	timesumA = timesum/(365.250*24.000*3600.000);                  /* Time in years */
 	/**/
 	if(mm2==5 || mm2==6 || mm2==25 || mm2==26)  /* Internal heating by lithophile radiogenic isotopes in molten/solid silicate phase */
 	  	{
 		/* Decay constants [1/a] */
-	  	decay_heat_al = 9.6808e-7;                             /*  26Al  */
-	  	decay_heat_k  = 4.9867e-10;                            /*  40K   */
-          	decay_heat_u  = 9.8458e-10;                            /*  235U  */
-          	decay_heat_uu = 1.5541e-10;                            /*  238U  */
-          	decay_heat_th = 4.9511e-11;                            /*  232Th */
+	  	decay_heat_al = 9.6673e-7;                            		/*  26Al, assuming t1/2 = 0.717 Myr  */
+	  	decay_heat_k  = 4.9867e-10;                            		/*  40K   */
+          	decay_heat_u  = 9.8458e-10;                            		/*  235U  */
+          	decay_heat_uu = 1.5541e-10;                            		/*  238U  */
+          	decay_heat_th = 4.9511e-11;                            		/*  232Th */
 		/**/
 		/* Initial heating rate [W/kg] */
-          	init_al       = 1.820e-7;                              /*  26Al  */
+          	init_al       = 1.89716e+23*al2627_init*4.999e-13/(3.264e+13);  /*  26Al, Moskovitz & Gaidos (2009), Eq. (5)  */
 		/* Assume potassium depletion in target body: 300 ppm K in silicate material [Waenke & Dreibus, Phil. Trans. A, 349, 285-293 (1994)] */
-          	init_k        = 0.40689*1.430e-11;                     /*  40K   */
-          	init_u        = 2.990e-12;                             /*  235U  */
-          	init_uu       = 1.600e-12;                             /*  238U  */
-          	init_th       = 1.000e-12;                             /*  232Th */
+          	init_k        = 0.40689*1.430e-11;                     		/*  40K   */
+          	init_u        = 2.990e-12;                             		/*  235U  */
+          	init_uu       = 1.600e-12;                             		/*  238U  */
+          	init_th       = 1.000e-12;                             		/*  232Th */
 		/**/
 		/* Individual heating terms [W/kg] */
 	  	mht_al        = init_al*exp(-timesumA*decay_heat_al);
@@ -762,13 +763,13 @@ if(markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky[
 	if(mm2==7 || mm2==8 || mm2==9 || mm2==10 || mm2==17 || mm2==18 || mm2==19)  /* Internal heating by siderophile radiogenic isotopes in iron phase */
 	  	{
 		/* Decay constants [1/a] */
-		decay_heat_fe = 2.6456e-7;                             /*  60Fe [Rugel et al., Phys. Rev. Lett., 103, 072502 (2009)]  */
-	  	decay_heat_k  = 4.9867e-10;                            /*  40K   */
+		decay_heat_fe = 2.6660e-7;              	                /*  60Fe, assuming t1/2 = 2.60 Myr from [Wallner et al., Phys. Rev. Lett., (2015)]  */
+	  	decay_heat_k  = 4.9867e-10;   		                        /*  40K   */
 		/**/
 		/* Initial heating rate [W/kg] */
-          	init_fe       = 1.340e-9;                              /*  60Fe  */
+		init_fe       = 1.971e+24*fe6056_init*4.3451e-13/(1.183e+14);   /*  60Fe, Moskovitz & Gaidos (2009), Eq. (5)  */
 		/* Assume potassium depletion in target body: 300 ppm K in iron material */
-          	init_ka       = 0.090625*1.430e-11;                    /*  40K   */
+          	init_ka       = 0.090625*1.430e-11;                    		/*  40K   */
 		/**/
 		/* Individual heating terms [W/kg] */
 	  	mht_fe        = init_fe*exp(-timesumA*decay_heat_fe);
@@ -782,21 +783,21 @@ if(markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky[
         	{
 		/**/
 		/* Decay constants [1/a] */
-	  	decay_heat_al = 9.6808e-7;                             /*  26Al  */
-          	decay_heat_u  = 9.8458e-10;                            /*  235U  */
-          	decay_heat_uu = 1.5541e-10;                            /*  238U  */
-          	decay_heat_th = 4.9511e-11;                            /*  232Th */
-	  	decay_heat_fe = 2.6456e-7;                             /*  60Fe [Rugel et al., Phys. Rev. Lett., 103, 072502 (2009)] */
-	  	decay_heat_k  = 4.9867e-10;                            /*  40K   */
+	  	decay_heat_al = 9.6673e-7;                                      /*  26Al, assuming t1/2 = 0.717 Myr  */
+          	decay_heat_u  = 9.8458e-10;                            		/*  235U  */
+          	decay_heat_uu = 1.5541e-10;                            		/*  238U  */
+          	decay_heat_th = 4.9511e-11;                            		/*  232Th */
+		decay_heat_fe = 2.6660e-7;                                      /*  60Fe, assuming t1/2 = 2.60 Myr from [Wallner et al., Phys. Rev. Lett., (2015)]  */
+	  	decay_heat_k  = 4.9867e-10;                            		/*  40K   */
 		/**/
 		/* Initial heating rate [W/kg] */
-          	init_al       = 1.820e-7;                              /*  26Al  */
-          	init_u        = 2.990e-12;                             /*  235U  */
-          	init_uu       = 1.600e-12;                             /*  238U  */
-          	init_th       = 1.000e-12;                             /*  232Th */
-          	init_fe       = 1.340e-9;                              /*  60Fe  */
+          	init_al       = 1.89716e+23*al2627_init*4.999e-13/(3.264e+13);  /*  26Al, Moskovitz & Gaidos (2009), Eq. (5)  */ 
+          	init_u        = 2.990e-12;                             		/*  235U  */
+          	init_uu       = 1.600e-12;                            	 	/*  238U  */
+          	init_th       = 1.000e-12;                             		/*  232Th */
+          	init_fe       = 1.971e+24*fe6056_init*4.3451e-13/(1.183e+14);   /*  60Fe, Moskovitz & Gaidos (2009), Eq. (5)  */
 		/* Assume NO potassium depletion in chondritic material */
-          	init_k        = 1.430e-11;                             /*  40K   */
+          	init_k        = 1.430e-11;                             		/*  40K   */
 		/**/
 		/* Individual heating terms [W/kg] */
 	  	mht_al        = init_al*exp(-timesumA*decay_heat_al);
