@@ -324,8 +324,8 @@ if(fl1itp==0)
 	ffscanf();pkf[3]=atof(sa);
 	ffscanf();GXKOEF=atof(sa);
 	ffscanf();GYKOEF=atof(sa);
-	ffscanf1();al2627_init=atof(sa)*1.0e-5;
-	ffscanf1();fe6056_init=atof(sa)*1.0e-8;
+	ffscanf();al2627_init=atof(sa)*1.0e-5;
+	ffscanf();fe6056_init=atof(sa)*1.0e-8;
 	ffscanf();rocknum=atoi(sa);
 	ffscanf();bondnum=atoi(sa);
 	ffscanf();

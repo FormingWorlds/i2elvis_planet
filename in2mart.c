@@ -85,8 +85,8 @@ ffscanf1();corr2d3d=atoi(sa);
 ffscanf1();pinit=atof(sa);
 ffscanf1();GXKOEF=atof(sa);
 ffscanf1();GYKOEF=atof(sa);
-ffscanf1();al2627_init=atof(sa)*1e-5;
-ffscanf1();fe6056_init=atof(sa)*1e-8;
+ffscanf1();al2627_init=atof(sa)*1.0e-5;
+ffscanf1();fe6056_init=atof(sa)*1.0e-8;
 ffscanf1();timesum=atof(sa)*3.15576e+7;
 ffscanf1();nonstab=atoi(sa);
 /**/
