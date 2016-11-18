@@ -324,6 +324,8 @@ if(fl1itp==0)
 	ffscanf();pkf[3]=atof(sa);
 	ffscanf();GXKOEF=atof(sa);
 	ffscanf();GYKOEF=atof(sa);
+	ffscanf();al2627_init=atof(sa)*1.0e-5;
+	ffscanf();fe6056_init=atof(sa)*1.0e-8;
 	ffscanf();rocknum=atoi(sa);
 	ffscanf();bondnum=atoi(sa);
 	ffscanf();
@@ -480,6 +482,8 @@ else
 	fread(pkf,szdouble,4,fl);
 	fread(&GXKOEF,szdouble,1,fl);
 	fread(&GYKOEF,szdouble,1,fl);
+	fread(&al2627_init,szdouble,1,fl);al2627_init*=1.0e-5;
+	fread(&fe6056_init,szdouble,1,fl);fe6056_init*=1.0e-8;
 	fread(&rocknum,szint,1,fl);
 	fread(&bondnum,szlong,1,fl);
 	fread(&n1,szint,1,fl);
