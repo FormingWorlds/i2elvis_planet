@@ -307,6 +307,13 @@ if(markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky[
         	/* if(mm2<2) mtk=markk[mm1]=2000.000; */
 		if(mm2<2) mtk=markk[mm1]=290.000;
 		}
+
+	/**/
+	/* Set higher sticky air viscosity to avoid artificial rotation */
+	/*if(mm2<2)
+		{
+		mnu=1.000e+22;
+		}*/
 	/**/
 	/* Marker Properties */
 	/* Viscosity calc */

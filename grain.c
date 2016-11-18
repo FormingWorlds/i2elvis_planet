@@ -1,5 +1,5 @@
 /* Compute pure olivine grain growth [Karato, 1989] and growth of olivine in partially/fully molten FeS in pallasites [Solferino et al., Geochim. Cosmochim. Acta, 162, 259-275, 2015; Solferino et al., unpublished data] */
-/* written by Gregor J. Golabek (last updated: 21/09/2016) */
+/* written by Gregor J. Golabek (last updated: 04/10/2016) */
 int grain()
 {
 	long int mm1;
@@ -25,6 +25,9 @@ int grain()
 	double ref_angle=45.000;       /* Angle of region of interest [degrees] */
 	double dev_angle=10.000;       /* Width of region of interest [degrees] */
 	/**/
+	int    growth_model=2;         /* Growth model: (1) Pure olivine reset by impact, only growth after collision, (2) Pure olivine not reset by impact, grows since model start */
+	double time_window=0.06;       /* Allowed time window for material resetting [Myr] */
+	/**/
 	double curr_angle,distancee,dist_x,dist_y;
 	double oliv_gr1,oliv_gr2,oliv_gr3,pall_gr1,pall_gr2,pall_gr3;
 	/**/
@@ -32,7 +35,7 @@ int grain()
 	for (mm1=0;mm1<marknum;mm1++)
 		{
 		/* Reset marker type in sector of circle after first impact event */
-        	if(((timesum+timestep)>=(impact_time[1]*1.000e+6*365.250*24.000*3600.000)) && ((timesum+timestep)<=((impact_time[1]+0.05)*1.000e+6*365.250*24.000*3600.000)))
+        	if(((timesum+timestep)>=(impact_time[1]*1.000e+6*365.250*24.000*3600.000)) && ((timesum+timestep)<=((impact_time[1]+time_window)*1.000e+6*365.250*24.000*3600.000)))
 			{
 			/* Relative coordinates [m] */
 			dist_x    = markx[mm1]-(xsize/2.000);
@@ -60,11 +63,13 @@ int grain()
 						{
 						markt[mm1]=25;
 						}
+					/* Reset grain size (relevant for growth_model no. 2) */
+					markgr[mm1] = (float)(gr_init);
 					}
 				}
 			}
 		/**/
-		/* Olivine grain growth only activated after impact event */
+		/* Olivine grain growth in olivine-FeS mixture only activated after impact event */
 		if((timesum+timestep)>=(impact_time[1]*1.000e+6*365.250*24.000*3600.000))
 			{
 			/* Olivine grains can only grow efficiently as long as (i) temperature is below olivine liquidus and (ii) Fe-Ni-S is still liquid [Solferino et al., Geochim. Cosmochim. Acta, 2015] */
@@ -84,27 +89,65 @@ int grain()
 				pall_gr3    = pow((pall_gr1+pall_gr2),(1.000/n_grain));
 				markgr[mm1] = (float)(pall_gr3);				
 				}
-			/* Growth of pure solid olivine */
-			if(markt[mm1]==6)
+			}
+                /**/
+		/* Assumption 1: Pure olivine growth only activated after impact event */
+		if(growth_model==1)
+			{
+			if((timesum+timestep)>=(impact_time[1]*1.000e+6*365.250*24.000*3600.000))
 				{
-				oliv_gr1    = pow(((double)(markgr[mm1])),n_oliv);
-				oliv_gr2    = k0_oliv*exp(-E_oliv/(8.3145*markk[mm1]))*timestep;
-				oliv_gr3    = pow((oliv_gr1+oliv_gr2),(1.000/n_oliv));
-				markgr[mm1] = (float)(oliv_gr3);
+				/* Growth of pure solid olivine */
+				if(markt[mm1]==6)
+					{
+					oliv_gr1    = pow(((double)(markgr[mm1])),n_oliv);
+					oliv_gr2    = k0_oliv*exp(-E_oliv/(8.3145*markk[mm1]))*timestep;
+					oliv_gr3    = pow((oliv_gr1+oliv_gr2),(1.000/n_oliv));
+					markgr[mm1] = (float)(oliv_gr3);
+					}
+				/* Growth of pure olivine only possible when temperature is below olivine liquidus */
+				if(markt[mm1]==26 && markk[mm1]<2103.000)
+					{
+					oliv_gr1    = pow(((double)(markgr[mm1])),n_oliv);
+					oliv_gr2    = k0_oliv*exp(-E_oliv/(8.3145*markk[mm1]))*timestep;
+					oliv_gr3    = pow((oliv_gr1+oliv_gr2),(1.000/n_oliv));
+					markgr[mm1] = (float)(oliv_gr3);
+					}
+				/**/
+				/* Grain size is reset to start value in case temperature rises above olivine liquidus */
+				if((markt[mm1]==25 || markt[mm1]==26) && markk[mm1]>=2103.000)
+					{
+					markgr[mm1] = (float)(gr_init);	
+					}
 				}
-			/* Growth of pure olivine only possible as temperature is below olivine liquidus */
-			if(markt[mm1]==26 && markk[mm1]<2103.000)
+			}
+                /**/
+		/* Assumption 2: Pure olivine growth activated immediately after model start  */
+		if(growth_model==2)
+			{
+			if((timesum+timestep)>=(start_time*1.000e+6*365.250*24.000*3600.000))
 				{
-				oliv_gr1    = pow(((double)(markgr[mm1])),n_oliv);
-				oliv_gr2    = k0_oliv*exp(-E_oliv/(8.3145*markk[mm1]))*timestep;
-				oliv_gr3    = pow((oliv_gr1+oliv_gr2),(1.000/n_oliv));
-				markgr[mm1] = (float)(oliv_gr3);
-				}
-			/**/
-			/* Grain size is reset to start value in case temperature rises above olivine liquidus */
-			if((markt[mm1]==25 || markt[mm1]==26) && markk[mm1]>=2103.000)
-				{
-				markgr[mm1] = (float)(gr_init);	
+				/* Growth of pure solid olivine */
+				if(markt[mm1]==6)
+					{
+					oliv_gr1    = pow(((double)(markgr[mm1])),n_oliv);
+					oliv_gr2    = k0_oliv*exp(-E_oliv/(8.3145*markk[mm1]))*timestep;
+					oliv_gr3    = pow((oliv_gr1+oliv_gr2),(1.000/n_oliv));
+					markgr[mm1] = (float)(oliv_gr3);
+					}
+				/* Growth of pure olivine only possible as temperature is below olivine liquidus */
+				if(markt[mm1]==26 && markk[mm1]<2103.000)
+					{
+					oliv_gr1    = pow(((double)(markgr[mm1])),n_oliv);
+					oliv_gr2    = k0_oliv*exp(-E_oliv/(8.3145*markk[mm1]))*timestep;
+					oliv_gr3    = pow((oliv_gr1+oliv_gr2),(1.000/n_oliv));
+					markgr[mm1] = (float)(oliv_gr3);
+					}
+				/**/
+				/* Grain size is reset to start value in case temperature rises above olivine liquidus */
+				if((markt[mm1]==25 || markt[mm1]==26) && markk[mm1]>=2103.000)
+					{
+					markgr[mm1] = (float)(gr_init);	
+					}
 				}
 			}
 		}
