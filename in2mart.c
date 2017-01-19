@@ -90,7 +90,7 @@ ffscanf1();fe6056_init=atof(sa)*1.0e-8;
 ffscanf1();timesum=atof(sa)*3.15576e+7;
 ffscanf1();nonstab=atoi(sa);
 /**/
-printf("Initial 26Al/27Al and 60Fe/56Fe = %e, %e \n",al2627_init,fe6056_init);
+printf("26Al/27Al and 60Fe/56Fe ratios at time 0: %e, %e \n",al2627_init,fe6056_init);
 /* Regular Nonstability Read */
 if(nonstab<0)
 	{
@@ -1405,6 +1405,18 @@ for(mm1=0;mm1<marknum;mm1++)
 	}
 /**/
 /**/
+/* Set start accretion time of all materials */
+/* Fabio/Tim (last update: 28/12/2016) */
+for(mm1=0;mm1<marknum;mm1++)
+        {
+        /* Start time as initial accretion time, NaN for sticky air */
+        if(markt[mm1]!=0)
+        	{
+		markacc[mm1] = (float)(timesum/(3.15576e+7));
+        	}
+    	}
+/**/
+/**/
 /* Set initial magnetization and magnetization time for all markers */
 /* added by Gregor (18/10/2011) */
 for(mm1=0;mm1<marknum;mm1++)
@@ -1421,6 +1433,10 @@ if (markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky
 	{
 	allintert((double)(markx[mm1]),(double)(marky[mm1]));
 	markk[mm1]=(float)(eps[2]);
+	if(markt[mm1]!=0)
+                {
+		marktmax[mm1]=(float)(markk[mm1]); /* Tim: Write initial temperature field for marker max */
+		}
 	}
 /**/
 /**/

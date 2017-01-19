@@ -434,6 +434,8 @@ if(fl1itp==0)
 		ffscanf();markhi[mm1]=atof(sa);      /* Greg: marker impact history variable */
 		ffscanf();markpor[mm1]=atof(sa);     /* Greg: marker porosity */
 		ffscanf();markgr[mm1]=atof(sa);      /* Greg: marker grain size */
+		ffscanf();marktmax[mm1]=atof(sa);    /* Tim: marker maximum temperature */
+		ffscanf();markacc[mm1]=atof(sa);     /* Tim: marker accretion time */
 		ffscanf();markmg_old[mm1]=atof(sa);  /* Greg: marker magnetization variable */
 		ffscanf();markmg_time[mm1]=atof(sa); /* Greg: marker magnetization time */
 		ffscanf();markt[mm1]=atoi(sa);
@@ -588,6 +590,8 @@ else
 		markhi[mm1]=iv[4];                       /* Greg: marker history variable */
 		markpor[mm1]=iv[5];                      /* Greg: marker porosity */
                 markgr[mm1]=iv[6];                       /* Greg: marker grain size */
+		marktmax[mm1]=iv[7];                     /* Tim: marker maximum temperature  */
+                markacc[mm1]=iv[8];                      /* Tim: marker accretion time */
 		fread(&nn3,1,1,fl);markmg_old[mm1]=nn3;  /* Greg: marker magnetization variable */
 		fread(&nn2,1,1,fl);markmg_time[mm1]=nn2; /* Greg: marker magnetization time */
 		fread(&nn1,1,1,fl);markt[mm1]=nn1;
@@ -884,6 +888,11 @@ printf("%ld %d   %e %e %e \n",m3,markt[m3],markx[m3],marky[m3],markk[m3]); getch
 			/* Reset marker temperature for newly coming markers */
 			if(markk[m3]<1.0) markk[m3]=(float)(eps[2]);
 			mtk=(double)(markk[m3]);
+			/* Set starting value for marker maximum temperature field (Tim, 28/12/2016) */
+			if(markt[m3]!=0)
+                		{
+                        	if(marktmax[m3]<markk[m3]) marktmax[m3]=(float)(markk[m3]);
+				}
 			/**/
 			/* Marker type */
 			mm2=markt[m3];

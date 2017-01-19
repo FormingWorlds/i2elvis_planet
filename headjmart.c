@@ -114,9 +114,11 @@ double sxx[MAXNOD],syy[MAXNOD],sxy[MAXNOD];
 /* markro[], markaa[], markbb[], markcp[], markkt[], markkf[], markkv[], markht[] - ro,aro,bro,cp,kt, Tkt, Pkt, ht */
 /* markpor[]                                                                      - porosity [non-dim.] */
 /* markgr[]									  - grain size [mum] */
+/* marktmax[]                                                                     - maximum temperature [K] */
+/* markacc[]                                                                      - accretion time [yr] */
 float markx[MAXMRK],marky[MAXMRK];
 float markk[MAXMRK],markv[MAXMRK],markp[MAXMRK],markhi[MAXMRK];
-float markpor[MAXMRK],markgr[MAXMRK];
+float markpor[MAXMRK],markgr[MAXMRK],marktmax[MAXMRK],markacc[MAXMRK];
 double melt_frac[MAXMRK];                    /* Silicate melt fraction on marker level */
 double markmg_time[MAXMRK];
 char markmg_old[MAXMRK];                     /* Global magnetization of solid silicates on marker level */

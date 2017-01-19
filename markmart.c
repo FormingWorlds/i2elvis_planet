@@ -349,6 +349,16 @@ if(markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky[
 		markpor[mm1] = 0.000;
 		}
 	/**/
+	/* Save maximum temperature of marker */
+	/* Added by Tim (last updatet: 28/12/2016) */
+	if(markt[mm1]!=0)
+                {
+		if(marktmax[mm1]<markk[mm1])
+                	{
+              		marktmax[mm1] = markk[mm1];
+			}
+		}
+        /**/
 	/* Effect of cold pressing and sintering on solid silicate porosity [non-dim.] */
 	if((mm2==5 || mm2==6) && (markpor[mm1]>0.000 && markpor[mm1]<=0.850))
 		{
