@@ -389,6 +389,7 @@ double core_form_time;                    /* Start time of thermochemical model 
 double fe_frac;                           /* Linear iron fraction of impactor bodies [non-dim.] */
 double por_init;                          /* Initially prescribed porosity of solid silicates [non-dim.] */
 double gr_init;                           /* Initial grain size for solid silicates [mum] */
+int growth_model;                         /* Grain growth model: (0) No olivine grain growth, (1) olivine grain growth after first impact, (2) olivine grain growth after model start */
 /**/
 /* core.c file */
 /* core() - Gregor's core routine */

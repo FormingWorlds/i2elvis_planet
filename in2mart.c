@@ -79,6 +79,7 @@ ffscanf1();gamma_eff=atof(sa);
 ffscanf1();memory_fe=atof(sa);
 ffscanf1();memory_si=atof(sa);
 ffscanf1();por_init=atof(sa);
+ffscanf1();growth_model=atoi(sa);
 ffscanf1();gr_init=atof(sa);
 ffscanf1();znumz=atoi(sa);
 ffscanf1();corr2d3d=atoi(sa);
@@ -91,6 +92,7 @@ ffscanf1();timesum=atof(sa)*3.15576e+7;
 ffscanf1();nonstab=atoi(sa);
 /**/
 printf("26Al/27Al and 60Fe/56Fe ratios at time 0: %e, %e \n",al2627_init,fe6056_init);
+printf("Grain growth mode: (%i) \n",growth_model);
 /* Regular Nonstability Read */
 if(nonstab<0)
 	{

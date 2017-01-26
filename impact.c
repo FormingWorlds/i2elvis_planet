@@ -3015,43 +3015,49 @@ t_liq = 1973.000;
 	}
 /**/
 /**/
-/* Define counters and current chondritic fraction */
-/*count      = 0;
-count1     = 0;
-hydr_frac  = 10.000;  /* In case of malfunction easy to spot */
+/* Hydration/dehydration routine */
 /**/
-/* Check for each timestep whether silicate markers would be still hydrated or not  */
-/*for(mm1=0;mm1<marknum;mm1++)
-	{*/
-	/* If temperature is sufficienty high silicate material will hydrate */
-/*	if(markt[mm1]==5 && markk[mm1]>273.15 && markpor[mm1]>=0.900*por_init)
-		{
-		markt[mm1]=6;
-		}*/
-	/* If temperature is sufficiently high silicate material will dehydrate */
-	/*if(markt[mm1]==6 && markk[mm1]>273.15+950.00)
-		{
-		markt[mm1]=5;
-		}*/
-	/**/
-	/* Count how many silicate markers are currently hydrous */
-	/*if(markt[mm1]==6)
-		{
-		count+=1;
-		}*/
-	/**/
-	/* Count how many markers are currently chondritic or silicatic */
-	/*if(markt[mm1]==5 || markt[mm1]==6 || markt[mm1]==25 || markt[mm1]==26)
-		{
-		count1+=1;
-		}
-	}*/
+/* Define counters and current hydrated fraction */
+count     = 0;
+count1    = 0;
+hydr_frac = 10.000;  /* In case of malfunction or deactivation easy to spot */
 /**/
-/* Compute current fraction of chondritic markers */
-/*if(count1>0)
-	{
-	hydr_frac = (double)(count)/(double)(count1);
-	}*/
+/* Make sure that hydration/dehydration is only active when no olivine grain growth is computed at the same time and no initial porosity is considered */
+if(growth_model==0 && por_init<=0.001)
+        {
+        /* Check for each timestep whether silicate markers would present rock+ice, hydrated silicates or dehydrated silicates */
+        for(mm1=0;mm1<marknum;mm1++)
+                {
+                /* If temperature is sufficienty high silicate material will hydrate */
+                if(markt[mm1]==5 && markk[mm1]>273.15)
+                        {
+                        markt[mm1]=6;
+                        }
+                /* If temperature is sufficiently high silicate material will dehydrate */
+                if(markt[mm1]==6 && markk[mm1]>273.15+950.00)
+                        {
+                        markt[mm1]=5;
+                        }
+                /**/
+                /* Count how many silicate markers are currently hydrous */
+                if(markt[mm1]==6)
+                        {
+                        count+=1;
+                        }
+                /**/
+                /* Count how many markers are currently chondritic or silicatic */
+                if(markt[mm1]==5 || markt[mm1]==6 || markt[mm1]==25 || markt[mm1]==26)
+                        {
+                        count1+=1;
+                        }
+                }
+        /**/
+        /* Compute current fraction of chondritic markers */
+        if(count1>0)
+                {
+                hydr_frac = (double)(count)/(double)(count1);
+                }
+        }
 /**/
 return 0;
 /**/

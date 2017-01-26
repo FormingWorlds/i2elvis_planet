@@ -252,6 +252,7 @@ if(fl1itp==0)
 	ffscanf();memory_fe=atof(sa);
 	ffscanf();memory_si=atof(sa);
 	ffscanf();por_init=atof(sa);
+	ffscanf();growth_model=atoi(sa);
 	ffscanf();gr_init=atof(sa);
 	ffscanf();znumz=atoi(sa);
 	ffscanf();corr2d3d=atoi(sa);
@@ -415,6 +416,7 @@ else
 	fread(&memory_fe,szdouble,1,fl);
 	fread(&memory_si,szdouble,1,fl);
 	fread(&por_init,szdouble,1,fl);
+	fread(&growth_model,szlong,1,fl);
 	fread(&gr_init,szdouble,1,fl);
 	fread(&znumz,szlong,1,fl);
 	fread(&corr2d3d,szlong,1,fl);
@@ -580,6 +582,7 @@ if (fl1otp==0)
 	fprintf(fl,"% 9.8e-memory_fe\n",memory_fe);
 	fprintf(fl,"% 9.8e-memory_si\n",memory_si);
 	fprintf(fl,"% 9.8e-por_init\n",por_init);
+	fprintf(fl,"%ld-growth_model\n",growth_model);
 	fprintf(fl,"% 9.8e-gr_init\n",gr_init);
 	fprintf(fl,"%ld-znumz\n",znumz);
 	fprintf(fl,"%ld-corr2d3d\n",corr2d3d);
@@ -684,6 +687,7 @@ else
 	fwrite(&memory_fe,szdouble,1,fl);
 	fwrite(&memory_si,szdouble,1,fl);
 	fwrite(&por_init,szdouble,1,fl);
+	fwrite(&growth_model,szlong,1,fl);
 	fwrite(&gr_init,szdouble,1,fl);
 	fwrite(&znumz,szlong,1,fl);
 	fwrite(&corr2d3d,szlong,1,fl);

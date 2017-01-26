@@ -314,6 +314,7 @@ if(fl1itp==0)
 	ffscanf();memory_fe=atof(sa);
 	ffscanf();memory_si=atof(sa);
 	ffscanf();por_init=atof(sa);
+	ffscanf();growth_model=atoi(sa);
 	ffscanf();gr_init=atof(sa);
 	ffscanf();znumz=atoi(sa);
 	ffscanf();corr2d3d=atoi(sa);
@@ -477,6 +478,7 @@ else
 	fread(&memory_fe,szdouble,1,fl);
 	fread(&memory_si,szdouble,1,fl);
 	fread(&por_init,szdouble,1,fl);
+	fread(&growth_model,szlong,1,fl);
 	fread(&gr_init,szdouble,1,fl);
 	fread(&znumz,szlong,1,fl);
 	fread(&corr2d3d,szlong,1,fl);

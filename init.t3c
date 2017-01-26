@@ -9,6 +9,7 @@
      0.300-memory_fe(0-1)
      0.300-memory_si(0-1)
      0.000-por_init(0-1)
+	 0-growth_model(0-2)
      100.0-gr_init(mum)
          1-znumz
          1-corr2d3d
