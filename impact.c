@@ -3028,11 +3028,13 @@ if(growth_model==0 && por_init<=0.001)
         /* Check for each timestep whether silicate markers would present rock+ice, hydrated silicates or dehydrated silicates */
         for(mm1=0;mm1<marknum;mm1++)
                 {
-                /* If temperature is sufficienty high silicate material will hydrate */
-                if(markt[mm1]==5 && markk[mm1]>273.15)
+                /* 
+ 		If temperature is sufficienty high silicate material will hydrate */
+                /*if(markt[mm1]==5 && markk[mm1]>273.15)
                         {
                         markt[mm1]=6;
                         }
+		*/
                 /* If temperature is sufficiently high silicate material will dehydrate */
                 if(markt[mm1]==6 && markk[mm1]>273.15+950.00)
                         {
@@ -3058,6 +3060,7 @@ if(growth_model==0 && por_init<=0.001)
                 hydr_frac = (double)(count)/(double)(count1);
                 }
         }
+/**/
 /**/
 return 0;
 /**/
