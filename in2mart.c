@@ -41,6 +41,12 @@ long int m10,m11,m20,m21,nshift,nshift1,nshift2;
 /* Set Pi value */
 pival=2.000*asin(1.000);
 /**/
+/* Reset pebble_accr.t3c at beginning of new simulation, Tim (2017-04-11) */
+fl1 = fopen("pebble_accr.t3c","wt");
+fprintf(fl1,"0.0 0.0 0 0 \n");
+fclose(fl1);
+/* Read in pebble accretion history from pebble_history.t3c, Tim (2017-04-11) */
+pebbleread();
 /*  Read impact history (Gregor addition) */
 impactread();
 /**/
@@ -86,11 +92,13 @@ ffscanf1();corr2d3d=atoi(sa);
 ffscanf1();pinit=atof(sa);
 ffscanf1();GXKOEF=atof(sa);
 ffscanf1();GYKOEF=atof(sa);
+ffscanf1();tmp_ambient=atof(sa);
 ffscanf1();al2627_init=atof(sa)*1.0e-5;
 ffscanf1();fe6056_init=atof(sa)*1.0e-8;
 ffscanf1();timesum=atof(sa)*3.15576e+7;
 ffscanf1();nonstab=atoi(sa);
 /**/
+printf("Ambient temperature for sticky air markers: %e K \n",tmp_ambient);
 printf("26Al/27Al and 60Fe/56Fe ratios at time 0: %e, %e \n",al2627_init,fe6056_init);
 printf("Grain growth mode: (%i) \n",growth_model);
 /* Regular Nonstability Read */
@@ -1408,7 +1416,7 @@ for(mm1=0;mm1<marknum;mm1++)
 /**/
 /**/
 /* Set start accretion time of all materials */
-/* Fabio/Tim (last update: 28/12/2016) */
+/* added by Tim (last update: 28/12/2016) */
 for(mm1=0;mm1<marknum;mm1++)
         {
         /* Start time as initial accretion time, NaN for sticky air */

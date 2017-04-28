@@ -178,6 +178,7 @@ FILE *fl,*fl1,*fl2,*fl3;
 /* mnumx,mnumy                        - num of markers in one cell for X,Y directions */
 /* xsize,ysize                        - size of grid in X,Y directions, m */
 /* GXKOEF,GYKOEF                      - Gravitation g for X,Y directions, m/sek^2 */
+/* tmp_ambient                        - Ambient temperature of sticky air */
 /* al2627_init,fe6056_init            - Initial abundance of 26Al (e-5) and 60Fe (e-8) relative to their stable isotopes */
 /* pinit                              - pressure on the upper boundary, Pa */
 /* gamma_eff                          - efficiency of impact heating [0-1] [Monteux et al., GRL (2007) use value of 0.3] */
@@ -195,6 +196,7 @@ long int xnumx,ynumy,znumz,mnumx,mnumy;
 long int xnumx1,ynumy1,corr2d3d;
 double xsize,ysize;
 double GXKOEF,GYKOEF;
+double tmp_ambient;
 double al2627_init,fe6056_init;
 double pinit;
 double gamma_eff,memory_fe,memory_si;
@@ -406,5 +408,11 @@ double t_mean,t_cmb_mean;                 /* Current mean temperature of the iro
 /**/
 /* Marker post-processing */
 int markersave();                         /* Gregor addition */
+/**/
+/* Pebble accretion routine */
+void pebbleaccr();			  /* Pebble accretion function */
+void pebbleread();			  /* Function to read in the pebble accretion history from file */
+double pebble_time[10000];		  /* Accretion time of pebbles from history file [Myr] */
+double pebble_mass[10000];		  /* Pebble mass accreted at accretion time [mass of Ceres = 9.47e20 kg] */
 /**/
 /* End FUNCTIONS PROTOTYPES ------------------------------------------- */

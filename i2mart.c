@@ -39,7 +39,9 @@ fln3=loadconf()+1;
 /* Load data from input file */
 loader();
 /**/
-/*  Read impact history */
+/* Read in pebble accretion history from pebble_history.t3c, Tim (2017-04-11) */
+pebbleread();
+/* Read impact history */
 impactread();
 /**/
 /**/
@@ -135,6 +137,9 @@ for (n0=0;n0<cyc0max;n0++)
 	/**/
 	/*  Impact takes place */
 	impact();
+	/**/
+	/* Handle pebble accretion event(s) since last timestep, Tim (2017-04-11) */
+	pebbleaccr();
 	/**/
 	/* ro[],nu[] Recalc */
 	if(gridmod)

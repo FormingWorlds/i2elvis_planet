@@ -325,6 +325,7 @@ if(fl1itp==0)
 	ffscanf();pkf[3]=atof(sa);
 	ffscanf();GXKOEF=atof(sa);
 	ffscanf();GYKOEF=atof(sa);
+	ffscanf();tmp_ambient=atof(sa);
 	ffscanf();al2627_init=atof(sa)*1.0e-5;
 	ffscanf();fe6056_init=atof(sa)*1.0e-8;
 	ffscanf();rocknum=atoi(sa);
@@ -486,6 +487,7 @@ else
 	fread(pkf,szdouble,4,fl);
 	fread(&GXKOEF,szdouble,1,fl);
 	fread(&GYKOEF,szdouble,1,fl);
+	fread(&tmp_ambient,szdouble,1,fl);
 	fread(&al2627_init,szdouble,1,fl);al2627_init*=1.0e-5;
 	fread(&fe6056_init,szdouble,1,fl);fe6056_init*=1.0e-8;
 	fread(&rocknum,szint,1,fl);
@@ -591,9 +593,9 @@ else
 		markv[mm1]=iv[3];
 		markhi[mm1]=iv[4];                       /* Greg: marker history variable */
 		markpor[mm1]=iv[5];                      /* Greg: marker porosity */
-                markgr[mm1]=iv[6];                       /* Greg: marker grain size */
+        markgr[mm1]=iv[6];                       /* Greg: marker grain size */
 		marktmax[mm1]=iv[7];                     /* Tim: marker maximum temperature  */
-                markacc[mm1]=iv[8];                      /* Tim: marker accretion time */
+        markacc[mm1]=iv[8];                      /* Tim: marker accretion time */
 		fread(&nn3,1,1,fl);markmg_old[mm1]=nn3;  /* Greg: marker magnetization variable */
 		fread(&nn2,1,1,fl);markmg_time[mm1]=nn2; /* Greg: marker magnetization time */
 		fread(&nn1,1,1,fl);markt[mm1]=nn1;
