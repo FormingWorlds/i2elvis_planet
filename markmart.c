@@ -2407,115 +2407,105 @@ if(tl_fe)
 /**/
 }
 /* Melt fraction, latent heat calculation */
-
 /**/
-/* Read in pebble accretion history from file, Tim (2017-04-26) */
-void pebbleread(){
-	int pebble_events;		/* Total number of pebble accretion events, read from file */
-    	int mmp;			/* Counter */
-	double M_Ceres = 9.39e+20;	/* Mass accretion normalization */
-    
-    	printf("Read pebble mass data from pebble_history.t3c \n");
-    	fl1 = fopen("pebble_history.t3c","rt");
-   	
-	ffscanf1();			/* First line defines the total number of pebble events */
-    	pebble_events = atoi(sa);
-	printf("Total number of pebble accretion events %d\n", pebble_events);
-   
-	/* Loop over all lines in file and save accretion time and mass to arrays */ 
-    	for(mmp = 1; mmp<=pebble_events; ++mmp){
-        	ffscanf1();  pebble_time[mmp] = atof(sa)*1.0e+6;	/* Time of accretion [yr] */
-        	ffscanf1();  pebble_mass[mmp] = atof(sa)*M_Ceres;	/* Mass of accreted pebbles [kg] */
-    	}
-
-    	fclose(fl1);
-    
-	/* Check whether file was read correctly */	
-	printf("1st pebble event at %f Myr, with pebble mass %f M_Ceres. \n",pebble_time[1]/1.0e+6,pebble_mass[1]/M_Ceres);
-	printf("10th pebble event at %f Myr, with pebble mass %f M_Ceres. \n",pebble_time[10]/1.0e+6,pebble_mass[10]/M_Ceres);
-
-}
-
-/* Calculate new planetary radius and convert sticky air markers to silicate markers, Tim (2017-04-26) */
+/**/
+/* Handle pebble accretion, Tim (2017-05-01) */
 void pebbleaccr(){ 
-    	int mmp 	= 0;		/* Counter */
-    	double xkf;			/* Distance in x direction to center */
-    	double ykf;			/* Distance in y direction to center */
-    	double skf;			/* Absolute distance to center of domain */
-    	double r_old    = 0.0;		/* Radius of body before pebble accretion */
-    	int num_conv 	= 0;  		/* Number of converted markers */
-    	int num_planet 	= 0;		/* Number of markers in planetary body */
-    	int num_air 	= 0;  		/* Number of sticky air markers */
-    	double dMM 	= 0.0;		/* Accreted pebble mass since last timestep */
-        double r_new 	= 0.0;		/* New radius after current pebble event */
-	double M_Ceres  = 9.39e+20;
-    
+    	int mmp 	= 0;						/* Counter */
+    	double xkf;							/* Distance in x direction to center */
+    	double ykf;							/* Distance in y direction to center */
+    	double skf;							/* Absolute distance to center of domain */
+    	double r_old    = 0.0;						/* Radius of body before pebble accretion */
+    	int num_conv 	= 0;  						/* Number of converted markers */
+    	int num_planet 	= 0;						/* Number of markers in planetary body */
+    	int num_air 	= 0;  						/* Number of sticky air markers */
+    	double dMM 	= 0.0;						/* Accreted pebble mass since last timestep */
+        double r_new 	= 0.0;						/* New radius after current pebble event */
+	double M_Ceres  = 9.39e+20;					/* Mass accretion normalization */
+	int pebble_events;              				/* Total number of pebble accretion events, read from file */
     	double currentTime = timesum/(365.250*24.000*3600.000);		/* [yr] */
-    	printf("Current time at pebble event: %f\n",currentTime);
+
+	/* Read in pebble accretion history from file */
+	fl1 = fopen("pebble_history.t3c","rt");
+        ffscanf1();                     /* First line defines the total number of pebble events */
+        pebble_events = atoi(sa);
+        printf("Pebble accretion events: %d\n", pebble_events);
+	/* Loop over all lines in file and save accretion time and mass to arrays */
+        if(pebble_events > 0){
+                for(mmp = 1; mmp<=pebble_events; ++mmp){
+                        ffscanf1();  pebble_time[mmp] = atof(sa)*1.0e+6;        /* Time of accretion [yr] */
+                        ffscanf1();  pebble_mass[mmp] = atof(sa)*M_Ceres;       /* Mass of accreted pebbles [kg] */
+                }
+        }
+        fclose(fl1);
 
 	/* Read in accretion already processed in earlier pebble iterations */
-        printf("Read in pebble data from earlier iterations\n");
         fl1 = fopen("pebble_accr.t3c","rt");
-        ffscanf1(); double time_last	 	= atof(sa)*1.0e+6;	/* Time at last pebble iteration [yr] */
-        ffscanf1(); double dMM_last     	= atof(sa);     	/* Pebble mass accreted since start [M_Ceres = 9.39e+20 kg] */
-        ffscanf1(); int num_conv_tot    	= atoi(sa);		/* Sticky air markers converted to planetary material since start */
-	ffscanf1(); int num_air_last            = atoi(sa);             /* Sticky air markers left for later conversion */
+        ffscanf1(); double time_last            = atof(sa)*1.0e+6;      /* Time at last pebble iteration [yr] */
+        ffscanf1(); double dMM_last             = atof(sa);             /* Pebble mass accreted since start [M_Ceres = 9.39e+20 kg] */
+        ffscanf1(); int num_conv_tot            = atoi(sa);             /* Sticky air markers converted to planetary material since start */
+        ffscanf1(); int num_air_last            = atoi(sa);             /* Sticky air markers left for later conversion */
         fclose(fl1);
-    
-	/* Read in all lines from pebble history which were not accreted yet, calculate total pebble mass to be accreted */ 
-    	while((pebble_time[mmp])<=currentTime){
-		if(pebble_time[mmp]>time_last){
-    			dMM += pebble_mass[mmp];			/* [kg] */
-			printf("New pebble event at %f Myr, with pebble mass %f M_Ceres. \n",pebble_time[mmp]/1.0e+6,pebble_mass[mmp]/M_Ceres);
-		}
-		printf("Sum of new pebble mass accreted: %f\n",dMM/M_Ceres);
-		++mmp;
-    	}
-    
-	/* Calculate current outermost radius of planetary body */
-    	for(mmp=0;mmp<marknum;mmp++){
-        	if(markt[mmp] == 5 || markt[mmp] == 6 || markt[mmp] == 7 || markt[mmp] == 8 || markt[mmp] == 25 || markt[mmp] == 26){
-            		++num_planet;
-            		xkf = markx[mmp] - xsize/2.0;
-            		ykf = marky[mmp] - ysize/2.0;
-            		skf = pow(xkf*xkf+ykf*ykf,0.5);
-            		if(skf > r_old)r_old = skf;
-        	}
-    	}	
-    
-	/* Calculate new radius, IGNORES POTENTIAL IMPACT CRATERS */
-    	printf("Radius of body before pebble event: %f\n", r_old);
-	r_new =  pow((3./4.)*dMM/(3500*M_PI)+pow(r_old,3.),1./3.);
-	printf("Radius of body with newly accreted pebbles: %f\n", r_new);
-   
-	/* Convert sticky air markers within the newly calculated radius to silicate markers */ 
-    	for(mmp=0;mmp<marknum;mmp++){
-        	if(markt[mmp]==0 && markx[mmp]>=0 && marky[mmp]>=0 && (double)(markx[mmp])<=xsize && (double)(marky[mmp])<=ysize){
-            		xkf = markx[mmp] - xsize/2.0;
-            		ykf = marky[mmp] - ysize/2.0;
-            		skf = pow(xkf*xkf+ykf*ykf,0.5);
-            		if(skf < r_new){
-                		markt[mmp] = 6; 		/* Convert to WET silicate marker type */
-                		markacc[mmp]=currentTime;	/* Reset accretion time of newly accreted pebble layer  */
-                		++num_conv;
-            		}
-			else{
-				++num_air;
+
+	/* Only execute routine if pebble routine is actived (pebble_events > 0) */
+	if(pebble_events>0 && pebble_time[1]<currentTime){
+
+		/* Read in all lines from pebble history which were not accreted yet, calculate total pebble mass to be accreted */ 
+    		while((pebble_time[mmp]<=currentTime) && (pebble_mass[mmp] > 0.0)){
+			if(pebble_time[mmp]>time_last){
+    				dMM += pebble_mass[mmp];		/* [kg] */
+				printf("Newly accreted pebbles at %f Myr, mass: %f M_Ceres. \n",pebble_time[mmp]/1.0e+6,pebble_mass[mmp]/M_Ceres);
 			}
-        	}
-    	}
-
-	printf("Marker update: %f body markers before event, %f converted, %f sticky air markers left.\n",num_planet,num_conv,num_air);
-
-	/* Save values for next timestep */
-	time_last 	= currentTime/1.0e+6;		/* Current time [Myr] */
-	dMM_last   	= dMM_last + dMM/M_Ceres; 	/* Totally accreted pebble mass since simulation star [M_Ceres] */
-	num_conv_tot 	= num_conv_tot + num_conv;	/* Total number of converted markers since simulation start */
-
-	/* Save information for next iterations */
-        fl1 = fopen("pebble_accr.t3c","wt");
-        fprintf(fl1,"%f %f %d %d \n",time_last,dMM_last,num_conv_tot,num_air);
-        fclose(fl1);
+			++mmp;
+    		}
+		printf("Total pebble mass accreted: %f, at time: %f Myr \n",dMM/M_Ceres,pebble_time[mmp]/1.0e+6);
     
-}
+		/* Calculate current outermost radius of planetary body */
+    		for(mmp=0;mmp<marknum;mmp++){
+        		if(markt[mmp] == 5 || markt[mmp] == 6 || markt[mmp] == 7 || markt[mmp] == 8 || markt[mmp] == 25 || markt[mmp] == 26){
+            			++num_planet;
+            			xkf = markx[mmp] - xsize/2.0;
+            			ykf = marky[mmp] - ysize/2.0;
+            			skf = pow(xkf*xkf+ykf*ykf,0.5);
+            			if(skf > r_old)r_old = skf;
+        		}
+    		}	
+    
+		/* Calculate new radius, IGNORES POTENTIAL IMPACT CRATERS */
+    		printf("Radius of body before pebble event: %f\n", r_old);
+		r_new =  pow((3./4.)*dMM/(3500*M_PI)+pow(r_old,3.),1./3.);
+		printf("Radius of body with newly accreted pebbles: %f\n", r_new);
+   
+		/* Convert sticky air markers within the newly calculated radius to silicate markers */ 
+    		for(mmp=0;mmp<marknum;mmp++){
+       		 	if(markt[mmp]==0 && markx[mmp]>=0 && marky[mmp]>=0 && (double)(markx[mmp])<=xsize && (double)(marky[mmp])<=ysize){
+            			xkf = markx[mmp] - xsize/2.0;
+            			ykf = marky[mmp] - ysize/2.0;
+            			skf = pow(xkf*xkf+ykf*ykf,0.5);
+            			if(skf < r_new){
+                			markt[mmp] = 6; 		/* Convert to WET silicate marker type */
+                			markacc[mmp]=currentTime;	/* Reset accretion time of newly accreted pebble layer  */
+                			++num_conv;
+            			}
+				else{
+					++num_air;
+				}
+        		}
+    		}
+
+		printf("Marker update: %f body markers before event, %f converted, %f sticky air markers left.\n",num_planet,num_conv,num_air);
+
+		/* Save values for next timestep */
+		time_last 	= currentTime/1.0e+6;		/* Current time [Myr] */
+		dMM_last   	= dMM_last + dMM/M_Ceres; 	/* Totally accreted pebble mass since simulation star [M_Ceres] */
+		num_conv_tot 	= num_conv_tot + num_conv;	/* Total number of converted markers since simulation start */
+
+		/* Save information for next iterations in external file, available after restarts */
+        	fl1 = fopen("pebble_accr.t3c","wt");
+        	fprintf(fl1,"%f %f %d %d \n",time_last,dMM_last,num_conv_tot,num_air);
+        	fclose(fl1);
+
+    } /* END of if(pebble_events > 0) */
+
+} /* END of pebbleaccr() */
 /**/

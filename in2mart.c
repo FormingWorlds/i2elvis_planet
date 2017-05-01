@@ -46,7 +46,7 @@ fl1 = fopen("pebble_accr.t3c","wt");
 fprintf(fl1,"0.0 0.0 0 0 \n");
 fclose(fl1);
 /* Read in pebble accretion history from pebble_history.t3c, Tim (2017-04-11) */
-pebbleread();
+pebbleaccr();
 /*  Read impact history (Gregor addition) */
 impactread();
 /**/

@@ -39,8 +39,6 @@ fln3=loadconf()+1;
 /* Load data from input file */
 loader();
 /**/
-/* Read in pebble accretion history from pebble_history.t3c, Tim (2017-04-11) */
-pebbleread();
 /* Read impact history */
 impactread();
 /**/

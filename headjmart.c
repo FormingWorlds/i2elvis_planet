@@ -409,8 +409,7 @@ int markersave();                         /* Gregor addition */
 /**/
 /* Pebble accretion routine */
 void pebbleaccr();                        /* Pebble accretion function */
-void pebbleread();                        /* Function to read in the pebble accretion history from file */
 double pebble_time[10000];                /* Accretion time of pebbles [Myr] */
-double pebble_mass[10000];                /* Pebble mass accreted at accretion time [mass of Ceres = 9.39e20 kg] */
+double pebble_mass[10000];                /* Pebble mass accreted at accretion time [mass of Ceres = 9.47e20 kg] */
 /**/
 /* End FUNCTIONS PROTOTYPES ------------------------------------------- */
