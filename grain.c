@@ -1,5 +1,6 @@
 /* Compute pure olivine grain growth [Karato, 1989] and growth of olivine in partially/fully molten FeS in pallasites [Solferino et al., Geochim. Cosmochim. Acta, 162, 259-275, 2015; Solferino et al., unpublished data] */
-/* written by Gregor J. Golabek (last updated: 04/10/2016) */
+/* written by Gregor J. Golabek (last updated: 19/12/2016) */
+/* extended by Tim Lichtenberg (last updated: 26/01/2017 ) */
 int grain()
 {
 	long int mm1;
@@ -25,8 +26,7 @@ int grain()
 	double ref_angle=45.000;       /* Angle of region of interest [degrees] */
 	double dev_angle=10.000;       /* Width of region of interest [degrees] */
 	/**/
-	int    growth_model=2;         /* Growth model: (1) Pure olivine reset by impact, only growth after collision, (2) Pure olivine not reset by impact, grows since model start */
-	double time_window=0.06;       /* Allowed time window for material resetting [Myr] */
+	double time_window=0.45;       /* Allowed time window for material resetting [Myr] */
 	/**/
 	double curr_angle,distancee,dist_x,dist_y;
 	double oliv_gr1,oliv_gr2,oliv_gr3,pall_gr1,pall_gr2,pall_gr3;
@@ -35,8 +35,7 @@ int grain()
 	for (mm1=0;mm1<marknum;mm1++)
 		{
 		/* Reset marker type in sector of circle after first impact event */
-        	if(((timesum+timestep)>=(impact_time[1]*1.000e+6*365.250*24.000*3600.000)) && ((timesum+timestep)<=((impact_time[1]+time_window)*1.000e+6*365.250*24.000*3600.000)))
-			{
+		if((growth_model==1 || growth_model==2) && ((timesum+timestep)>=(impact_time[1]*1.000e+6*365.250*24.000*3600.000)) && ((timesum+timestep)<=((impact_time[1]+time_window)*1.000e+6*365.250*24.000*3600.000))){
 			/* Relative coordinates [m] */
 			dist_x    = markx[mm1]-(xsize/2.000);
 			dist_y    = marky[mm1]-(ysize/2.000);

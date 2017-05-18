@@ -41,6 +41,12 @@ long int m10,m11,m20,m21,nshift,nshift1,nshift2;
 /* Set Pi value */
 pival=2.000*asin(1.000);
 /**/
+/* Reset pebble_accr.t3c at beginning of new simulation, Tim (2017-04-11) */
+fl1 = fopen("pebble_accr.t3c","wt");
+fprintf(fl1,"0.0 0.0 0 0 \n");
+fclose(fl1);
+/* Read in pebble accretion history from pebble_history.t3c, Tim (2017-04-11) */
+pebbleaccr();
 /*  Read impact history (Gregor addition) */
 impactread();
 /**/
@@ -79,18 +85,22 @@ ffscanf1();gamma_eff=atof(sa);
 ffscanf1();memory_fe=atof(sa);
 ffscanf1();memory_si=atof(sa);
 ffscanf1();por_init=atof(sa);
+ffscanf1();growth_model=atoi(sa);
 ffscanf1();gr_init=atof(sa);
 ffscanf1();znumz=atoi(sa);
 ffscanf1();corr2d3d=atoi(sa);
 ffscanf1();pinit=atof(sa);
 ffscanf1();GXKOEF=atof(sa);
 ffscanf1();GYKOEF=atof(sa);
+ffscanf1();tmp_ambient=atof(sa);
 ffscanf1();al2627_init=atof(sa)*1.0e-5;
 ffscanf1();fe6056_init=atof(sa)*1.0e-8;
 ffscanf1();timesum=atof(sa)*3.15576e+7;
 ffscanf1();nonstab=atoi(sa);
 /**/
-printf("Initial 26Al/27Al and 60Fe/56Fe = %e, %e \n",al2627_init,fe6056_init);
+printf("Ambient temperature for sticky air markers: %e K \n",tmp_ambient);
+printf("26Al/27Al and 60Fe/56Fe ratios at time 0: %e, %e \n",al2627_init,fe6056_init);
+printf("Grain growth mode: (%i) \n",growth_model);
 /* Regular Nonstability Read */
 if(nonstab<0)
 	{
@@ -1405,6 +1415,18 @@ for(mm1=0;mm1<marknum;mm1++)
 	}
 /**/
 /**/
+/* Set start accretion time of all materials */
+/* added by Tim (last update: 28/12/2016) */
+for(mm1=0;mm1<marknum;mm1++)
+        {
+        /* Start time as initial accretion time, NaN for sticky air */
+        if(markt[mm1]!=0)
+        	{
+		markacc[mm1] = (float)(timesum/(3.15576e+7));
+        	}
+    	}
+/**/
+/**/
 /* Set initial magnetization and magnetization time for all markers */
 /* added by Gregor (18/10/2011) */
 for(mm1=0;mm1<marknum;mm1++)
@@ -1421,6 +1443,10 @@ if (markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky
 	{
 	allintert((double)(markx[mm1]),(double)(marky[mm1]));
 	markk[mm1]=(float)(eps[2]);
+	if(markt[mm1]!=0)
+                {
+		marktmax[mm1]=(float)(markk[mm1]); /* Tim: Write initial temperature field for marker max */
+		}
 	}
 /**/
 /**/

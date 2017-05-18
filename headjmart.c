@@ -114,9 +114,11 @@ double sxx[MAXNOD],syy[MAXNOD],sxy[MAXNOD];
 /* markro[], markaa[], markbb[], markcp[], markkt[], markkf[], markkv[], markht[] - ro,aro,bro,cp,kt, Tkt, Pkt, ht */
 /* markpor[]                                                                      - porosity [non-dim.] */
 /* markgr[]									  - grain size [mum] */
+/* marktmax[]                                                                     - maximum temperature [K] */
+/* markacc[]                                                                      - accretion time [yr] */
 float markx[MAXMRK],marky[MAXMRK];
 float markk[MAXMRK],markv[MAXMRK],markp[MAXMRK],markhi[MAXMRK];
-float markpor[MAXMRK],markgr[MAXMRK];
+float markpor[MAXMRK],markgr[MAXMRK],marktmax[MAXMRK],markacc[MAXMRK];
 double melt_frac[MAXMRK];                    /* Silicate melt fraction on marker level */
 double markmg_time[MAXMRK];
 char markmg_old[MAXMRK];                     /* Global magnetization of solid silicates on marker level */
@@ -176,6 +178,7 @@ FILE *fl,*fl1;
 /* mnumx,mnumy                        - num of markers in one cell for X,Y directions */
 /* xsize,ysize                        - size of grid in X,Y directions, m */
 /* GXKOEF,GYKOEF                      - Gravitation g for X,Y directions, m/s^2 */
+/* tmp_ambient			      - Ambient temperature of sticky air */
 /* al2627_init,fe6056_init            - Initial abundances of 26Al (e-5) and 60Fe (e-8) relative to their stable isotopes */
 /* pinit                              - pressure on the upper boundary, Pa */
 /* gamma_eff                          - efficiency of impact heating [0-1] [Monteux et al., GRL (2007) use value of 0.3] */
@@ -193,6 +196,7 @@ long int xnumx,ynumy,znumz,mnumx,mnumy;
 long int xnumx1,ynumy1,corr2d3d;
 double xsize,ysize;
 double GXKOEF,GYKOEF;
+double tmp_ambient;
 double al2627_init,fe6056_init;
 double pinit;
 double gamma_eff,memory_fe,memory_si;
@@ -387,6 +391,7 @@ double core_form_time;                    /* Start time of thermochemical model 
 double fe_frac;                           /* Linear iron fraction of impactor bodies [non-dim.] */
 double por_init;                          /* Initially prescribed porosity of solid silicates [non-dim.] */
 double gr_init;                           /* Initial grain size for solid silicates [mum] */
+int growth_model;                         /* Grain growth model: (0) No olivine grain growth, (1) olivine grain growth after first impact, (2) olivine grain growth after model start */
 /**/
 /* core.c file */
 /* core() - Gregor's core routine */
@@ -401,5 +406,10 @@ double t_mean,t_cmb_mean;                 /* Current mean temperature of the iro
 /**/
 /* Marker post-processing */
 int markersave();                         /* Gregor addition */
+/**/
+/* Pebble accretion routine */
+void pebbleaccr();                        /* Pebble accretion function */
+double pebble_time[10000];                /* Accretion time of pebbles [Myr] */
+double pebble_mass[10000];                /* Pebble mass accreted at accretion time [mass of Ceres = 9.47e20 kg] */
 /**/
 /* End FUNCTIONS PROTOTYPES ------------------------------------------- */

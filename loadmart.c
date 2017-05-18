@@ -252,6 +252,7 @@ if(fl1itp==0)
 	ffscanf();memory_fe=atof(sa);
 	ffscanf();memory_si=atof(sa);
 	ffscanf();por_init=atof(sa);
+	ffscanf();growth_model=atoi(sa);
 	ffscanf();gr_init=atof(sa);
 	ffscanf();znumz=atoi(sa);
 	ffscanf();corr2d3d=atoi(sa);
@@ -262,6 +263,7 @@ if(fl1itp==0)
 	ffscanf();pkf[3]=atof(sa);
 	ffscanf();GXKOEF=atof(sa);
 	ffscanf();GYKOEF=atof(sa);
+	ffscanf();tmp_ambient=atof(sa);
 	ffscanf();al2627_init=atof(sa)*1.0e-5;
         ffscanf();fe6056_init=atof(sa)*1.0e-8;
 	ffscanf();rocknum=atoi(sa);
@@ -372,6 +374,8 @@ if(fl1itp==0)
 		ffscanf();markhi[mm1]=atof(sa);      /* Greg: impact history variable */
 		ffscanf();markpor[mm1]=atof(sa);     /* Greg: marker porosity */
 		ffscanf();markgr[mm1]=atof(sa);      /* Greg: marker grain size */
+		ffscanf();marktmax[mm1]=atof(sa);    /* Tim: marker maximum temperature */
+        ffscanf();markacc[mm1]=atof(sa);     /* Tim: marker accretion time */
 		ffscanf();markmg_old[mm1]=atof(sa);  /* Greg: silicate magnetization variable */
 		ffscanf();markmg_time[mm1]=atof(sa); /* Greg: silicate magnetization time */
 		ffscanf();markt[mm1]=atoi(sa);
@@ -413,6 +417,7 @@ else
 	fread(&memory_fe,szdouble,1,fl);
 	fread(&memory_si,szdouble,1,fl);
 	fread(&por_init,szdouble,1,fl);
+	fread(&growth_model,szlong,1,fl);
 	fread(&gr_init,szdouble,1,fl);
 	fread(&znumz,szlong,1,fl);
 	fread(&corr2d3d,szlong,1,fl);
@@ -420,6 +425,7 @@ else
 	fread(pkf,szdouble,4,fl);
 	fread(&GXKOEF,szdouble,1,fl);
 	fread(&GYKOEF,szdouble,1,fl);
+	fread(&tmp_ambient,szdouble,1,fl);
 	fread(&al2627_init,szdouble,1,fl);al2627_init*=1.0e-5;
         fread(&fe6056_init,szdouble,1,fl);fe6056_init*=1.0e-8;
 	fread(&rocknum,szint,1,fl);
@@ -516,11 +522,13 @@ else
 		fread(&ival0,szfloat,1,fl);marky[mm1]=ival0;
 		fread(&ival0,szfloat,1,fl);markk[mm1]=ival0;
 		fread(&ival0,szfloat,1,fl);markv[mm1]=ival0;
-		fread(&ival0,szfloat,1,fl);markhi[mm1]=ival0;  /* Greg: marker variable for impact history */
-		fread(&ival0,szfloat,1,fl);markpor[mm1]=ival0; /* Greg: marker porosity */
-		fread(&ival0,szfloat,1,fl);markgr[mm1]=ival0;  /* Greg: marker grain size */
-		fread(&nn3,1,1,fl);markmg_old[mm1]=ival0;      /* Greg: marker variable for silicate magnetization */
-		fread(&nn2,1,1,fl);markmg_time[mm1]=ival0;     /* Greg: marker variable for silicate magnetization time */
+		fread(&ival0,szfloat,1,fl);markhi[mm1]=ival0;   /* Greg: marker variable for impact history */
+		fread(&ival0,szfloat,1,fl);markpor[mm1]=ival0;  /* Greg: marker porosity */
+		fread(&ival0,szfloat,1,fl);markgr[mm1]=ival0;   /* Greg: marker grain size */
+		fread(&ival0,szfloat,1,fl);marktmax[mm1]=ival0; /* Tim: marker maximum temperature */
+        fread(&ival0,szfloat,1,fl);markacc[mm1]=ival0;  /* Tim: marker accretion time */
+		fread(&nn3,1,1,fl);markmg_old[mm1]=ival0;       /* Greg: marker variable for silicate magnetization */
+		fread(&nn2,1,1,fl);markmg_time[mm1]=ival0;      /* Greg: marker variable for silicate magnetization time */
 		fread(&nn1,1,1,fl);markt[mm1]=nn1;
 /*
 if(mm1>850) {printf("%ld %e %e %e %d",mm1,markx[mm1],marky[mm1],markk[mm1],markt[mm1]);getchar();}
@@ -576,6 +584,7 @@ if (fl1otp==0)
 	fprintf(fl,"% 9.8e-memory_fe\n",memory_fe);
 	fprintf(fl,"% 9.8e-memory_si\n",memory_si);
 	fprintf(fl,"% 9.8e-por_init\n",por_init);
+	fprintf(fl,"%ld-growth_model\n",growth_model);
 	fprintf(fl,"% 9.8e-gr_init\n",gr_init);
 	fprintf(fl,"%ld-znumz\n",znumz);
 	fprintf(fl,"%ld-corr2d3d\n",corr2d3d);
@@ -586,6 +595,7 @@ if (fl1otp==0)
 	fprintf(fl,"% 9.8e-pxy\n",pkf[3]);
 	fprintf(fl,"% 9.8e-GXKOEF\n",GXKOEF);
 	fprintf(fl,"% 9.8e-GYKOEF\n",GYKOEF);
+	fprintf(fl,"% 9.8e-tmp_ambient\n",tmp_ambient);
 	fprintf(fl,"% 9.8e-al2627_init\n",al2627_init*1.0e+5);
 	fprintf(fl,"% 9.8e-fe6056_init\n",fe6056_init*1.0e+8);
 	fprintf(fl,"%d-rocknum\n",rocknum);
@@ -646,7 +656,7 @@ if (fl1otp==0)
 	for (m1=0;m1<=marknum;m1++)
 		{
 		mm2=markt[m1];
-		fprintf(fl,"% 9.8e % 9.8e % 9.8e % 9.8e % 9.8e % 9.8e % 9.8e %d % 9.5e %d \n",markx[m1],marky[m1],markk[m1],markv[m1],markhi[m1],markpor[m1],markgr[m1],markmg_old[mm1],markmg_time[mm1],mm2);
+		fprintf(fl,"% 9.8e % 9.8e % 9.8e % 9.8e % 9.8e % 9.8e % 9.8e % 9.8e % 9.8e %d % 9.5e %d \n",markx[m1],marky[m1],markk[m1],markv[m1],markhi[m1],markpor[m1],markgr[m1],marktmax[m1],markacc[m1],markmg_old[mm1],markmg_time[mm1],mm2);
 		}
 	}
 /* Save data in text format ---------------------------- */
@@ -680,6 +690,7 @@ else
 	fwrite(&memory_fe,szdouble,1,fl);
 	fwrite(&memory_si,szdouble,1,fl);
 	fwrite(&por_init,szdouble,1,fl);
+	fwrite(&growth_model,szlong,1,fl);
 	fwrite(&gr_init,szdouble,1,fl);
 	fwrite(&znumz,szlong,1,fl);
 	fwrite(&corr2d3d,szlong,1,fl);
@@ -687,6 +698,7 @@ else
 	fwrite(pkf,szdouble,4,fl);
 	fwrite(&GXKOEF,szdouble,1,fl);
 	fwrite(&GYKOEF,szdouble,1,fl);
+	fwrite(&tmp_ambient,szdouble,1,fl);
 	ival1=al2627_init*1.0e+5;fwrite(&ival1,szdouble,1,fl);
 	ival1=fe6056_init*1.0e+8;fwrite(&ival1,szdouble,1,fl);
 	fwrite(&rocknum,szint,1,fl);
@@ -782,7 +794,9 @@ else
 		ival0=markv[mm1];fwrite(&ival0,szfloat,1,fl);
 		ival0=markhi[mm1];fwrite(&ival0,szfloat,1,fl);   /* Greg: impact history variable */
 		ival0=markpor[mm1];fwrite(&ival0,szfloat,1,fl);  /* Greg: marker porosity */
-                ival0=markgr[mm1];fwrite(&ival0,szfloat,1,fl);   /* Greg: marker grain size */
+        ival0=markgr[mm1];fwrite(&ival0,szfloat,1,fl);   /* Greg: marker grain size */
+		ival0=marktmax[mm1];fwrite(&ival0,szfloat,1,fl); /* Tim: marker maximum temperature */
+        ival0=markacc[mm1];fwrite(&ival0,szfloat,1,fl);  /* Tim: marker accretion time */
 		nn3=markmg_old[mm1];fwrite(&nn3,1,1,fl);         /* Greg: silicate magnetization variable */
 		nn2=markmg_time[mm1];fwrite(&nn2,1,1,fl);        /* Greg: silicate magnetization time */
 		nn1=markt[mm1];fwrite(&nn1,1,1,fl);
