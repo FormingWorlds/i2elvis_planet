@@ -6,10 +6,7 @@
 2) Compile code:
 	>> sh compile.sh
 
-3) Generate initial conditions (*_0.prn file):
-	>> ./in2mart
-
-4) Submit (chain-)job to Euler:
+3) Submit (chain-)job to Euler:
 	>> sh submitjobs.sh
 
 
