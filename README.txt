@@ -1,1 +1,0 @@
-Great README file for the 2d code version: i2elvis_planet
