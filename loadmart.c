@@ -270,6 +270,7 @@ if(fl1itp==0)
 	ffscanf();bondnum=atoi(sa);
 	ffscanf();
 	ffscanf();timesum=atof(sa)*3.15576e+7;
+	ffscanf();timeexit=atof(sa)*3.15576e+7;
 	/**/
 	/* Calc,Check Grid parameters */
 	gridcheck();
@@ -432,6 +433,7 @@ else
 	fread(&bondnum,szlong,1,fl);
 	fread(&n1,szint,1,fl);
 	fread(&timesum,szdouble,1,fl);timesum*=3.15576e+7;
+	fread(&timeexit,szdouble,1,fl);timeexit*=3.15576e+7;
 	/**/
 	/* Calc,Check Grid parameters */
 	gridcheck();
@@ -602,6 +604,7 @@ if (fl1otp==0)
 	fprintf(fl,"%ld-bondnum\n",bondnum);
 	fprintf(fl,"%d-n0cycle\n",n0+1);
 	fprintf(fl,"% 9.8e-timesum",timesum/3.15576e+7);
+	fprintf(fl,"% 9.8e-timeexit",timeexit/3.15576e+7);
 	fprintf(fl,"\n\n\n");
 	/**/
 	/* Rock Types information */
@@ -705,6 +708,7 @@ else
 	fwrite(&bondnum,szlong,1,fl);
 	fwrite(&n0,szint,1,fl);
 	ival1=timesum/3.15576e+7;fwrite(&ival1,szdouble,1,fl);
+	ival1=timeexit/3.15576e+7;fwrite(&ival1,szdouble,1,fl);
 	/**/
 	/* Rock Types information */
 	fwrite(markim,szint,rocknum,fl);

@@ -230,6 +230,7 @@ int fl0num,intermod,intermod1,outgrid=0,densimod;
 /* maxtmstep - max Time for one time step, sek */
 /* timestep  - time step, sek */
 /* timesum   - time from start, sek */
+/* timeexit  - time to end simulation, sek */
 /* timedir   - direction of motion in time:1 - forward, -1 - backward */
 /* movemod   - solve Stokes+Continuity equations Y(1)/N(0) */
 /* tempmod   - solve Heat Transfer equation Y(1)/N(0) */
@@ -237,7 +238,7 @@ int fl0num,intermod,intermod1,outgrid=0,densimod;
 /* ratemod   - reset velosity and pressure Y(1)/N(0) */
 /* gridmod   - recalc grid parameters Y(1)/N(0) */
 int cyc0max,movemod,tempmod,markmod,ratemod,gridmod;
-double maxxystep,maxtkstep,maxtmstep,timestep,timesum,timedir;
+double maxxystep,maxtkstep,maxtmstep,timestep,timesum,timeexit,timedir;
 /**/
 /**/
 /**/

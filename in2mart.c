@@ -96,6 +96,7 @@ ffscanf1();tmp_ambient=atof(sa);
 ffscanf1();al2627_init=atof(sa)*1.0e-5;
 ffscanf1();fe6056_init=atof(sa)*1.0e-8;
 ffscanf1();timesum=atof(sa)*3.15576e+7;
+ffscanf1();timeexit=atof(sa)*3.15576e+7;
 ffscanf1();nonstab=atoi(sa);
 /**/
 printf("Ambient temperature for sticky air markers: %e K \n",tmp_ambient);
