@@ -168,6 +168,9 @@ for (n0=0;n0<cyc0max;n0++)
 /* Print Results */
 saver(f0+1,n0-1);
 /**/
+/* Exit if final time is reached */
+if(timesum>timeexit) {printf("Reached timeexit: QUIT"); exit(0);}
+/**/
 /* Check core evolution (Greg addition) */
 core();
 /**/

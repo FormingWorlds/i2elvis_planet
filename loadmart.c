@@ -106,9 +106,7 @@ fclose(fl);
 /**/
 /* stop.yn file creation */
 fl = fopen("stop.yn","wt");
-if (timesum>timeexit){printf("Greater than exit time: quit"); fprintf(fl,"y \n"); exit(0);}
-else {fprintf(fl,"n \n");}
-// fprintf(fl,"n \n");
+fprintf(fl,"n \n");
 fclose(fl);
 /**/
 /**/
@@ -928,9 +926,6 @@ if (rocknum>MAXTMR){printf("Space out in marknu[]"); exit(0);}
 /**/
 /* Bondary condit Equations Num */
 if (bondnum>MAXBON){printf("Space out in bondv[]"); exit(0);}
-/**/
-/* Exit time */
-if (timesum>timeexit){printf("Greater than exit time: quit"); exit(0);}
 /**/
 /* Koef for processing */
 xstpx=xsize/(double)(xnumx-1);
