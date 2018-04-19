@@ -1282,6 +1282,9 @@ if (rocknum>MAXTMR){printf("Space out in marknu[]"); exit(0);}
 /* Bondary condit Equations Num */
 if (bondnum>MAXBON){printf("Space out in bondv[]"); exit(0);}
 /**/
+/* Exit time */
+if (timesum>timeexit){printf("Greater than exit time: quit"); exit(0);}
+/**/
 /* Koef for processing */
 xstpx=xsize/(double)(xnumx-1);
 ystpy=ysize/(double)(ynumy-1);
