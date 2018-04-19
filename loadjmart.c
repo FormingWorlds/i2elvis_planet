@@ -170,7 +170,9 @@ fclose(fl);
 /**/
 /* stop.yn file creation */
 fl = fopen("stop.yn","wt");
-fprintf(fl,"n \n");
+if (timesum>timeexit){printf("Greater than exit time: quit"); exit(0);}
+else {fprintf(fl,"n \n");}
+// fprintf(fl,"n \n");
 fclose(fl);
 /**/
 /**/
