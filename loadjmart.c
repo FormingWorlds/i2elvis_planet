@@ -326,13 +326,13 @@ if(fl1itp==0)
 	ffscanf();GXKOEF=atof(sa);
 	ffscanf();GYKOEF=atof(sa);
 	ffscanf();tmp_ambient=atof(sa);
+	ffscanf();timeexit=atof(sa)*3.15576e+7;
 	ffscanf();al2627_init=atof(sa)*1.0e-5;
 	ffscanf();fe6056_init=atof(sa)*1.0e-8;
 	ffscanf();rocknum=atoi(sa);
 	ffscanf();bondnum=atoi(sa);
 	ffscanf();
 	ffscanf();timesum=atof(sa)*3.15576e+7;
-	ffscanf();timeexit=atof(sa)*3.15576e+7;
 	/**/
 	/* Calc,Check Grid parameters */
 	gridcheck();
@@ -489,13 +489,13 @@ else
 	fread(&GXKOEF,szdouble,1,fl);
 	fread(&GYKOEF,szdouble,1,fl);
 	fread(&tmp_ambient,szdouble,1,fl);
+	fread(&timeexit,szdouble,1,fl);timeexit*=3.15576e+7;
 	fread(&al2627_init,szdouble,1,fl);al2627_init*=1.0e-5;
 	fread(&fe6056_init,szdouble,1,fl);fe6056_init*=1.0e-8;
 	fread(&rocknum,szint,1,fl);
 	fread(&bondnum,szlong,1,fl);
 	fread(&n1,szint,1,fl);
 	fread(&timesum,szdouble,1,fl);timesum*=3.15576e+7;
-	fread(&timeexit,szdouble,1,fl);timeexit*=3.15576e+7;
 	/**/
 	/* Calc,Check Grid parameters */
 	gridcheck();
