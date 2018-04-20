@@ -5,7 +5,7 @@
 
 2) Compile code:
 	- On Euler:
-	    >> module load intel 
+		>> module load intel 
 		>> sh compile.sh
 	- Local (needs Intel compiler):
 		>> sh.compile
