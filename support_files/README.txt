@@ -17,5 +17,5 @@
 
 2) Define correct 'PDIR' and 'image_dir' in plot2d.py
 
-3) Run plotting script:
+3) Run plotting script (with Python 2):
 	>> python plot2d.py
