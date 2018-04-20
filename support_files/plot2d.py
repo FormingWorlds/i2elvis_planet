@@ -26,7 +26,7 @@ from matplotlib import cm
 from matplotlib import colors
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 # import colorlover as cl #http://nbviewer.ipython.org/gist/jackparmer/4696226c9b6b931bbdf6
-from IPython.display import HTML
+#from IPython.display import HTML
 import locale # http://stackoverflow.com/questions/1823058/how-to-print-number-with-commas-as-thousands-separators
 import datetime
 
