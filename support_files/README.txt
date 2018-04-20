@@ -4,6 +4,7 @@
 	>> git clone git@github.com:timlichtenberg/i2elvis_planet.git
 
 2) Compile code:
+        >> module load intel
 	>> sh compile.sh
 
 3) Submit (chain-)job to Euler:
