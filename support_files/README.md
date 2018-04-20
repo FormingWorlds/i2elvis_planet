@@ -1,4 +1,4 @@
-##### Minimum working example to get the code up and running
+## Minimum working example to get the code up and running
 
 1) Get code:
 	>> git clone git@github.com:timlichtenberg/i2elvis_planet.git
@@ -17,8 +17,7 @@
 		>> ./in2mart 	(generates *_0.prn, initial conditions)
 		>> ./i2mart 	(runs code)
 
-
-##### Check the output
+## Check the output
 
 1) Plot the files using the python script in the 'support_files' folder
 	>> python plot2d.py
@@ -28,6 +27,6 @@ in the 'support_files/reference_output' folder.
 
 	main_temp_0002.png:
 	![](reference_output/main_tmp_0002.png)
-	main_temp_0002.png:
+	main_rho_0002.png:
 	![](reference_output/main_rho_0002.png)
 
