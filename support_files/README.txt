@@ -4,18 +4,14 @@
 	>> git clone git@github.com:timlichtenberg/i2elvis_planet.git
 
 2) Compile code:
-        >> module load intel
+    >> module load intel
 	>> sh compile.sh
 
 3) Submit (chain-)job to Euler:
 	>> sh submitjobs.sh
 
 
-### Plot the output
+### Check the output
 
-1) Copy .prn files to local directory
-
-2) Define correct 'PDIR' and 'image_dir' in plot2d.py
-
-3) Run plotting script (with Python 2):
+1) Plot the files using the python script in the 'support_files' folder
 	>> python plot2d.py
