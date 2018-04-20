@@ -19,13 +19,13 @@ long int m1;
         ffscanf1(); no1=atoi(sa);                          /* impactor no. [non-dim.] */
 	fclose(fl1);
 /**/
-	/* Read data of all impact events */
-	printf("Read data of all impactor bodies \n");
-/**/
 	fl1 = fopen("impact_history.t3c","rt");
 	ffscanf1(); impactnnn  = atoi(sa);                 /* total no. of impactors [non-dim.] */
 	ffscanf1(); start_time = atof(sa);                 /* start time of model after CAI formation [Ma] */
 	ffscanf1(); fe_frac    = atof(sa);                 /* linear iron fraction of impactor bodies [non-dim.] */
+/**/
+	/* Read data of all impact events */
+	printf("# Read data of all impactor bodies: %i impactors \n",impactnnn);
 /**/
 	for(m1=1;m1<=impactnnn;m1++)
 		{

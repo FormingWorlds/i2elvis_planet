@@ -2411,25 +2411,25 @@ if(tl_fe)
 /**/
 /* Handle pebble accretion, Tim (2017-05-01) */
 void pebbleaccr(){ 
-    	int mmp 	= 0;						/* Counter */
-    	double xkf;							/* Distance in x direction to center */
-    	double ykf;							/* Distance in y direction to center */
-    	double skf;							/* Absolute distance to center of domain */
+    	int mmp 	= 0;							/* Counter */
+    	double xkf;									/* Distance in x direction to center */
+    	double ykf;									/* Distance in y direction to center */
+    	double skf;									/* Absolute distance to center of domain */
     	double r_old    = 0.0;						/* Radius of body before pebble accretion */
     	int num_conv 	= 0;  						/* Number of converted markers */
     	int num_planet 	= 0;						/* Number of markers in planetary body */
     	int num_air 	= 0;  						/* Number of sticky air markers */
-    	double dMM 	= 0.0;						/* Accreted pebble mass since last timestep */
+    	double dMM 	= 0.0;							/* Accreted pebble mass since last timestep */
         double r_new 	= 0.0;						/* New radius after current pebble event */
-	double M_Ceres  = 9.39e+20;					/* Mass accretion normalization */
-	int pebble_events;              				/* Total number of pebble accretion events, read from file */
-    	double currentTime = timesum/(365.250*24.000*3600.000);		/* [yr] */
+		double M_Ceres  = 9.39e+20;					/* Mass accretion normalization */
+		int pebble_events;              			/* Total number of pebble accretion events, read from file */
+    	double currentTime = timesum/3.15576e+7;	/* [yr] */
 
 	/* Read in pebble accretion history from file */
 	fl1 = fopen("pebble_history.t3c","rt");
         ffscanf1();                     /* First line defines the total number of pebble events */
         pebble_events = atoi(sa);
-        printf("Pebble accretion events: %d\n", pebble_events);
+        printf("# Read data of all pebble accretion events: %d events \n", pebble_events);
 	/* Loop over all lines in file and save accretion time and mass to arrays */
         if(pebble_events > 0){
                 for(mmp = 1; mmp<=pebble_events; ++mmp){

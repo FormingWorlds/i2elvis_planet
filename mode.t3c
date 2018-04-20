@@ -2,16 +2,16 @@
 test_0.prn	b				
 
 /SAVEFILE_TYPE_cyc0max_maxxystep_maxtkstep_maxtmstep					
-test_1.prn	b	11 	0.00001	2.00E+09	1.00E+02
-test_2.prn	b	11	0.01   	2.00E+09	1.00E+04
-test_3.prn	b	5 	0.05   	2.00E+09	1.00E+04
-test_4.prn	b	5 	0.05	2.00E+09	1.00E+04
-test_5.prn	b	5 	0.05	2.00E+09	1.00E+04
-test_6.prn	b	5 	0.05	2.00E+09	1.00E+04
-test_7.prn	b	51	0.05	2.00E+09	1.00E+04
-test_8.prn	b	51	0.05	2.00E+09	1.00E+04
-test_9.prn	b	51	0.05	2.00E+09	1.00E+04
-test_10.prn	b	51	0.05	2.00E+09	1.00E+04
+test_1.prn	b	10 	0.00001	2.00E+09	1.00E+02
+test_2.prn	b	10	0.05   	2.00E+09	1.00E+04
+test_3.prn	b	10 	0.05   	2.00E+09	1.00E+04
+test_4.prn	b	10 	0.05	2.00E+09	1.00E+04
+test_5.prn	b	10 	0.05	2.00E+09	1.00E+04
+test_6.prn	b	10 	0.05	2.00E+09	1.00E+04
+test_7.prn	b	10	0.05	2.00E+09	1.00E+04
+test_8.prn	b	10	0.05	2.00E+09	1.00E+04
+test_9.prn	b	10	0.05	2.00E+09	1.00E+04
+test_10.prn	b	10	0.05	2.00E+09	1.00E+04
 test_11.prn	b	51	0.05	2.00E+09	1.00E+04
 test_12.prn	b	51	0.05	2.00E+09	1.00E+04
 test_13.prn	b	51	0.05	2.00E+09	1.00E+04

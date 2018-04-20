@@ -169,7 +169,7 @@ for (n0=0;n0<cyc0max;n0++)
 saver(f0+1,n0-1);
 /**/
 /* Exit if final time is reached */
-if(timesum>timeexit) {printf("Reached timeexit: QUIT"); exit(0);}
+if(timesum>timeexit) {printf("Reached timeexit (timesum %e yr > timeexit %e yr) >>> QUIT\n",timesum/3.15576e+7,timeexit/3.15576e+7); exit(0);}
 /**/
 /* Check core evolution (Greg addition) */
 core();

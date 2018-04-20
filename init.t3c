@@ -16,8 +16,8 @@
       0000-pinit(Pa)
 1.0000e+00-GXKOEF
 0.2490e+06-GYKOEF_RADIUS(m)
-       290-tmp_ambient(K)
- 1.000e+06-timeexit(Years)
+       150-tmp_ambient(K)
+ 0.500e+06-timeexit(Years)
      5.250-al2627_init(e-5)
      1.150-fe6056_init(e-8)
  0.000e+06-timesum(Years)
@@ -46,7 +46,6 @@ test_0.prn  b
       26  1e+17 1e+17 0e+00 2.9e+09  1.00E+13  0.00E+05  0.00E+00   0.00E+04    1.00E+00     1.00   1e+08 1e+08 0.000 0.000  0.0   1.0    2.90E+03      6.00E-05        4.00E-03      1.00E+03     3.00E+00   0.00e+02  0.00E-06  k1.833610E-07
 ~
 
-
 /PRESSURE
 /VAR:
 /V_T_P___regular_box
@@ -59,7 +58,6 @@ P                  1             1           1             1      00000000000   
 P                  1             1           y             y      00000000000             1.0 +1 +0  0 0
 P                  x             x           1             1      00000000000             1.0 -1 +0  0 0
 P                  x             x           y             y      00000000000             1.0 -1 +0  0 0
-
 
 /VELOCITY
 /VAR____x0________y0________x1________y1________x2________y2________x3________y3______Const________Koef_dm1_dm2_Koef1_dm1_dm2_Koef2_dm1_dm2
@@ -76,20 +74,16 @@ Vy                 0             0             1             y-1            0   
 Vx                 x             x             0             y-1            0             0 0 0
 Vy                 x-1           x-1           1             y-1            0             1.0 -1 +0   0 0
 
-
 /TEMPERATURE
 /VAR___m10___m11___m20___m21___Const___Koef_dm1_dm2_Koef1_dm1_dm2_Koef2_dm1_dm2
 /Left_Bondary_Symmetry
-T                  0             0              1            y-1            290            0 0 0
+T                  0             0              1            y-1            150            0 0 0
 /Right_Bondary_Symmetry
-T                  x             x              1            y-1            290            0 0 0
+T                  x             x              1            y-1            150            0 0 0
 /Upper_Bondary_FIXED_T
-T                  0             x              0            0              290            0 0 0
+T                  0             x              0            0              150            0 0 0
 /LOWER_BOUNDARY_Remote_Fixed^M
-T                  0             x              y            y              290            0 0 0  
-
-
-
+T                  0             x              y            y              150            0 0 0  
 
 /END_BOUNDARY_CONDITIONS_DESCRIPTIONS-------------------------------------
 ~
@@ -98,14 +92,12 @@ T                  0             x              y            y              290 
 /AIR
  0     0     0         0         0         1          1         0         1         1
 /Wet_Mantle
- 3     6     0.5       0.5       0.5       0.5       m50000    m0         0         360
-/Iron_Core
- 3     8     0.5       0.5       0.5       0.5       m20000    m0         0         360
+ 3     6     0.5       0.5       0.5       0.5       m100000   m0         0         360
 /AIR
- 3     0     0.5       0.5       0.5       0.5       m500000   m50000     0         360
+ 3     0     0.5       0.5       0.5       0.5       m500000   m100000    0         360
 ~
 
 /T_BOXES_DESCRIPTION
-0         0         0         0         1         1         0         1         1         290       290       290       290
-3         0.5       0.5       0.5       0.5    m50000      m0         0         360       290       290       290       290
+0         0         0         0         1         1         0         1         1         150       150       150       150
+3         0.5       0.5       0.5       0.5    m100000      m0        0         360       150       150       150       150
 ~

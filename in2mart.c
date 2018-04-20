@@ -41,6 +41,7 @@ long int m10,m11,m20,m21,nshift,nshift1,nshift2;
 /* Set Pi value */
 pival=2.000*asin(1.000);
 /**/
+printf("### in2mart - create initial conditions ###\n");
 /* Reset pebble_accr.t3c at beginning of new simulation, Tim (2017-04-11) */
 fl1 = fopen("pebble_accr.t3c","wt");
 fprintf(fl1,"0.0 0.0 0 0 \n");
@@ -58,7 +59,7 @@ loadconf();
 /**/
 /* Open File init.t3c */
 fl1 = fopen("init.t3c","rt");
-printf("Formation of Initial Condition ...\n");
+printf("Read in setting\n");
 /**/
 /**/
 /**/
@@ -93,15 +94,17 @@ ffscanf1();pinit=atof(sa);
 ffscanf1();GXKOEF=atof(sa);
 ffscanf1();GYKOEF=atof(sa);
 ffscanf1();tmp_ambient=atof(sa);
+ffscanf1();timeexit=atof(sa)*3.15576e+7;
 ffscanf1();al2627_init=atof(sa)*1.0e-5;
 ffscanf1();fe6056_init=atof(sa)*1.0e-8;
 ffscanf1();timesum=atof(sa)*3.15576e+7;
-ffscanf1();timeexit=atof(sa)*3.15576e+7;
 ffscanf1();nonstab=atoi(sa);
 /**/
-printf("Ambient temperature for sticky air markers: %e K \n",tmp_ambient);
-printf("26Al/27Al and 60Fe/56Fe ratios at time 0: %e, %e \n",al2627_init,fe6056_init);
-printf("Grain growth mode: (%i) \n",growth_model);
+printf("# Starting time: %e yr after CAIs; Exit time %e yr  after CAIs \n",timesum/3.15576e+7,timeexit/3.15576e+7);
+printf("# Ambient temperature for sticky air markers: %e K \n",tmp_ambient);
+printf("# 26Al/27Al and 60Fe/56Fe ratios at time 0: %e, %e \n",al2627_init,fe6056_init);
+printf("# Grain growth mode: (%i) \n",growth_model);
+printf("# Grain growth mode: (%i) \n",growth_model);
 /* Regular Nonstability Read */
 if(nonstab<0)
 	{

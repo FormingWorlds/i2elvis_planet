@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 Visualisation routine for I2ELVIS_planet .prn output files
-
-Created on Thu Feb 26 17:05:18 2015 @author: Tim Lichtenberg
+originally based on the Matlab 2D plotting routine by Gregor Golabek (GJG)
+Created on 2015-05-15 by Tim Lichtenberg (TL)
 Edit 2015-05-15: Change contour to heatmap, various layout changes
-
-based on the Matlab 2D plotting routine by Gregor Golabek
+Edit 2018-04-20: TL: Added changes to adapt to github usage
 """
 
 # Import packages
@@ -17,9 +16,6 @@ import glob
 import struct # Decode binary data
 import numpy as np 
 from natsort import natsorted #https://pypi.python.org/pypi/natsort
-
-# Packages for plotting
-#import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
@@ -45,13 +41,11 @@ plt.rcParams.update(params)
 # Define path to run folder
 working_dir = os.getcwd()
 
-# Define path to folder with .prn files, examples:
-PDIR = "/Volumes/astro/meyer/timli/19_55cnc"
-PDIR = working_dir+"/../tests"
+# Define path to file folder
+PDIR = working_dir+"/.."
 
-# Define whicploth RUNS you want to plot
-# RUNS = [ "test1[8,9]*", "test2[0,1,2]*" ]
-RUNS = [ "test*" ]
+# Define which RUNS you want to plot, LEAVE empty when analysing .prn files from main code folder
+RUNS = [] # selective: RUNS = [ "test1[8,9]*", "test2[0,1,2]*" ]
 
 # Define which FILES you want to plot
 FILES = [ '*_*.prn' ] # '*_*[8,9]??.prn'
@@ -78,7 +72,7 @@ file_mode = 'glob' # options: 'glob', 'specific'
 plot_nodes    = [ "rho", "tmp" ] #"eta , "prs"
 # Specifiy list of marker quantities to plot
 # Available marker quantities: "comp", "por"
-plot_markers  = [ "comp", "tmax", "acc"  ] # "por", "comp", "tmax", "acc" 
+plot_markers  = [ ] # "por", "comp", "tmax", "acc" 
 
 # Shall isotherm show the surface?
 isotherm      =  0
@@ -109,7 +103,11 @@ if run_mode == 'specific':
 # sort run list
 RUN_LIST=natsorted(RUN_LIST)
 
-print "List of runs to analyse:", RUN_LIST
+if not RUN_LIST:
+  print("Analyze files in main code folder")
+  RUN_LIST = [ "main" ]
+else:
+    print "List of runs to analyse:", RUN_LIST
 
 ##########################
 ### Loop over all runs ###
@@ -117,8 +115,15 @@ print "List of runs to analyse:", RUN_LIST
 
 for RUN in RUN_LIST:
 
+    # .prn files folder:
+    if RUN == "main":
+        prn_folder = PDIR
+    else:
+        prn_folder = PDIR+"/"+RUN
+    
+
     # Inform about current run
-    print "##########", "Analyse", RUN, "(", PDIR+"/"+RUN, ")", "##########"
+    print "##########", "Analyse", prn_folder, "##########"
     
     # Start the main plotting routine
 
@@ -128,7 +133,7 @@ for RUN in RUN_LIST:
 
     # Loop over all chosen datafiles in directory
     if file_mode == 'glob':
-        os.chdir(PDIR+"/"+RUN)
+        os.chdir(prn_folder)
         FILE_LIST = []
         for i in range(0,len(FILES)):
             glob_files=glob.glob(FILES[i])
@@ -149,7 +154,7 @@ for RUN in RUN_LIST:
         # https://docs.python.org/2/library/struct.html#struct-alignment
         # http://www.tutorialspoint.com/python/python_tuples.htm
         # https://stackoverflow.com/questions/8092469/reading-a-binary-file-in-python
-        fdata = open(PDIR+"/"+RUN+"/"+FILE, "rb")
+        fdata = open(prn_folder+"/"+FILE, "rb")
         print datetime.datetime.now(), fdata.name        
 
         # Read sizes of variables
@@ -190,6 +195,8 @@ for RUN in RUN_LIST:
         GYKOEF      = struct.unpack("d",fdata.read(8))[0]
         # Ambient temperature for sticky air
         tmp_ambient = struct.unpack("d",fdata.read(8))[0]
+        # Time to exit simulation
+        timeexit    = struct.unpack("d",fdata.read(8))[0]
         # 26Al/27Al ratio
         al2627_init = struct.unpack("d",fdata.read(8))[0]
         # 60Fe/56Fe ratio
@@ -209,8 +216,8 @@ for RUN in RUN_LIST:
         # print GYKOEF, rocknum, bondnum, n1, Time
 
         # Define cursor positions within the binary file in bytes
-        # 1*int (A), x*int, y*float/long
-        curpos_nodes    = 4 + 2*4 + 27*8 + rocknum*(8*24+4)
+        # 1*int (A),              x*int,    y*float/long
+        curpos_nodes    = 4     + 2*4   +   28*8 + rocknum*(8*24+4)
         # Skip all nodes
         curpos_grid     = curpos_nodes+(4*20+8*4)*xnumx*ynumy
         # Skip gridlines and boundary conditions
@@ -616,8 +623,10 @@ for RUN in RUN_LIST:
         for var in plot_nodes+plot_markers:
             # for specific_map in cmaps_specific: # cmap tests
             
-            # image_dir="/net/astrogate/export/astro/meyer/timli/poros2d_viz/" # when running on bluesky
-            image_dir=working_dir+"/../figures/"+RUN+"/" # when running on local machine
+            if RUN == "main":
+                image_dir=working_dir+"/../figures/"
+            else:
+                image_dir=working_dir+"/../figures/"+RUN+"/"
             
             # Add dir
             if not os.path.exists(image_dir):
@@ -664,8 +673,8 @@ for RUN in RUN_LIST:
                 var_name=r"Density"
                 var_cmap="Spectral"# "Blues" "gist_heat_r" #hot_r
                 data_array=rho
-                unit=r'$\rho \, [\mathrm{kg} \, \mathrm{m}^{-2}]$'
-                cmap_range_min=2750#int(np.amin(data_array))#3000
+                unit=r'$\rho \, [\mathrm{kg} \, \mathrm{m}^{-3}]$'
+                cmap_range_min=2000#int(np.amin(data_array))#3000
                 cmap_range_max=int(np.amax(data_array))
             if var == "eta":
                 var_name=r"Viscosity"
@@ -679,7 +688,7 @@ for RUN in RUN_LIST:
                 var_cmap="Reds"#"RdBu_r"
                 data_array=tmp
                 unit=r'$T \, [\mathrm{K}]$'
-                cmap_range_min=int(np.amin(data_array))#290
+                cmap_range_min=int(tmp_ambient)#int(np.amin(data_array))#290
                 cmap_range_max=int(np.amax(data_array))
             if var == "prs":
                 var_name=r"Pressure"
