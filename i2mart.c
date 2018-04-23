@@ -69,6 +69,7 @@ for (n0=0;n0<cyc0max;n0++)
 	if (printmod) printf("\n !!! INITIAL TIME STEP FOR CYCLE %e YEARS !!! \n",timestep/3.15576e+7);
 	/**/
 	/**/
+	///// START ITERATION WITH TN=0 guess, REFINE GUESS WITH titerate, REFEED TO viterate, cycle 4-6 times
 	/**/
 	/* vX,vY recalc after Stokes+Continuity equation */
 	if(movemod)
@@ -95,6 +96,8 @@ for (n0=0;n0<cyc0max;n0++)
 		if (printmod) printf("TEMPERATURE OK!\n");
 		}
 	/**/
+	///// --> GET BETTER ESTIMATE OF TN
+	// END ITERATION
 	/**/
 	/**/
 	/* Move marker */
