@@ -195,6 +195,8 @@ for RUN in RUN_LIST:
         GYKOEF      = struct.unpack("d",fdata.read(8))[0]
         # Ambient temperature for sticky air
         tmp_ambient = struct.unpack("d",fdata.read(8))[0]
+        # Delta T for tide-locked planets
+        delta_tmp   = struct.unpack("d",fdata.read(8))[0]
         # Time to exit simulation
         timeexit    = struct.unpack("d",fdata.read(8))[0]
         # 26Al/27Al ratio
@@ -217,7 +219,7 @@ for RUN in RUN_LIST:
 
         # Define cursor positions within the binary file in bytes
         # 1*int (A),              x*int,    y*float/long
-        curpos_nodes    = 4     + 2*4   +   28*8 + rocknum*(8*24+4)
+        curpos_nodes    = 4     + 2*4   +   29*8 + rocknum*(8*24+4)
         # Skip all nodes
         curpos_grid     = curpos_nodes+(4*20+8*4)*xnumx*ynumy
         # Skip gridlines and boundary conditions
@@ -689,7 +691,10 @@ for RUN in RUN_LIST:
                 data_array=tmp
                 unit=r'$T \, [\mathrm{K}]$'
                 cmap_range_min=int(tmp_ambient)#int(np.amin(data_array))#290
-                cmap_range_max=int(np.amax(data_array))
+                if int(delta_tmp) > 0:
+                    cmap_range_max=int(tmp_ambient-delta_tmp)
+                else:
+                    cmap_range_max=int(np.amax(data_array))
             if var == "prs":
                 var_name=r"Pressure"
                 var_cmap="seismic"

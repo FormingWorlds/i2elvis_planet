@@ -221,6 +221,8 @@ double m_mars=6.4185e+23;      /* Present-day mass of Mars: 6.4185e23 kg [Lodder
 /* RO, NU equations var */
 double mpb=1.0,mtk=300.0,numax=0,numin=0,radmax;
 /**/
+double angle, pival; /* Find angle of atmospheric marker */
+pival = 3.141592654;   /* Set value of Pi */
 /**/
 printf("\n Number of nodes = %ld  Number of markers = %ld \n",nodenum,marknum);
 /**/
@@ -291,21 +293,54 @@ if(markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky[
 	/* by Greg (last modified: 05/03/2011) */
 	/* tmp_ambient defined in init.3c, Tim (2017-04-27) */
 	mwa=0;
-	/**/
-	if((M_init+M_acc)<=(0.100*m_mars))
+// 	/**/
+// 	if((M_init+M_acc)<=(0.100*m_mars))
+// 		{
+// 		/* No impact-induced atmosphere, T is set to equilibrium temperature of fast rotating body at current Mars distance */
+//                 /* Using assumptions: */
+// 		/* Present day mean surface temperature [K] [Lodders & Fegley, The Planetary Scientist's Companion (1998)] */
+// 		if(mm2<2) mtk=markk[mm1]=(float)(tmp_ambient);
+// 		}
+// 	if((M_init+M_acc)>(0.100*m_mars))
+// 		{
+// 		/* Impact-induced atmosphere when M>0.1*M_mars [Tyburczy et al., EPSL, 80, 201-207 (1986) (Fig. 3)] */
+// 		/* Estimation of temperature of impact atmosphere [Abe, Earth Moon Planets, 108, 9-14 (2011) (Fig. 1)] */
+//         	/* if(mm2<2) mtk=markk[mm1]=2000.000; */
+// 		if(mm2<2) mtk=markk[mm1]=(float)(tmp_ambient);
+// 		}
+// /**/
+	/* Reset marker temperatures according to hemisphere if Delta T is given */
+	if(mm2<2)
+	{
+		/* Calculate angle of marker */
+	    if((markx[mm1]/xsize>=0.500) && (marky[mm1]/ysize<0.500))
 		{
-		/* No impact-induced atmosphere, T is set to equilibrium temperature of fast rotating body at current Mars distance */
-                /* Using assumptions: */
-		/* Present day mean surface temperature [K] [Lodders & Fegley, The Planetary Scientist's Companion (1998)] */
-		if(mm2<2) mtk=markk[mm1]=(float)(tmp_ambient);
+            angle = atan((markx[mm1]/xsize-0.500)/(0.500-marky[mm1]/ysize))*180.000/pival;
 		}
-	if((M_init+M_acc)>(0.100*m_mars))
+	    else if(((markx[mm1]/xsize)>0.500) && ((marky[mm1]/ysize)>=0.500))
 		{
-		/* Impact-induced atmosphere when M>0.1*M_mars [Tyburczy et al., EPSL, 80, 201-207 (1986) (Fig. 3)] */
-		/* Estimation of temperature of impact atmosphere [Abe, Earth Moon Planets, 108, 9-14 (2011) (Fig. 1)] */
-        	/* if(mm2<2) mtk=markk[mm1]=2000.000; */
-		if(mm2<2) mtk=markk[mm1]=(float)(tmp_ambient);
+            angle = 90.000+atan((marky[mm1]/ysize-0.500)/(markx[mm1]/xsize-0.500))*180.000/pival;
 		}
+	    else if((markx[mm1]/xsize<=0.500) && (marky[mm1]/ysize>0.500))
+		{
+            angle = 180.000+atan((0.500-markx[mm1]/xsize)/(marky[mm1]/ysize-0.500))*180.000/pival;
+		}
+	    else if((markx[mm1]/xsize<0.500) && (marky[mm1]/ysize<=0.500))
+		{
+            angle = 270.000+atan((0.500-marky[mm1]/ysize)/(0.500-markx[mm1]/xsize))*180.000/pival;
+		}
+
+		/* Set temperature according to hemisphere */
+		if(angle <= 180.000) 
+		{
+			mtk=markk[mm1]=(float)(tmp_ambient);
+		}
+		else if(angle > 180.000)
+		{
+			mtk=markk[mm1]=(float)(tmp_ambient-delta_tmp);
+		}
+	}
+	/* End of hemispheric reset */
 	
 	/**/
 	/* Set higher sticky air viscosity to avoid artificial rotation */
@@ -2508,4 +2543,38 @@ void pebbleaccr(){
     } /* END of if(pebble_events > 0) */
 
 } /* END of pebbleaccr() */
+/**/
+// /**/
+// /* Introduce radial segments for surface heat flow/atmosphere, Tim (2018-05-30) */
+// void rad_segements(){ 
+// /* Go through all markers */
+// for(mm1=0;mm1<marknum;mm1++)
+// 	{
+// 		/* Check only sticky air markers */
+// 		if(markt[mm1]==0)
+// 		{
+// 			/* Calculate angle of marker */
+// 		    if((markx[mm1]/xsize>=0.500) && (marky[mm1]/ysize<0.500))
+// 			{
+// 	            angle = atan((markx[mm1]/xsize-0.500)/(0.500-marky[mm1]/ysize))*180.000/pival;
+// 			}
+// 		    else if(((markx[mm1]/xsize)>0.500) && ((marky[mm1]/ysize)>=0.500))
+// 			{
+// 	            angle = 90.000+atan((marky[mm1]/ysize-0.500)/(markx[mm1]/xsize-0.500))*180.000/pival;
+// 			}
+// 		    else if((markx[mm1]/xsize<=0.500) && (marky[mm1]/ysize>0.500))
+// 			{
+// 	            angle = 180.000+atan((0.500-markx[mm1]/xsize)/(marky[mm1]/ysize-0.500))*180.000/pival;
+// 			}
+// 		    else if((markx[mm1]/xsize<0.500) && (marky[mm1]/ysize<=0.500))
+// 			{
+// 	            angle = 270.000+atan((0.500-marky[mm1]/ysize)/(0.500-markx[mm1]/xsize))*180.000/pival;
+// 			}
+// 			/* Set temperature according to hemisphere */
+// 			mtk=markk[mm1]=(float)(tmp_ambient);
+// 		}
+// 		/* End of marker loop */
+// 	}
+// } /* END of rad_segments() */
+
 /**/

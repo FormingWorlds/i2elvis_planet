@@ -3,8 +3,8 @@
        251-ynumy
          4-mnumx
          4-mnumy
-    500000-xsize(m)
-    500000-ysize(m)
+  50000000-xsize(m)
+  50000000-ysize(m)
      0.300-gamma_eff(0-1)
      0.300-memory_fe(0-1)
      0.300-memory_si(0-1)
@@ -15,11 +15,12 @@
          1-corr2d3d
       0000-pinit(Pa)
 1.0000e+00-GXKOEF
-0.2490e+06-GYKOEF_RADIUS(m)
-       150-tmp_ambient(K)
- 0.500e+06-timeexit(Years)
-     5.250-al2627_init(e-5)
-     1.150-fe6056_init(e-8)
+0.2490e+08-GYKOEF_RADIUS(m)
+      2700-tmp_ambient(K)
+      2000-delta_tmp(K)
+ 1.000e+09-timeexit(Years)
+     0.000-al2627_init(e-5)
+     0.000-fe6056_init(e-8)
  0.000e+06-timesum(Years)
 100-nonstab 0.5-dx 0.5-dy
 
@@ -77,27 +78,27 @@ Vy                 x-1           x-1           1             y-1            0   
 /TEMPERATURE
 /VAR___m10___m11___m20___m21___Const___Koef_dm1_dm2_Koef1_dm1_dm2_Koef2_dm1_dm2
 /Left_Bondary_Symmetry
-T                  0             0              1            y-1            150            0 0 0
+T                  0             0              1            y-1            700            0 0 0
 /Right_Bondary_Symmetry
-T                  x             x              1            y-1            150            0 0 0
+T                  x             x              1            y-1            2700           0 0 0
 /Upper_Bondary_FIXED_T
-T                  0             x              0            0              150            0 0 0
+T                  0             x              0            0              1700           0 0 0
 /LOWER_BOUNDARY_Remote_Fixed^M
-T                  0             x              y            y              150            0 0 0  
+T                  0             x              y            y              1700           0 0 0  
 
 /END_BOUNDARY_CONDITIONS_DESCRIPTIONS-------------------------------------
 ~
 
 /ROCKS_BOXES_DESCRIPTION
 /AIR
- 0     0     0         0         0         1          1         0         1         1
+ 0     0     0         0         0         1         1         0         1         1
 /Wet_Mantle
- 3     6     0.5       0.5       0.5       0.5       m100000   m0         0         360
+ 3     6     0.5       0.5       0.5       0.5       m12742000 m0        0         360
 /AIR
- 3     0     0.5       0.5       0.5       0.5       m500000   m100000    0         360
+ 3     0     0.5       0.5       0.5       0.5       m15000000 m12742000 0         360
 ~
 
 /T_BOXES_DESCRIPTION
-0         0         0         0         1         1         0         1         1         150       150       150       150
-3         0.5       0.5       0.5       0.5    m100000      m0        0         360       150       150       150       150
+0         0         0         0         1         1         0         1         1         1700       1700       1700       1700
+3         0.5       0.5       0.5       0.5    m12742000    m0        0         360       1700       1700       1700       1700
 ~

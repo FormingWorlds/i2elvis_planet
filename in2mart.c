@@ -93,6 +93,7 @@ ffscanf1();pinit=atof(sa);
 ffscanf1();GXKOEF=atof(sa);
 ffscanf1();GYKOEF=atof(sa);
 ffscanf1();tmp_ambient=atof(sa);
+ffscanf1();delta_tmp=atof(sa);
 ffscanf1();timeexit=atof(sa)*3.15576e+7;
 ffscanf1();al2627_init=atof(sa)*1.0e-5;
 ffscanf1();fe6056_init=atof(sa)*1.0e-8;
@@ -101,6 +102,7 @@ ffscanf1();nonstab=atoi(sa);
 /**/
 printf("# Starting time: %e yr after CAIs; Exit time %e yr  after CAIs \n",timesum/3.15576e+7,timeexit/3.15576e+7);
 printf("# Ambient temperature for sticky air markers: %e K \n",tmp_ambient);
+printf("# Delta T of hemispheric temperature deviation for tide-locked planet: %e K \n",delta_tmp);
 printf("# 26Al/27Al and 60Fe/56Fe ratios at time 0: %e, %e \n",al2627_init,fe6056_init);
 printf("# Grain growth mode: (%i) \n",growth_model);
 printf("# Grain growth mode: (%i) \n",growth_model);

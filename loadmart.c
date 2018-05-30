@@ -264,6 +264,7 @@ if(fl1itp==0)
 	ffscanf();GXKOEF=atof(sa);
 	ffscanf();GYKOEF=atof(sa);
 	ffscanf();tmp_ambient=atof(sa);
+	ffscanf();delta_tmp=atof(sa);
 	ffscanf();timeexit=atof(sa)*3.15576e+7;
 	ffscanf();al2627_init=atof(sa)*1.0e-5;
         ffscanf();fe6056_init=atof(sa)*1.0e-8;
@@ -427,6 +428,7 @@ else
 	fread(&GXKOEF,szdouble,1,fl);
 	fread(&GYKOEF,szdouble,1,fl);
 	fread(&tmp_ambient,szdouble,1,fl);
+	fread(&delta_tmp,szdouble,1,fl);
 	fread(&timeexit,szdouble,1,fl);timeexit*=3.15576e+7;
 	fread(&al2627_init,szdouble,1,fl);al2627_init*=1.0e-5;
 	fread(&fe6056_init,szdouble,1,fl);fe6056_init*=1.0e-8;
@@ -598,6 +600,7 @@ if (fl1otp==0)
 	fprintf(fl,"% 9.8e-GXKOEF\n",GXKOEF);
 	fprintf(fl,"% 9.8e-GYKOEF\n",GYKOEF);
 	fprintf(fl,"% 9.8e-tmp_ambient\n",tmp_ambient);
+	fprintf(fl,"% 9.8e-delta_tmp\n",delta_tmp);
 	fprintf(fl,"% 9.8e-timeexit",timeexit/3.15576e+7);
 	fprintf(fl,"% 9.8e-al2627_init\n",al2627_init*1.0e+5);
 	fprintf(fl,"% 9.8e-fe6056_init\n",fe6056_init*1.0e+8);
@@ -702,6 +705,7 @@ else
 	fwrite(&GXKOEF,szdouble,1,fl);
 	fwrite(&GYKOEF,szdouble,1,fl);
 	fwrite(&tmp_ambient,szdouble,1,fl);
+	fwrite(&delta_tmp,szdouble,1,fl);
 	ival1=timeexit/3.15576e+7;fwrite(&ival1,szdouble,1,fl);
 	ival1=al2627_init*1.0e+5;fwrite(&ival1,szdouble,1,fl);
 	ival1=fe6056_init*1.0e+8;fwrite(&ival1,szdouble,1,fl);
