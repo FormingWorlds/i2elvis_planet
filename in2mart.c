@@ -58,7 +58,7 @@ loadconf();
 /**/
 /* Open File init.t3c */
 fl1 = fopen("init.t3c","rt");
-printf("Read in setting\n");
+printf("Read in initial conditions\n");
 /**/
 /**/
 /**/
@@ -102,7 +102,6 @@ ffscanf1();nonstab=atoi(sa);
 printf("# Starting time: %e yr after CAIs; Exit time %e yr  after CAIs \n",timesum/3.15576e+7,timeexit/3.15576e+7);
 printf("# Ambient temperature for sticky air markers: %e K \n",tmp_ambient);
 printf("# 26Al/27Al and 60Fe/56Fe ratios at time 0: %e, %e \n",al2627_init,fe6056_init);
-printf("# Grain growth mode: (%i) \n",growth_model);
 printf("# Grain growth mode: (%i) \n",growth_model);
 /* Regular Nonstability Read */
 if(nonstab<0)

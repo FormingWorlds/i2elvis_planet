@@ -266,7 +266,7 @@ if(fl1itp==0)
 	ffscanf();tmp_ambient=atof(sa);
 	ffscanf();timeexit=atof(sa)*3.15576e+7;
 	ffscanf();al2627_init=atof(sa)*1.0e-5;
-        ffscanf();fe6056_init=atof(sa)*1.0e-8;
+    ffscanf();fe6056_init=atof(sa)*1.0e-8;
 	ffscanf();rocknum=atoi(sa);
 	ffscanf();bondnum=atoi(sa);
 	ffscanf();

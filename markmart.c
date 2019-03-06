@@ -2411,7 +2411,7 @@ if(tl_fe)
 /**/
 /* Handle pebble accretion, Tim (2017-05-01) */
 void pebbleaccr(){ 
-    	int mmp 	= 0;							/* Counter */
+    	int mmp 		= 0;						/* Counter */
     	double xkf;									/* Distance in x direction to center */
     	double ykf;									/* Distance in y direction to center */
     	double skf;									/* Absolute distance to center of domain */
@@ -2419,11 +2419,11 @@ void pebbleaccr(){
     	int num_conv 	= 0;  						/* Number of converted markers */
     	int num_planet 	= 0;						/* Number of markers in planetary body */
     	int num_air 	= 0;  						/* Number of sticky air markers */
-    	double dMM 	= 0.0;							/* Accreted pebble mass since last timestep */
+    	double dMM 		= 0.0;						/* Accreted pebble mass since last timestep */
         double r_new 	= 0.0;						/* New radius after current pebble event */
 		double M_Ceres  = 9.39e+20;					/* Mass accretion normalization */
 		int pebble_events;              			/* Total number of pebble accretion events, read from file */
-    	double currentTime = timesum/3.15576e+7;	/* [yr] */
+    	double currentTime = timesum/3.15576e+7;	/* [yr], 365.250*24.000*3600.000 */
 
 	/* Read in pebble accretion history from file */
 	fl1 = fopen("pebble_history.t3c","rt");
