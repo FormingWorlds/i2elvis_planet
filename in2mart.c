@@ -42,7 +42,8 @@ long int m10,m11,m20,m21,nshift,nshift1,nshift2;
 pival=2.000*asin(1.000);
 /**/
 printf("### in2mart - create initial conditions ###\n");
-/* Generate pebble_accr.t3c and file.t3c at the beginning */
+/* Generate pebble_accr.t3c, file.t3c, and hydrous_silicates.t3c at the beginning */
+fl1 = fopen("hydrous_silicates.t3c","wt");fprintf(fl1,"");fclose(fl1);
 fl1 = fopen("file.t3c","wt");fprintf(fl1,"0 \n");fclose(fl1);
 fl1 = fopen("pebble_accr.t3c","wt");fprintf(fl1,"0.0 0.0 0 0 \n");fclose(fl1);
 /* Read in pebble accretion history from pebble_history.t3c, Tim (2017-04-11) */

@@ -35,11 +35,13 @@ in the 'support_files/reference_output' folder.
 1) Install macOS command line tools (& Xcode via the App Store if you want to use it)
 	>> xcode-select --install
 
-2) Download Intel Parallel Studio XE 20XX from https://idesnx.ethz.ch/ (macOS version):
+2) Download Intel Parallel Studio XE 20XX from either:
+	- At ETH: https://idesnx.ethz.ch/ (macOS version)
+	- Official Intel website: https://software.intel.com/en-us/parallel-studio-xe (sign up for students or educators license)
 	- Follow the installation instructions closely:
 		- Use the online installer ('m_ccompxe_online_2018.1.031.dmg' for the 2018 version)
 		- Use command line installation only (no install for Xcode)
-		- When you reach the dialog "Activation options" choose: "Choose alternative activation" -> "Use Intel(R) Software License Manager"
+		- When you reach the dialog "Activation options" choose: "Choose alternative activation" -> "Use Intel(R) Software License Manager" (or serial number, if downloaded from the official website)
 		- Enter the license server information: Host: "lic-intel.ethz.ch"; Port: "28000"
 	- In terminal, link to the new icc installation:
 		>>> source /opt/intel/bin/compilervars.sh intel64

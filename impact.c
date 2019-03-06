@@ -3,9 +3,11 @@
 /**/
 /**/
 /* Global variables for impacts */
-double hydr_frac,impact_time[1000],impact_angle[1000],impact_mass[1000],impact_vel[1000],iron_type[1000],spin_rate[1000],fe_frac,start_time;
+double impact_time[1000],impact_angle[1000],impact_mass[1000],impact_vel[1000],iron_type[1000],spin_rate[1000],fe_frac,start_time;
 int    no1;
 long int impactnnn;
+/* Global variables for hydration routine */
+double sol_frac,liq_frac,hydrous_frac,primitive_frac,n2co2_frac,cocl_frac,h2o_frac,phyllo1_frac,phyllo2_frac,phyllo3_frac,phyllo4_frac,perco_frac,melt1_frac,melt2_frac,t_max_body;
 /**/
 /**/
 /* Read out all data needed about accretion */
@@ -110,7 +112,7 @@ int impactsave()
         /* Current time [Ma] */ 
         /* Current hydrous fraction [non-dim.] */
 	fl1 = fopen("hydrous_silicates.t3c","a+");     /* a+ stands for adding new data at the end of preexistent file */
-	fprintf(fl1,"%f %f \n",timesum/(3600.000*24.000*365.250*1.000e6),hydr_frac);
+	fprintf(fl1,"%f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f \n",timesum/(3600.000*24.000*365.250*1.000e6),sol_frac,liq_frac,hydrous_frac,primitive_frac,n2co2_frac,cocl_frac,h2o_frac,phyllo1_frac,phyllo2_frac,phyllo3_frac,phyllo4_frac,perco_frac,melt1_frac,melt2_frac,t_max_body);
 	fclose(fl1);
 /**/
 return 0;
@@ -124,7 +126,8 @@ return 0;
 int impact()
 {
 /* Counters */
-long int air_marker_no,count,count1,ii,ij,ij_max,m1,m2,m3,m4,m5,m6,m7;
+long int air_marker_no,ii,ij,ij_max,m1,m2,m3,m4,m5,m6,m7;
+long int count_tot,count_sol,count_liq,count_hydrous,count_primitive,count_n2co2,count_cocl,count_h2o,count_phyllo1,count_phyllo2,count_phyllo3,count_phyllo4,count_perco,count_melt1,count_melt2;
 long int mm1,mm2,mmm1,minmx=0,maxmx=0,minmy=0,maxmy=0,mm3,si_marker_no;
 /* Nonstability for markers, m */
 int nonstab;
@@ -3016,11 +3019,41 @@ t_liq = 1973.000;
 /**/
 /**/
 /* Hydration/dehydration routine */
+/* References: Katayama and Karato (2008) (wet), Evans and Goetze (1979) (dry), Mei
+& Kohlstedt (2000a, 2000b), Fu & Elkins-Tanton (2014)
+*/
 /**/
-/* Define counters and current hydrated fraction */
-count     = 0;
-count1    = 0;
-hydr_frac = 10.000;  /* In case of malfunction or deactivation easy to spot */
+/* Define counters and compositional fractions */
+count_tot   	= 0;
+count_sol   	= 0;
+count_liq   	= 0;
+count_hydrous 	= 0;
+count_primitive = 0;
+count_n2co2   	= 0;
+count_cocl     	= 0;
+count_h2o     	= 0;
+count_phyllo1   = 0;
+count_phyllo2   = 0;
+count_phyllo3   = 0;
+count_phyllo4   = 0;
+count_perco     = 0;
+count_melt1     = 0;
+count_melt2     = 0;
+sol_frac   		= 99.99;
+liq_frac    	= 99.99;
+hydrous_frac    = 99.99; /* In case of malfunction or deactivation easy to spot */
+primitive_frac  = 99.99;
+n2co2_frac  	= 99.99;
+cocl_frac  		= 99.99;
+h2o_frac  		= 99.99;
+phyllo1_frac  	= 99.99;
+phyllo2_frac  	= 99.99;
+phyllo3_frac  	= 99.99;
+phyllo4_frac  	= 99.99;
+perco_frac  	= 99.99;
+melt1_frac  	= 99.99;
+melt2_frac  	= 99.99;
+t_max_body 		= 0.0;
 /**/
 /* Make sure that hydration/dehydration is only active when no olivine grain growth is computed at the same time and no initial porosity is considered */
 if(growth_model==0 && por_init<=0.001)
@@ -3028,38 +3061,145 @@ if(growth_model==0 && por_init<=0.001)
         /* Check for each timestep whether silicate markers would present rock+ice, hydrated silicates or dehydrated silicates */
         for(mm1=0;mm1<marknum;mm1++)
                 {
-                /* 
- 		If temperature is sufficienty high silicate material will hydrate */
-                /*if(markt[mm1]==5 && markk[mm1]>273.15)
+                /* Rheology switch */
+                /* If temperature was ever sufficiently high, rock+ice material is hydrous */
+                if(markt[mm1]==5 && marktmax[mm1]>=273.15 && marktmax[mm1]<1223.15)
                         {
                         markt[mm1]=6;
                         }
-		*/
-                /* If temperature is sufficiently high silicate material will dehydrate */
-                if(markt[mm1]==6 && markk[mm1]>273.15+950.00)
+                /* If temperature was ever sufficiently high, hydrous material is dehydrated */
+                /* T > 950°C/1223.15 K | H2O completely lost  */
+                if(markt[mm1]==6 && marktmax[mm1]>=1223.15)
                         {
                         markt[mm1]=5;
                         }
                 /**/
-                /* Count how many silicate markers are currently hydrous */
-                if(markt[mm1]==6)
-                        {
-                        count+=1;
-                        }
                 /**/
-                /* Count how many markers are currently chondritic or silicatic */
+                /**/
+                /* Currently solid silicates */
+                if(markt[mm1]==5 || markt[mm1]==6)
+                        {
+                        count_sol+=1;
+		                }
+				/**/
+		        /* Currently molten silicates */
+		        if(markt[mm1]==25 || markt[mm1]==26)
+                        {
+                        count_liq+=1;
+                    	}
+                /**/        
+                /* Volatile + differentiation classification */
                 if(markt[mm1]==5 || markt[mm1]==6 || markt[mm1]==25 || markt[mm1]==26)
                         {
-                        count1+=1;
+                        /**/
+		                /**/
+		                /**/
+                        /* T_max < 0°C/273.15 K | primitive composition (rock+ice)  */
+		                if(marktmax[mm1]<273.15)
+		                        {
+		                        count_primitive+=1;
+		                        }
+		                /**/
+		                /* hydrous silicates */
+		                if(marktmax[mm1]>=273.15 && marktmax[mm1]<1223.15)
+		                        {
+		                        count_hydrous+=1;
+		                        }
+		                /**/
+		                /**/
+		                /**/
+		                /* Volatiles retained */
+                        /**/
+                        /* T_max < 800°C/1073.15 K | (some) N2/CO2 retained  */
+		                if(marktmax[mm1]<1073.15)
+		                        {
+		                        count_n2co2+=1;
+		                        }
+		                /**/
+                        /* phi < first melt mobilization | (some) CO/Cl retained  */
+		                if(marktmax[mm1]<(0.10*(t_liq-t_sol)+t_sol)) 
+		                        {
+		                        count_cocl+=1;
+		                        }
+		                /**/
+		                /* T_max < 950°C/1223.15 K | (some) H2O retained  */
+		                if(marktmax[mm1]<1223.15)
+		                        {
+		                        count_h2o+=1;
+		                        }
+		                /**/
+		                /**/
+		                /**/
+		                /* Hydrous silicates sub-classification  */
+		                /**/        
+		                /* T_max > 0°C/273.15 K | chl+atg+amph  */
+		                if(marktmax[mm1]>=273.15 && marktmax[mm1]<773.15)
+		                        {
+		                        count_phyllo1+=1;
+		                        }
+		                /**/
+		                /* T_max > 500°C/773.15 K | chl+tlc+amph  */
+		                if(marktmax[mm1]>=773.15 && marktmax[mm1]<873.15)
+		                        {
+		                        count_phyllo2+=1;
+		                        }
+		                /**/
+		                /* T_max > 600°C/873.15 K | chl+amph  */
+		                if(marktmax[mm1]>=873.15 && marktmax[mm1]<973.15)
+		                        {
+		                        count_phyllo3+=1;
+		                        }
+		                /**/
+		                /* T_max > 700°C/973.15 K | amph  */
+		                if(marktmax[mm1]>=973.15 && marktmax[mm1]<1223.15)
+		                        {
+		                        count_phyllo4+=1;
+		                        }
+		                /**/
+		                /**/
+		                /**/
+		                /* Differentiation-related criteria */
+		                /**/
+		                /* T_max > 1000°C/1273.15 K | Fe-FeS eutectic at 1 bar --> percolation onset(?) */
+		                if(marktmax[mm1]>=1273.15)
+		                        {
+		                        count_perco+=1;
+		                        }
+		                /* phi > 0 | silicate melting  */
+		                if(marktmax[mm1]>=t_sol) 
+		                        {
+		                        count_melt1+=1;
+		                        }
+		                /**/
+		                /* phi > disaggregation threshold | internal MO, Fe rain-out  */
+		                if(marktmax[mm1]>=(0.40*(t_liq-t_sol)+t_sol))
+		                        {
+		                        count_melt2+=1;
+		                        }
+		                /**/
+                        /* Total silicate type markers in body  */
+		                count_tot+=1;
+                        /* Current maximum temperature in entire body */
+                        if(markk[mm1]>t_max_body) t_max_body=markk[mm1]; 
                         }
                 }
-        /**/
-        /* Compute current fraction of chondritic markers */
-        if(count1>0)
-                {
-                hydr_frac = (double)(count)/(double)(count1);
-                }
         }
+		/**/
+        /* Compute current composition fractions */
+        sol_frac  		= (double)(count_sol)/(double)(count_tot);
+        liq_frac  		= (double)(count_liq)/(double)(count_tot);
+        hydrous_frac  	= (double)(count_hydrous)/(double)(count_tot);
+        primitive_frac  = (double)(count_primitive)/(double)(count_tot);
+        n2co2_frac  	= (double)(count_n2co2)/(double)(count_tot);
+        cocl_frac  		= (double)(count_cocl)/(double)(count_tot);
+        h2o_frac  		= (double)(count_h2o)/(double)(count_tot);
+		phyllo1_frac  	= (double)(count_phyllo1)/(double)(count_tot);
+		phyllo2_frac  	= (double)(count_phyllo2)/(double)(count_tot);
+		phyllo3_frac  	= (double)(count_phyllo3)/(double)(count_tot);
+		phyllo4_frac  	= (double)(count_phyllo4)/(double)(count_tot);
+		perco_frac  	= (double)(count_perco)/(double)(count_tot);
+		melt1_frac  	= (double)(count_melt1)/(double)(count_tot);
+		melt2_frac  	= (double)(count_melt2)/(double)(count_tot);
 /**/
 /**/
 return 0;
