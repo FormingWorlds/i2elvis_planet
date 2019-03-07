@@ -7,7 +7,8 @@ double impact_time[1000],impact_angle[1000],impact_mass[1000],impact_vel[1000],i
 int    no1;
 long int impactnnn;
 /* Global variables for hydration routine */
-double sol_frac,liq_frac,hydrous_frac,primitive_frac,n2co2_frac,cocl_frac,h2o_frac,phyllo1_frac,phyllo2_frac,phyllo3_frac,phyllo4_frac,perco_frac,melt1_frac,melt2_frac,t_max_body;
+double sol_frac,liq_frac,hydrous_frac,primitive_frac,n2co2_frac,cocl_frac,h2o_frac,phyllo1_frac,phyllo2_frac,phyllo3_frac,phyllo4_frac,perco_frac,melt1_frac,melt2_frac,maxtk,t_max_body,meantk,t_mean_body;
+long int count_toohot;
 /**/
 /**/
 /* Read out all data needed about accretion */
@@ -112,7 +113,7 @@ int impactsave()
         /* Current time [Ma] */ 
         /* Current hydrous fraction [non-dim.] */
 	fl1 = fopen("hydrous_silicates.t3c","a+");     /* a+ stands for adding new data at the end of preexistent file */
-	fprintf(fl1,"%f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f \n",timesum/(3600.000*24.000*365.250*1.000e6),sol_frac,liq_frac,hydrous_frac,primitive_frac,n2co2_frac,cocl_frac,h2o_frac,phyllo1_frac,phyllo2_frac,phyllo3_frac,phyllo4_frac,perco_frac,melt1_frac,melt2_frac,t_max_body);
+	fprintf(fl1,"%f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %i\n",timesum/(3600.000*24.000*365.250*1.000e6),sol_frac,liq_frac,hydrous_frac,primitive_frac,n2co2_frac,cocl_frac,h2o_frac,phyllo1_frac,phyllo2_frac,phyllo3_frac,phyllo4_frac,perco_frac,melt1_frac,melt2_frac,maxtk,t_max_body,meantk,t_mean_body,count_toohot);
 	fclose(fl1);
 /**/
 return 0;
@@ -127,7 +128,7 @@ int impact()
 {
 /* Counters */
 long int air_marker_no,ii,ij,ij_max,m1,m2,m3,m4,m5,m6,m7;
-long int count_tot,count_sol,count_liq,count_hydrous,count_primitive,count_n2co2,count_cocl,count_h2o,count_phyllo1,count_phyllo2,count_phyllo3,count_phyllo4,count_perco,count_melt1,count_melt2;
+long int count_body_nodes,count_tot,count_sol,count_liq,count_hydrous,count_primitive,count_n2co2,count_cocl,count_h2o,count_phyllo1,count_phyllo2,count_phyllo3,count_phyllo4,count_perco,count_melt1,count_melt2;
 long int mm1,mm2,mmm1,minmx=0,maxmx=0,minmy=0,maxmy=0,mm3,si_marker_no;
 /* Nonstability for markers, m */
 int nonstab;
@@ -3024,6 +3025,8 @@ t_liq = 1973.000;
 */
 /**/
 /* Define counters and compositional fractions */
+count_toohot = 0;
+count_body_nodes = 0;
 count_tot   	= 0;
 count_sol   	= 0;
 count_liq   	= 0;
@@ -3053,7 +3056,25 @@ phyllo4_frac  	= 99.99;
 perco_frac  	= 99.99;
 melt1_frac  	= 99.99;
 melt2_frac  	= 99.99;
-t_max_body 		= 0.0;
+t_max_body 		= tmp_ambient;
+t_mean_body 	= 0.0;
+/**/
+/**/
+/* Get maximum of entire grid and mean temperature of body only from nodes */
+maxtk=tmp_ambient;
+meantk=0.0;
+for (m1=0;m1<nodenum;m1++)
+		{
+		tk0[m1]=tk[m1];
+		maxtk=MAXV(maxtk,tk[m1]);
+		if(tk[m1] != tmp_ambient) 
+				{
+				meantk+=tk[m1];
+				count_body_nodes+=1;
+				}
+		}
+meantk = meantk/(double)(count_body_nodes);
+/**/
 /**/
 /* Make sure that hydration/dehydration is only active when no olivine grain growth is computed at the same time and no initial porosity is considered */
 if(growth_model==0 && por_init<=0.001)
@@ -3180,7 +3201,10 @@ if(growth_model==0 && por_init<=0.001)
                         /* Total silicate type markers in body  */
 		                count_tot+=1;
                         /* Current maximum temperature in entire body */
-                        if(markk[mm1]>t_max_body) t_max_body=markk[mm1]; 
+                        if(markk[mm1]>t_max_body) t_max_body=markk[mm1];
+                        /* Current mean temperature in entire body */
+                        t_mean_body+=markk[mm1];
+                        if(markk[mm1] > maxtk+200) count_toohot+=1;
                         }
                 }
         }
@@ -3200,6 +3224,7 @@ if(growth_model==0 && por_init<=0.001)
 		perco_frac  	= (double)(count_perco)/(double)(count_tot);
 		melt1_frac  	= (double)(count_melt1)/(double)(count_tot);
 		melt2_frac  	= (double)(count_melt2)/(double)(count_tot);
+		t_mean_body		= t_mean_body/(double)(count_tot);
 /**/
 /**/
 return 0;
