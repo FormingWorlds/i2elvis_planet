@@ -3204,7 +3204,8 @@ if(growth_model==0 && por_init<=0.001)
                         if(markk[mm1]>t_max_body) t_max_body=markk[mm1];
                         /* Current mean temperature in entire body */
                         t_mean_body+=markk[mm1];
-                        if(markk[mm1] > maxtk+200) count_toohot+=1;
+                        /* Count markers that exceed node max temperature by more than 10% */
+                        if(markk[mm1]/maxtk>1.1) count_toohot+=1;
                         }
                 }
         }
