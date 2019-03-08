@@ -26,7 +26,7 @@
 /MARKERS_TYPES_FILE_NAME_Y(Name)_N(0)
 0
 /DATA_OUTPUT_FILE_NAME____TYPE
-test_0.prn  b
+dd_0.prn  b
 
 /ROCKS_DESCRIPTIONS
 /____NUM_______________NU(Pa^MM*s)_________________DE(J)_DV(J/bar)_____SS(Pa)___MM(Power)___LL(KOEF)______Coh(Pa)___sin(phi)_____weakn.__RO(kg/M^3)_____aRo(1/K)______bRo(1/kbar)____CP(J/kg/K)__Kt(W/(m*K))_______________________Ht(W/kg)
