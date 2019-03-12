@@ -10,8 +10,8 @@ echo "#SBATCH --error=$prefix.err" >> submit.sh
 echo "#SBATCH --time=336:00:00" >> submit.sh
 echo "#SBATCH --ntasks=1" >> submit.sh
 echo "#SBATCH --mem=3000" >> submit.sh
-#echo "#SBATCH -p priority-rp" >> submit.sh # Pierrehumbert priority queue
-echo "#SBATCH -p shared" >> submit.sh # Physics/AOPP shared queue
+echo "#SBATCH -p priority-rp" >> submit.sh
+#echo "#SBATCH -p shared" >> submit.sh
 echo "#SBATCH --cpus-per-task=1" >> submit.sh
 
 # Print date and time before job runs
@@ -24,7 +24,7 @@ echo "module load intel-mpi/2015" >> submit.sh
 echo "module load intel-mkl/2015" >> submit.sh
 
 # Generate initial conditions and run the code
-echo "./in2mart" >> submit.sh
+#echo "./in2mart" >> submit.sh
 echo "./i2mart" >> submit.sh
 
 #Print date and time after job finished
