@@ -10,15 +10,18 @@ echo "#SBATCH --error=$prefix.err" >> submit.sh
 echo "#SBATCH --time=336:00:00" >> submit.sh
 echo "#SBATCH --ntasks=1" >> submit.sh
 echo "#SBATCH --mem=3000" >> submit.sh
-#echo "#SBATCH -p priority-rp" >> submit.sh # Pierrehumbert priority queue
-echo "#SBATCH -p shared" >> submit.sh # Physics/AOPP shared queue
+echo "#SBATCH -p priority-rp" >> submit.sh # Pierrehumbert priority queue
+#echo "#SBATCH -p shared" >> submit.sh # Physics/AOPP shared queue
 echo "#SBATCH --cpus-per-task=1" >> submit.sh
 
 # Print date and time before job runs
 echo "date" >> submit.sh
 
+# Multithreading, should be equal to number of cpus
+echo "export OMP_NUM_THREADS=1" >> submit.sh
+
 # Load environment
-echo "module load netcdf/4.4.1__intel2015" >> submit.sh
+echo "otheros/generic-arc" >> submit.sh
 echo "module load intel-compilers/2015" >> submit.sh
 echo "module load intel-mpi/2015" >> submit.sh
 echo "module load intel-mkl/2015" >> submit.sh
