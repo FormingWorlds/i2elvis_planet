@@ -107,7 +107,7 @@ if not RUN_LIST:
   print("Analyze files in main code folder")
   RUN_LIST = [ "main" ]
 else:
-    print "List of runs to analyse:", RUN_LIST
+    print("List of runs to analyse:", RUN_LIST)
 
 ##########################
 ### Loop over all runs ###
@@ -123,7 +123,7 @@ for RUN in RUN_LIST:
     
 
     # Inform about current run
-    print "##########", "Analyse", prn_folder, "##########"
+    print("##########", "Analyse", prn_folder, "##########")
     
     # Start the main plotting routine
 
@@ -145,7 +145,7 @@ for RUN in RUN_LIST:
     # sort file list
     FILE_LIST=natsorted(FILE_LIST)
 
-    print "List of files to analyse:", FILE_LIST
+    print("List of files to analyse:", FILE_LIST)
 
     for FILE in FILE_LIST:
         
@@ -155,7 +155,7 @@ for RUN in RUN_LIST:
         # http://www.tutorialspoint.com/python/python_tuples.htm
         # https://stackoverflow.com/questions/8092469/reading-a-binary-file-in-python
         fdata = open(prn_folder+"/"+FILE, "rb")
-        print datetime.datetime.now(), fdata.name        
+        print(datetime.datetime.now(), fdata.name)        
 
         # Read sizes of variables
         # A = struct.unpack("BBBB",fdata.read(4))[0]
@@ -223,7 +223,7 @@ for RUN in RUN_LIST:
         # Skip gridlines and boundary conditions
         curpos_markers  = curpos_grid+4*(xnumx+ynumy)+(4*4+8*3)*(bondnum-1)
 
-        print "Read in node properties..."
+        print ("Read in node properties...")
 
         # Skip rock properties
         #curpos0=4+2*4+22*8+rocknum*(8*24+4)
@@ -401,7 +401,7 @@ for RUN in RUN_LIST:
 
         if len(plot_markers) > 0:
             
-            print "Read in marker properties..."
+            print ("Read in marker properties...")
 
             # Skip rock properties, nodes, gridlines and boundary conditions
             fdata.seek(curpos_markers)
@@ -529,7 +529,7 @@ for RUN in RUN_LIST:
         FILE=FILE[-1]
         RUN=RUN.split("/")
         RUN=RUN[-1]
-        print "Plotting run", RUN, ", file", FILE
+        print ("Plotting run", RUN, ", file", FILE)
 
         # Get the settings of the current run
         if RUN.startswith("r"):
@@ -749,7 +749,7 @@ for RUN in RUN_LIST:
                     cbar.cmap.set_under('w')
                     cbar.set_clim(0, cmap_range_max)
 
-            print var, cmap_range_min, cmap_range_max#, data_array
+            print (var, cmap_range_min, cmap_range_max)#, data_array
 
             if var == "comp":
                 norm = mpl.colors.Normalize(vmin=cmap_range_min, vmax=cmap_range_max)

@@ -273,9 +273,10 @@ double nubeg,nuend,nucontr,hidry,hidrl,strmin,strmax;
 /* adiabyn    - Adiabatic heat calculation: N(0)/Y(1) */
 /* si_melting - Peridotite solidus T: 0: Hirschmann [2000], 1: Herzberg et al. [2000] */
 /* fe_melting - Iron melting T: 0: Pure iron after Boehler [1993], 1: Fe-FeS eutectic after Chudinovskikh & Boehler [2007] */
+/* ice_melting - Ice melting of water ice for planetesimal materials */
 double HEATMIN;
 double heatdif;
-int fe_melting,heatmod,heatfd,si_melting;
+int fe_melting,heatmod,heatfd,si_melting,ice_melting;
 double frictyn,adiabyn;
 /**/
 /* Standard Volume in <mark2d.c> */

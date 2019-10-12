@@ -208,7 +208,7 @@ double a_fact,c_fact,cont_r,decay_heat_al,decay_heat_fe,decay_heat_k,decay_heat_
 double eta_fluid,eta_fluid_fe,funct,funct_drv,funct_error,grain_corr,grain_guess,grain_old,grain_stress,heat_flux;
 double init_al,init_fe,init_k,init_ka,init_u,init_uu,init_th;
 double mht_al,mht_fe,mht_k,mht_ka,mht_u,mht_uu,mht_th,p_ref,por_orig,por_change,por_ref1,por_ref2;
-double timesumA,xmelt,xmelt_fe;
+double timesumA,xmelt,xmelt_fe,xmelt_ice;
 /* As fit was done by Schwenn & Goetze (1978) using old fashioned non-SI units, apply these units for calculation */
 double E_act=85000.000;        /* Apparent activation energy for sintering proceses [cal/mol] [Schwenn & Goetze, Tectonophysics, 48, 41-60 (1978)] */
 double fact_a=4.000e-5;        /* Factor for porosity change calculation due to sintering [cm^3/(bar^(3/2)*s)] [Schwenn & Goetze, Tectonophysics, 48, 41-60 (1978)] */
@@ -284,8 +284,9 @@ if(markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky[
 /**/
 	/* Newly added by Greg */
 	mga=eps[49];      /* gravity acceleration [m/s^2] on the marker level */
-        xmelt=eps[21];    /* silicate melt fraction [0-1] on the marker level */
-        xmelt_fe=eps[50]; /* iron melt fraction [0 or 1] on the marker level */
+    xmelt=eps[21];    /* silicate melt fraction [0-1] on the marker level */
+    xmelt_fe=eps[50]; /* iron melt fraction [0 or 1] on the marker level */
+	xmelt_ice=eps[52]; /* water melt fraction [0-1] on the marker level */
 /**/
 	/* Temperature reset for sticky air to simulate impact-induced greenhouse atmosphere or space */
 	/* by Greg (last modified: 05/03/2011) */
@@ -492,9 +493,17 @@ if(markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky[
 		/**/
 		}
 	/**/
+	// /* Compute iron melt fraction, added by Gregor (last updated: 23/05/2018) */
+	// if(mm2==7 || mm2==8 || mm2==27 || mm2==28)
+	// 	{
+	// 	eps[48]=mnu;
+	// 	iron_stuff(mtk,mpb,mm2,mm1);
+	// 	mnu=eps[48];
+	// 	}
 	/**/
-	/* Modify thermal conductivity to better simulate the cooling of a magma ocean/iron diapirs */
-	/* by Greg (last modified: 30/10/2013) */
+	/**/
+	/* Modify thermal conductivity to better simulate the cooling of a magma drops and iron diapirs and water */
+	/* by Tim (last modified: 10/2019) */
 	/**/
 	/* Only valid for molten silicates, not used for very first timestep */
         if((mm2==25 || mm2==26) && (timesum>core_form_time))
@@ -503,9 +512,9 @@ if(markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky[
 		if(xmelt>=0.4000 && xmelt<=0.6000)  /* Use rheological boundary value for silicate melts as suggested by [Solomatov, Treatise on Geophysics Vol. 9, 91-119 (2007)] */
 			{
 			/* Assume immediate drop of viscosity */
-			eta_fluid = 100.000;
+			// eta_fluid = 100.000;
 			/* Simplified assumption that viscosity of crystal mush decreases exponentially with melt fraction [width of transition zone based on Lejeune and Richet, JGR, 100, 1995] */
-			/* eta_fluid = markn0[mm2]*exp((-172.690)*(xmelt-0.400)); */
+			eta_fluid = markn0[mm2]*exp((-172.690)*(xmelt-0.400));
 			/* Simplified assumption that viscosity of crystal mush decreases linearly with melt fraction [width of transition zone based on Lejeune and Richet, JGR, 100, 1995] */
 			/* eta_fluid = mnu-((mnu-100.0000)/0.2000)*(xmelt-0.4000); */
 			/**/
@@ -530,7 +539,7 @@ if(markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky[
 		if(xmelt>0.6000)
 			{
 			/* First calculate the correct heat flux for largely molten silicates using eta_fluid = 100 Pa s [Reese et al., JGR, 115, E05004 (2010)] */
-                        eta_fluid = 100.0000;
+            eta_fluid = 100.0000;
 			/**/
 			/* Apply the soft turbulence model [Solomatov, Treatise on Geophysics Vol. 9, 91-119 (2007)] to compute expected heat flux [W/m^2] */
 			heat_flux = 0.089*pow(markkt[mm2],(2.000/3.000))*pow(ABSV(markk[mm1]-markk[0]),(4.000/3.000))*pow((mro*mro*markbb[mm2]*mga*mcp/eta_fluid),(1.000/3.000));
@@ -555,11 +564,11 @@ if(markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky[
 	/* Only valid for iron, not used for very first timestep */
         if((mm2==7 || mm2==8 || mm2==9 || mm2==10 || mm2==17 || mm2==18 || mm2==19) && (timesum>core_form_time))
 		{
-		if(xmelt_fe==0.0000)  /* Iron is solid */
+		if(xmelt_fe<1.0000)  /* Iron is solid */
 			{
 			/**/
 			/* First calculate the correct heat flux for solid iron using eta_fluid_fe = 1e12 Pa s [Yunker & Van Orman, EPSL, 254, 203-213 (2007)] */
-                        eta_fluid_fe = 1.0000e12;
+            eta_fluid_fe = 1.0000e12;
 			/**/
 			/* Apply the soft turbulence model [Solomatov, Treatise on Geophysics Vol. 9, 91-119 (2007)] to compute expected heat flux [W/m^2] */
 			heat_flux = 0.089*pow(markkt[mm2],(2.000/3.000))*pow(ABSV(markk[mm1]-markk[0]),(4.000/3.000))*pow((mro*mro*markbb[mm2]*mga*mcp/eta_fluid_fe),(1.000/3.000));
@@ -581,7 +590,7 @@ if(markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky[
 			{
 			/**/
 			/* First calculate the correct heat flux for molten iron using eta_fluid_fe = 1e-2 Pa s [Rubie et al., Treatise on Geophysics Vol. 9, 51-90 (2007)] */
-                        eta_fluid_fe = 0.010;
+            eta_fluid_fe = 0.010;
 			/**/
 			/* Apply the soft turbulence model [Solomatov, Treatise on Geophysics Vol. 9, 91-119, (2007)] to compute expected heat flux [W/m^2] */
 			heat_flux = 0.089*pow(markkt[mm2],(2.000/3.000))*pow(ABSV(markk[mm1]-markk[0]),(4.000/3.000))*pow((mro*mro*markbb[mm2]*mga*mcp/eta_fluid_fe),(1.000/3.000));
@@ -751,8 +760,8 @@ if(markx[mm1]>0 && marky[mm1]>0 && (double)(markx[mm1])<xsize && (double)(marky[
 	if(mm2==5 || mm2==6 || mm2==25 || mm2==26)  /* Internal heating by lithophile radiogenic isotopes in molten/solid silicate phase */
 	  	{
 		/* Decay constants [1/a] */
-	  	decay_heat_al = 9.6673e-7;                            		/*  26Al, assuming t1/2 = 0.717 Myr  */
-	  	decay_heat_k  = 4.9867e-10;                            		/*  40K   */
+		  	decay_heat_al = 9.6673e-7;                            		/*  26Al, assuming t1/2 = 0.717 Myr  */
+		  	decay_heat_k  = 4.9867e-10;                            		/*  40K   */
           	decay_heat_u  = 9.8458e-10;                            		/*  235U  */
           	decay_heat_uu = 1.5541e-10;                            		/*  238U  */
           	decay_heat_th = 4.9511e-11;                            		/*  232Th */
@@ -2062,7 +2071,7 @@ void tdbasecalc(double mtk, double mpb, int mm2, long int mm1)
 double H0,H1,H2,H3,R0,R1,R2,R3,G0,G1,G2,G3,W0,W1,W2,W3,n,e;
 /* Val Buffers */
 int n1,n2,mm3,ynpb;
-double mhh0,mhh1,mdhh,maa,mwa,mnu,nueff,ival,dmwa,dmtk,dmpb,xmelt,wro,mro,mcp,mbb,mgg,mkt,mkt1,xold,kr01,kr1,kr10,xkr,krad;
+double mhh0,mhh1,mdhh,maa,mwa,mnu,nueff,ival,dmwa,dmtk,dmpb,xmelt,xmelt_ice,wro,mro,mcp,mbb,mgg,mkt,mkt1,xold,kr01,kr1,kr10,xkr,krad;
 long int m1=wn[0];
 double sy1,e1;
 /**/
@@ -2224,6 +2233,39 @@ if (mm2>20)
 		/**/
 		}
 	}
+/* Molten ice material */
+meltpart1(mtk,mpb,mm2);
+/**/
+mm2=markt[mm1];
+/**/
+if(mm2==6) // Wet planetesimal material, Tim
+	{
+	xmelt_ice=eps[52];
+	/**/
+	/* Additional ice melting adiabatic term, heat capacity */
+	if(xmelt_ice>0 && xmelt_ice<1.0)
+    	{
+    	/* Melting adiabatic term: alm=-ro*(dHlat/dP)/T */
+    	/* Numerical differentiation */
+   		dmpb=mpb*0.001;
+    	meltpart1(mtk,mpb-dmpb,mm2);
+    	ival=eps[53];
+    	meltpart1(mtk,mpb+dmpb,mm2);
+    	ival-=eps[53];
+    	ival*=mro/(mtk*2.0*dmpb*1e+5);  /* Bug fixed by Greg (01/06/2011) */
+    	mbb+=ival;
+    	/**/
+    	/* Melting heat capacity term: cpm=dHlat/dT */
+    	/* Numerical differentiation */
+    	dmtk=1.0;
+    	meltpart1(mtk+dmtk,mpb,mm2);
+    	ival=eps[53];
+    	meltpart1(mtk-dmtk,mpb,mm2);
+    	ival-=eps[53];
+    	ival/=2.0*dmtk;
+    	mcp+=ival;
+    	}
+	}
 /* Save TD variables */
 eps[41]=mro;
 eps[43]=mcp;
@@ -2235,6 +2277,60 @@ eps[48]=mnu;
 }
 /* Thermodynamic database use for ro, Cp */
 
+// /* Treat iron melting, added by Gregor (last update: 15/05/2018) */
+// void iron_stuff(double mtk, double mpb, int mm2, long int mm1)
+// {
+// double dmpb,dmtk,ival,mbb,mcp,mro,mnu,nueff,xmelt_fe;
+// /**/
+// /* Reset TD variables */
+// /*eps[43]=eps[44]=0;*/
+// /**/
+// mnu=eps[48];
+// /**/
+// /* Molten iron material */
+// meltpart1(mtk,mpb,mm2);
+// /**/
+// /* Marker permutation for iron material */
+// if(eps[50]>0 && mm2<20) markt[mm1]+=20;
+// if(eps[50]<=0 && mm2>20) markt[mm1]-=20;
+// /**/
+// mm2=markt[mm1];
+// /**/
+// if(mm2==27 || mm2==28)
+// 	{
+// 	xmelt_fe=eps[50];
+// 	/**/
+// 	/* Reset viscosity of molten iron to lower cut-off viscosity */
+// 	mnu=nubeg;
+//     	/**/
+//     	/* Additional melting adiabatic term, heat capacity */
+//     	if(xmelt_fe>0 && xmelt_fe<1.0)
+//         	{
+//         	/* Melting adiabatic term: alm=-ro*(dHlat/dP)/T */
+//         	/* Numerical differentiation */
+//         	dmpb=mpb*0.001;
+//         	meltpart1(mtk,mpb-dmpb,mm2);
+//         	ival=eps[51];
+//         	meltpart1(mtk,mpb+dmpb,mm2);
+//         	ival-=eps[51];
+//         	ival*=mro/(mtk*2.0*dmpb*1e+5);  /* Bug fixed by Greg (01/06/2011) */
+//         	mbb+=ival;
+//         	/**/
+//         	/* Melting heat capacity term: cpm=dHlat/dT */
+//         	/* Numerical differentiation */
+//         	dmtk=1.0;
+//         	meltpart1(mtk+dmtk,mpb,mm2);
+//         	ival=eps[51];
+//         	meltpart1(mtk-dmtk,mpb,mm2);
+//         	ival-=eps[51];
+//         	ival/=2.0*dmtk;
+//         	mcp+=ival;
+//         	}
+// 	}
+// /*eps[43]=mcp;*/
+// /*eps[44]=mbb;*/
+// eps[48]=mnu;
+// }
 
 /* Melt fraction, latent heat calculation */
 void meltpart1(double mtk, double mpb, int mm2)
@@ -2246,9 +2342,9 @@ void meltpart1(double mtk, double mpb, int mm2)
 /* yn  - type of calculation: 0 - Ro, 1 - Nu, 2 - Cp, 3 - kt */
 {
 /* Val buffer */
-double xmelt=0,xmelt_fe=0,hlatent=0,hlatent_fe=0,ival;
+double xmelt=0,xmelt_fe=0,xmelt_ice=0,hlatent=0,hlatent_fe=0,hlatent_ice=0,ival;
 long int m1;
-double ykm=mpb*3e-3,ts=0,tl=0,tl_fe=0;
+double ykm=mpb*3e-3,ts=0,ts_fe=0,ts_ice=0,tl=0,tl_fe=0,tl_ice=0,t_shift=10.000;
 /**/
 /**/
 /* Calculate melt fraction using marker type */
@@ -2276,7 +2372,6 @@ switch(mm2)
 	/**/
 	/* Dry Peridotite: latent heat 400 kJ/kg [Turcotte & Schubert, p. 171 (1982)] */
 	case 5:
-	case 6:
 	case 25:
 	case 26:
 /**/
@@ -2313,6 +2408,100 @@ switch(mm2)
 	hlatent=400000.0;  /* in [J/kg] */
 /**/
 	break;
+	/* Wet planetesimal material: added by Tim/Greg 2018/2019 */
+	case 6:
+/**/
+	if(si_melting == 0)
+		{
+		/* Dry peridotite solidus [Hirschmann, Geochem. Geophys. Geosyst., 1, 2000GC000070 (2000)] */
+		if(mpb<10e+4)        /* P < (10e4 bar = 1e5 bar = 1e10 Pa =) 10 GPa */
+			{
+			ts=273.15+1120.661+132.899e-4*mpb-5.104e-8*mpb*mpb;
+			}
+		else
+		/* Linear extrapolation to higher pressures */
+			{
+			ts=273.15+1939.251+30.819e-4*(mpb-10e+4);
+			}
+		}
+/**/
+	else if(si_melting == 1)
+		{
+		/* Dry peridotite solidus [Herzberg et al., Geochem. Geophys. Geosyst., 1, 2000GC000089 (2000)] */
+		if(mpb<21.50e+4)        /* P < (21.5e4 bar = 2.15e5 bar = 2.15e10 Pa =) 21.5 GPa */
+			{
+			ts=273.15+1143.04342+58.2946423e-4*mpb+52.3439318e-8*mpb*mpb-16.3201032e-12*mpb*mpb*mpb+2.29886314e-16*pow(mpb,4.000)-0.180865486e-20*pow(mpb,5.000)+0.00815679773e-24*pow(mpb,6.000)-0.000197104325e-28*pow(mpb,7.000)+1.97908526e-38*pow(mpb,8.000);
+			}
+		else
+		/* Linear extrapolation to higher pressures */
+			{
+			ts=273.15+2157.500+11.7297e-4*(mpb-21.50e+4);
+			}
+		}
+/**/
+	/* Martian mantle peridotite liquidus parametrized after [Wade and Wood, EPSL, 236, 78-95 (2005)] */
+	tl=1973.000+28.570e-4*mpb;
+	hlatent=400000.0;  /* in [J/kg] */
+/**/
+	if(ice_melting == 1)
+		{
+		/* Pure water ice melting curve parametrized after [Dunaeva et al., Solar System Research, 44, 202-222 (2010)] */
+		/**/
+		if(mpb>=0.000e6 && mpb<2085.66)
+			{
+			ts_ice=273.0159-0.0132*mpb-0.1577*log(mpb)+0.1516*pow(mpb,0.500);
+			}
+		if(mpb>=2085.66 && mpb<3501.0)             /* 0.208566 GPa <= P < 0.3501 GPa */
+			{
+			ts_ice=10.277+0.0265*mpb+50.1624*log(mpb)+(0.5868/mpb)-4.3288*pow(mpb,0.500);
+			}
+		if(mpb>=3501.0 && mpb<6324.0)              /* 0.3501 GPa <= P < 0.6324 GPa */
+			{
+			ts_ice=5.0321-0.0004*mpb+30.9482*log(mpb)+(1.0018/mpb);
+			}
+		if(mpb>=6324.000 && mpb<22160.0)            /* 0.6324 GPa <= P < 2.216 GPa */
+			{
+			ts_ice=4.2804-0.0013*mpb+21.8756*log(mpb)+(1.0018/mpb)+1.0785*pow(mpb,0.500);
+			}
+		if(mpb>=22160.0 && mpb<4.000e5)             /* 2.216 GPa <= P < 40 GPa */
+			{
+			ts_ice=-1355.42+0.0018*mpb+167.0609*log(mpb)+(-0.6633/mpb);
+			}
+		if(mpb>=4.000e5 && mpb<9.000e5)             /* 40 GPa <= P < 90 GPa */
+			{
+			ts_ice=0.2524+0.0019*mpb+0.2795*log(mpb)+(0.500/mpb)+1.1675*pow(mpb,0.500);
+			}
+		/**/
+		/* Introduce a small gap between onset and full melting of water ice (due to numerical reasons) */
+		if(mpb>=0.000e6 && mpb<2085.66)            /* 0 GPa <= P < 0.208566 GPa */
+			{
+			tl_ice=t_shift+273.0159-0.0132*mpb-0.1577*log(mpb)+0.1516*pow(mpb,0.500);
+			}
+		if(mpb>=2085.66 && mpb<3501.0)             /* 0.208566 GPa <= P < 0.3501 GPa */
+			{
+			tl_ice=t_shift+10.277+0.0265*mpb+50.1624*log(mpb)+(0.5868/mpb)-4.3288*pow(mpb,0.500);
+			}
+		if(mpb>=3501.0 && mpb<6324.0)              /* 0.3501 GPa <= P < 0.6324 GPa */
+			{
+			tl_ice=t_shift+5.0321-0.0004*mpb+30.9482*log(mpb)+(1.0018/mpb);
+			}
+		if(mpb>=6324.000 && mpb<22160.0)            /* 0.6324 GPa <= P < 2.216 GPa */
+			{
+			tl_ice=t_shift+4.2804-0.0013*mpb+21.8756*log(mpb)+(1.0018/mpb)+1.0785*pow(mpb,0.500);
+			}
+		if(mpb>=22160.0 && mpb<4.000e5)             /* 2.216 GPa <= P < 40 GPa */
+			{
+			tl_ice=t_shift-1355.42+0.0018*mpb+167.0609*log(mpb)+(-0.6633/mpb);
+			}
+		if(mpb>=4.000e5 && mpb<9.000e5)             /* 40 GPa <= P < 90 GPa */
+			{
+			tl_ice=t_shift+0.2524+0.0019*mpb+0.2795*log(mpb)+(0.500/mpb)+1.1675*pow(mpb,0.500);
+			}
+		}
+	// hlatent_ice=284000000.0; // x100 for testing purposes
+	// hlatent_ice=284000.0;  /* Latent heat of pure water ice I in [J/kg] [Kirk & Stevenson, Icarus, 69, 91-134 (1987); Grasset et al., Planet. Space Sci., 48, 617-636 (2001)] */
+	hlatent_ice=(284000.0+233000.0)*0.3; /* 30% initial water ice mass fraction --> latent heat of pure water ice + latent heat of dehydration [Castillo Rogez & Young, Planetesimals, 2017, Cambridge University Press, p. 104] */
+	break;
 /**/
 /* Iron melting by Gregor */
 	case 7:
@@ -2329,23 +2518,45 @@ switch(mm2)
 		/**/
 		if(mpb>=0.000e6 && mpb<0.100e6)            /*  0 GPa <= P < 10 GPa */
 			{
-			tl_fe=1761.000+3.100e-3*mpb;
+			ts_fe=1761.000+3.100e-3*mpb;
 			}
 		if(mpb>=0.100e6 && mpb<0.200e6)            /* 10 GPa <= P < 20 GPa */
 			{
-			tl_fe=1863.000+2.080e-3*mpb;
+			ts_fe=1863.000+2.080e-3*mpb;
 			}
 		if(mpb>=0.200e6 && mpb<0.600e6)            /* 20 GPa <= P < 60 GPa */
 			{
-			tl_fe=2071.800+1.035e-3*mpb;
+			ts_fe=2071.800+1.035e-3*mpb;
 			}
 		if(mpb>=0.600e6 && mpb<1.000e6)            /* 60 GPa <= P < 100 GPa */
 			{
-			tl_fe=2382.800+5.170e-4*mpb;
+			ts_fe=2382.800+5.170e-4*mpb;
 			}
 		if(mpb>=1.000e6)                           /* P >= 100 GPa */
 			{
-			tl_fe=2900.000+(1.000/1.000e3)*mpb;
+			ts_fe=2900.000+(1.000/1.000e3)*mpb;
+			}
+		/**/
+		/* Introduce a small gap between onset and full melting of pure iron (due to numerical reasons) */
+		if(mpb>=0.000e6 && mpb<0.100e6)            /*  0 GPa <= P < 10 GPa */
+			{
+			tl_fe=t_shift+1761.000+3.100e-3*mpb;
+			}
+		if(mpb>=0.100e6 && mpb<0.200e6)            /* 10 GPa <= P < 20 GPa */
+			{
+			tl_fe=t_shift+1863.000+2.080e-3*mpb;
+			}
+		if(mpb>=0.200e6 && mpb<0.600e6)            /* 20 GPa <= P < 60 GPa */
+			{
+			tl_fe=t_shift+2071.800+1.035e-3*mpb;
+			}
+		if(mpb>=0.600e6 && mpb<1.000e6)            /* 60 GPa <= P < 100 GPa */
+			{
+			tl_fe=t_shift+2382.800+5.170e-4*mpb;
+			}
+		if(mpb>=1.000e6)                           /* P >= 100 GPa */
+			{
+			tl_fe=t_shift+2900.000+(1.000/1.000e3)*mpb;
 			}
 		}
 /**/
@@ -2362,12 +2573,23 @@ switch(mm2)
 			{
 			tl_fe=1597.7000+4.2635e-4*(mpb-0.4180e6);
 			}
+		/* Introduce a small gap between onset and full melting of eutectic Fe-FeS (due to numerical reasons) */
+		/**/
+		if(mpb<=0.4180e6)        /* P < (0.418e6 bar = 4.18e5 bar = 4.18e10 Pa =) 41.8 GPa */
+			{
+			tl_fe=t_shift+1260.1000+3.3171e-4*mpb-3.395e-9*mpb*mpb+2.660e-14*mpb*mpb*mpb-3.7688e-20*pow(mpb,4.000);
+			}
+		else
+		/* Linear extrapolation to higher pressures */
+			{
+			tl_fe=t_shift+1597.7000+4.2635e-4*(mpb-0.4180e6);
+			}
 		}
 /**/
 	hlatent_fe=240000.0;  /* Latent heat of pure iron in [J/kg] [Sramek et al., Geophys. J. Int., 181, 198-220 (2010)] */
 	break;
 	/**/
-        /**/
+    /**/
 	/* Other rocks - No melting */
 	default:
 	break;
@@ -2395,14 +2617,35 @@ eps[50]=eps[51]=0;
 if(tl_fe)
 	{
 	/* Iron melt fraction calc, check */
-	if(mtk<tl_fe) xmelt_fe=0.0000;
-	if(mtk>=tl_fe) xmelt_fe=1.0000; /* For eutectic iron solidus = liquidus [Andrault et al., High Pressure Res., 26, 267-276 (2006)] */
-/**/
-/* Save iron melt fraction */
+	/* For eutectic Fe-FeS solidus = liquidus [Andrault et al., High Pressure Res., 26, 267-276 (2006)] */
+	/* Only for numerical reasons a small gap between solidus and liquidus is introduced */
+	xmelt_fe=(mtk-ts_fe)/(tl_fe-ts_fe);
+	if(xmelt_fe<0.000) xmelt_fe=0.0000;
+	if(xmelt_fe>1.000) xmelt_fe=1.0000;
+	/**/
+	/* Save iron melt fraction */
 	eps[50]=xmelt_fe;
 	/* Latent heat calc for iron */
 	hlatent_fe*=xmelt_fe;
 	eps[51]=hlatent_fe;
+	}
+/**/
+/**/
+/* Water ice melt fraction */
+eps[52]=eps[53]=0;
+if(tl_ice)
+	{
+	/* Water ice melt fraction calc, check */
+	/* Only for numerical reasons a small gap between solidus and liquidus is introduced */
+	xmelt_ice=(mtk-ts_ice)/(tl_ice-ts_ice);
+	if(xmelt_ice<0.000) xmelt_ice=0.0000;
+	if(xmelt_ice>1.000) xmelt_ice=1.0000;
+/**/
+/* Save ice melt fraction */
+	eps[52]=xmelt_ice;
+	/* Latent heat calc for water ice */
+	hlatent_ice*=xmelt_ice;
+	eps[53]=hlatent_ice;
 	}
 /**/
 }

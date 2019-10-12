@@ -87,6 +87,7 @@ ffscanf();adiabyn=atof(sa)*3.15576e+7;
 ffscanf();core_form_time=atof(sa)*3.15576e+7;
 ffscanf();si_melting=atoi(sa);
 ffscanf();fe_melting=atoi(sa);
+ffscanf();ice_melting=atoi(sa);
 /**/
 /**/
 /**/
