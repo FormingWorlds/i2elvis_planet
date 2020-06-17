@@ -1,10 +1,10 @@
 ## General information
 
-The simulation code hosted on this repository derives from the I2ELVIS code family, developed by [Prof. Taras V. Gerya](https://erdw.ethz.ch/en/people/profile.taras-gerya.html) (taras.gerya@erdw.ethz.ch). Below you will find references on the code, contact options and installation instructions.
+The simulation code hosted on this repository derives from the I2ELVIS code family, developed by [Taras V. Gerya](https://erdw.ethz.ch/en/people/profile.taras-gerya.html) (taras.gerya@erdw.ethz.ch). Below you will find references on the code, contact options and installation instructions.
 
 ## Contact
 
-For questions and help surrounding this code repository please contact [Tim Lichtenberg](https://timlichtenberg.net/) (tim.lichtenberg@physics.ox.ac.uk).
+For questions and help surrounding this code repository please contact [Tim Lichtenberg](https://timlichtenberg.net/) (tim.lichtenberg@physics.ox.ac.uk) or [Gregor J. Golabek](http://www.staff.uni-bayreuth.de/~bt303373/) (gregor.golabek@uni-bayreuth.de) .
 
 ## References
 
@@ -34,10 +34,18 @@ For questions and help surrounding this code repository please contact [Tim Lich
 	
 	> Morishima, R., Golabek, G. J., & Samuel, H. (2013). N-body simulations of oligarchic growth of Mars: Implications for Hf–W chronology. Earth and Planetary Science Letters, 366, 6-16.
 	
+	> Lin, J. R., Gerya, T. V., Tackley, P. J., Yuen, D. A., & Golabek, G. J. (2011). Protocore destabilization in planetary
+	
 	> Lin, J. R., Gerya, T. V., Tackley, P. J., Yuen, D. A., & Golabek, G. J. (2009). Numerical modeling of protocore destabilization during planetary accretion: Methodology and results. Icarus, 204(2), 732-748.
+ embryos formed by cold accretion: Feedbacks from non-Newtonian rheology and energy dissipation. Icarus, 213(1), 24-42.
 
-	> Lin, J. R., Gerya, T. V., Tackley, P. J., Yuen, D. A., & Golabek, G. J. (2011). Protocore destabilization in planetary embryos formed by cold accretion: Feedbacks from non-Newtonian rheology and energy dissipation. Icarus, 213(1), 24-42.
+## Software requirements
 
+- Intel compilers
+- Intel MKL library
+- Python 3.x
+
+The code is tested and on UNIX systems, such as Linux or mac OS.
 
 ## Minimum working example
 
@@ -46,7 +54,7 @@ For questions and help surrounding this code repository please contact [Tim Lich
     git clone git@github.com:timlichtenberg/i2elvis_planet.git
     ```
 
-2. Compile code:
+1. Compile code:
     - On ETHZ Euler cluster:
     ```
     module load intel
@@ -56,7 +64,7 @@ For questions and help surrounding this code repository please contact [Tim Lich
     ```
     sh.compile
     ```
-3. Run code:
+1. Run code:
 - On ETHZ Euler:
   ```
   sh submitjobs.sh
@@ -67,25 +75,28 @@ For questions and help surrounding this code repository please contact [Tim Lich
   ./i2mart      # runs code
   ```
 
-## Check output
-
-1. Plot the files using the python script in the 'support_files' folder
+1. Check output: plot the files using the python script in the 'support_files' folder
     ```
     python plot2d.py
     ```
 
-2. Examine the output in the 'figures' folder, and compare them to the references
+1. Examine the output in the 'figures' folder, and compare them to the references
 in the 'support_files/reference_output' folder.
 
 	- main_temp_0002.png:
-	![](support_files/reference_output/main_tmp_0002.png)
+	
+	<img src="support_files/reference_output/main_tmp_0002.png" alt="alt text" width="490" height="425">
+	
 	- main_rho_0002.png:
-	![](support_files/reference_output/main_rho_0002.png)
+	
+	<img src="support_files/reference_output/main_rho_0002.png" alt="alt text" width="490" height="425">
 
 ## Install Intel compilers with MKL library on macOS
 
 1. Install macOS command line tools (& Xcode via the App Store if you want to use it)
-	>> xcode-select --install
+	```
+	xcode-select --install
+	```
 
 2. Download Intel Parallel Studio XE 20XX from either:
 	- At ETH: https://idesnx.ethz.ch/ (macOS version)
@@ -96,9 +107,13 @@ in the 'support_files/reference_output' folder.
 		- When you reach the dialog "Activation options" choose: "Choose alternative activation" -> "Use Intel(R) Software License Manager" (or serial number, if downloaded from the official website)
 		- Enter the license server information: Host: "lic-intel.ethz.ch"; Port: "28000"
 	- In terminal, link to the new icc installation:
-		>>> source /opt/intel/bin/compilervars.sh intel64
+		```
+		source /opt/intel/bin/compilervars.sh intel64
+		```
 		('which icc' should show sth alike '/opt/intel/compilers_and_libraries_2018.1.126/mac/bin/intel64/icc')
 	- Attention: Installing Xcode or the macOS command line tools after MKL installation requires relinking (see item above)
 
 3. Try intel/MKL installation by compiling the code:
-	>> sh.compile
+	```
+	sh.compile
+	```
