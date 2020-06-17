@@ -34,10 +34,10 @@ For questions, help and notifications surrounding this code repository please co
 
 	> Morishima, R., Golabek, G. J., & Samuel, H. (2013). N-body simulations of oligarchic growth of Mars: Implications for Hf–W chronology. Earth and Planetary Science Letters, 366, 6-16.
 
-	> Lin, J. R., Gerya, T. V., Tackley, P. J., Yuen, D. A., & Golabek, G. J. (2011). Protocore destabilization in planetary
+	> Lin, J. R., Gerya, T. V., Tackley, P. J., Yuen, D. A., & Golabek, G. J. (2011). Protocore destabilization in planetary embryos formed by cold accretion: Feedbacks from non-Newtonian rheology and energy dissipation. Icarus, 213(1), 24-42.
 
 	> Lin, J. R., Gerya, T. V., Tackley, P. J., Yuen, D. A., & Golabek, G. J. (2009). Numerical modeling of protocore destabilization during planetary accretion: Methodology and results. Icarus, 204(2), 732-748.
-	 embryos formed by cold accretion: Feedbacks from non-Newtonian rheology and energy dissipation. Icarus, 213(1), 24-42.
+	 
 
 ## Software requirements
 
