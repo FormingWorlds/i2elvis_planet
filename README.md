@@ -45,7 +45,7 @@ For questions, help and notifications surrounding this code repository please co
 - Intel MKL library
 - Python 3.x
 
-The code is tested and on UNIX systems, such as Linux or mac OS.
+The code is tested on UNIX systems, such as Linux or mac OS.
 
 ## Minimum working example
 
