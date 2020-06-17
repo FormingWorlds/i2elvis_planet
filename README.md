@@ -1,6 +1,47 @@
+## General information
+
+The simulation code hosted on this repository derives from the I2ELVIS code family, developed by [Prof. Taras V. Gerya](https://erdw.ethz.ch/en/people/profile.taras-gerya.html) (taras.gerya@erdw.ethz.ch). Below you will find references on the code, contact options and installation instructions.
+
+## Contact
+
+For questions and help surrounding this code repository please contact [Tim Lichtenberg](https://timlichtenberg.net/) (tim.lichtenberg@physics.ox.ac.uk).
+
+## References
+
+- Code and fluid dynamics basics
+
+	> Gerya, T. (2019). Introduction to numerical geodynamic modelling. Cambridge University Press.
+
+	> Gerya, T. V., & Yuen, D. A. (2007). Robust characteristics method for modelling multiphase visco-elasto-plastic thermo-mechanical problems. Physics of the Earth and Planetary Interiors, 163(1-4), 83-105.
+
+	> Gerya, T. V., & Yuen, D. A. (2003). Characteristics-based marker-in-cell method with conservative finite-differences schemes for modeling geological flows with strongly variable transport properties. Physics of the Earth and Planetary Interiors, 140(4), 293-318.
+
+- Research applications
+
+	> Lichtenberg, T., Golabek, G. J., Burn, R., Meyer, M. R., Alibert, Y., Gerya, T. V., & Mordasini, C. (2019). A water budget dichotomy of rocky protoplanets from 26 Al-heating. Nature Astronomy, 3(4), 307-313.
+
+	> Golabek, G. J., Emsenhuber, A., Jutzi, M., Asphaug, E. I., & Gerya, T. V. (2018). Coupling SPH and thermochemical models of planets: Methodology and example of a Mars-sized body. Icarus, 301, 235-246.
+	
+	> Lichtenberg, T., Golabek, G. J., Dullemond, C. P., Schönbächler, M., Gerya, T. V., & Meyer, M. R. (2018). Impact splash chondrule formation during planetesimal recycling. Icarus, 302, 27-43.
+
+	> Monteux, J., Golabek, G. J., Rubie, D. C., Tobie, G., & Young, E. D. (2018). Water and the interior structure of terrestrial planets and icy bodies. Space Science Reviews, 214(1), 39.
+
+	> Hunt, A. C., Cook, D. L., Lichtenberg, T., Reger, P. M., Ek, M., Golabek, G. J., & Schönbächler, M. (2018). Late metal–silicate separation on the IAB parent asteroid: constraints from combined W and Pt isotopes and thermal modelling. Earth and Planetary Science Letters, 482, 490-500.
+	
+	> Lichtenberg, T., Golabek, G. J., Gerya, T. V., & Meyer, M. R. (2016). The effects of short-lived radionuclides and porosity on the early thermo-mechanical evolution of planetesimals. Icarus, 274, 350-365.
+	
+	> Golabek, G. J., Bourdon, B., & Gerya, T. V. (2014). Numerical models of the thermomechanical evolution of planetesimals: Application to the acapulcoite‐lodranite parent body. Meteoritics & Planetary Science, 49(6), 1083-1099.
+	
+	> Morishima, R., Golabek, G. J., & Samuel, H. (2013). N-body simulations of oligarchic growth of Mars: Implications for Hf–W chronology. Earth and Planetary Science Letters, 366, 6-16.
+	
+	> Lin, J. R., Gerya, T. V., Tackley, P. J., Yuen, D. A., & Golabek, G. J. (2009). Numerical modeling of protocore destabilization during planetary accretion: Methodology and results. Icarus, 204(2), 732-748.
+
+	> Lin, J. R., Gerya, T. V., Tackley, P. J., Yuen, D. A., & Golabek, G. J. (2011). Protocore destabilization in planetary embryos formed by cold accretion: Feedbacks from non-Newtonian rheology and energy dissipation. Icarus, 213(1), 24-42.
+
+
 ## Minimum working example
 
-1. Get code:
+1. Clone the code:
     ```
     git clone git@github.com:timlichtenberg/i2elvis_planet.git
     ```
@@ -37,9 +78,9 @@
 in the 'support_files/reference_output' folder.
 
 	- main_temp_0002.png:
-	![](/reference_output/main_tmp_0002.png)
+	![](support_files/reference_output/main_tmp_0002.png)
 	- main_rho_0002.png:
-	![](/reference_output/main_rho_0002.png)
+	![](support_files/reference_output/main_rho_0002.png)
 
 ## Install Intel compilers with MKL library on macOS
 
