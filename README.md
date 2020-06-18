@@ -33,11 +33,11 @@ For questions, help and notifications surrounding this code repository please co
 	> Golabek, G. J., Bourdon, B., & Gerya, T. V. (2014). Numerical models of the thermomechanical evolution of planetesimals: Application to the acapulcoite‐lodranite parent body. Meteoritics & Planetary Science, 49(6), 1083-1099.
 
 	> Lin, J. R., Gerya, T. V., Tackley, P. J., Yuen, D. A., & Golabek, G. J. (2011). Protocore destabilization in planetary embryos formed by cold accretion: Feedbacks from non-Newtonian rheology and energy dissipation. Icarus, 213(1), 24-42.
+	
+	> Golabek, G. J., Gerya, T. V., Kaus, B. J. P., Ziethe, R., & Tackley, P. J. (2009). Rheological controls on the terrestrial core formation mechanism. Geochemistry, Geophysics, Geosystems, 10(11).
 
 	> Lin, J. R., Gerya, T. V., Tackley, P. J., Yuen, D. A., & Golabek, G. J. (2009). Numerical modeling of protocore destabilization during planetary accretion: Methodology and results. Icarus, 204(2), 732-748.
 	
-	> Golabek, G. J., Gerya, T. V., Kaus, B. J. P., Ziethe, R., & Tackley, P. J. (2009). Rheological controls on the terrestrial core formation mechanism. Geochemistry, Geophysics, Geosystems, 10(11).
-	 
 
 ## Software requirements
 
