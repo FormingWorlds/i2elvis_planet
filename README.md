@@ -4,7 +4,7 @@ The simulation code hosted on this repository derives from the I2ELVIS code fami
 
 ## Contact
 
-For questions, help and notifications surrounding this code repository please contact [Tim Lichtenberg](https://timlichtenberg.net/) (tim.lichtenberg@physics.ox.ac.uk) or [Gregor J. Golabek](http://www.staff.uni-bayreuth.de/~bt303373/) (gregor.golabek@uni-bayreuth.de) .
+For questions, help and notifications surrounding this code repository please contact [Tim Lichtenberg](https://timlichtenberg.net/) (tim.lichtenberg@physics.ox.ac.uk) or [Gregor J. Golabek](http://www.staff.uni-bayreuth.de/~bt303373/) (gregor.golabek@uni-bayreuth.de).
 
 ## References
 
@@ -45,11 +45,10 @@ For questions, help and notifications surrounding this code repository please co
 
 ## Software requirements
 
-- Intel compilers
-- Intel MKL library
+- Intel compilers & MKL library (see below for installation instructions)
 - Python 3.x
 
-The code is tested on UNIX systems, such as Linux or mac OS.
+The code is tested on UNIX systems, such as macOS or Linux distributions.
 
 ## Minimum working example
 
@@ -66,8 +65,9 @@ The code is tested on UNIX systems, such as Linux or mac OS.
 	```
 	- Local machine (requires Intel compiler, see further down):
 	```
-	sh.compile
+	bash compile.sh
 	```
+	- Compilation should produce the executables, including 'in2mart' and 'i2mart'.
 1. Run code:
 	- On ETHZ Euler:
 	```
@@ -95,29 +95,29 @@ in the 'support_files/reference_output' folder.
 	
 	<img src="support_files/reference_output/main_rho_0002.png" alt="alt text" width="490" height="425">
 
-## Install Intel compilers with MKL library on macOS
+## Install Intel compilers (icc) and MKL library
 
 1. Install macOS command line tools (& Xcode via the App Store if you want to use it)
 	```
 	xcode-select --install
 	```
 
-2. Download Intel Parallel Studio XE 20XX from either:
-	- At ETH: https://idesnx.ethz.ch/ (macOS version)
-	- Official Intel website: https://software.intel.com/en-us/parallel-studio-xe (sign up for students or educators license)
-	- Follow the installation instructions closely:
-		- Use the online installer ('m_ccompxe_online_2018.1.031.dmg' for the 2018 version)
-		- Use command line installation only (no install for Xcode)
-		- When you reach the dialog "Activation options" choose: "Choose alternative activation" -> "Use Intel(R) Software License Manager" (or serial number, if downloaded from the official website)
-		- Enter the license server information: Host: "lic-intel.ethz.ch"; Port: "28000"
+2. Download Intel compilers and MKL library:
+	- For macOS: install Xcode and the macOS command line tools (otherwise MKL installation will require relinking)
+	- At ETH Zurich: https://idesnx.ethz.ch/
+	- Otherwise download from official Intel website: https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/dpc-compiler.html
+		- Download and install 'Intel® oneAPI Base Toolkit' & 'Intel® oneAPI HPC Toolkit'
+		- Use the online installer versions
+		- Use command line installation only (no installation for Xcode on macOS)
 	- In terminal, link to the new icc installation:
 		```
-		source /opt/intel/bin/compilervars.sh intel64
+		source /opt/intel/bin/compilervars.sh intel64 # (2018 version)
+		source /opt/intel/oneapi/setvars.sh # (2020 oneAPI versions)
 		```
-		('which icc' should show sth alike '/opt/intel/compilers_and_libraries_2018.1.126/mac/bin/intel64/icc')
-	- Attention: Installing Xcode or the macOS command line tools after MKL installation requires relinking (see item above)
+		('which icc' should show sth alike '/opt/intel/compilers_and_libraries_2018.1.126/mac/bin/intel64/icc' (2018) or '/opt/intel/oneapi/compiler/2021.1.1/mac/bin/intel64/icc' (2020))
+	
 
-3. Try intel/MKL installation by compiling the code:
+3. Try intel/MKL installation by compiling the code in the I2ELVIS directory:
 	```
-	sh.compile
+	bash compile.sh
 	```
