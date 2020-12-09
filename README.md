@@ -8,6 +8,8 @@ For questions, help and notifications surrounding this code repository please co
 
 ## References
 
+[![DOI](https://zenodo.org/badge/112503178.svg)](https://zenodo.org/badge/latestdoi/112503178)
+
 - Code and fluid dynamics basics
 
 	> Gerya, T. (2019). Introduction to numerical geodynamic modelling. Cambridge University Press.
