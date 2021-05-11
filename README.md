@@ -19,6 +19,10 @@ For questions, help and notifications surrounding this code repository please co
 	> Gerya, T. V., & Yuen, D. A. (2003). Characteristics-based marker-in-cell method with conservative finite-differences schemes for modeling geological flows with strongly variable transport properties. Physics of the Earth and Planetary Interiors, 140(4), 293-318.
 
 - Research applications
+	
+	> Lichtenberg, T., Krijt, S. (2021). System-level fractionation of carbon from disk and planetesimal processing. Astrophysical Journal Letters.   
+
+	> Lichtenberg, T., Drążkowska, J., Schönbächler, M., Golabek, G. J., Hands, T. O. (2021). Bifurcation of planetary building blocks during Solar System formation. Science, 371, 365–370.    
 
 	> Lichtenberg, T., Golabek, G. J., Burn, R., Meyer, M. R., Alibert, Y., Gerya, T. V., & Mordasini, C. (2019). A water budget dichotomy of rocky protoplanets from 26 Al-heating. Nature Astronomy, 3(4), 307-313.
 
