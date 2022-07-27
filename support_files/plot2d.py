@@ -539,7 +539,7 @@ for RUN in RUN_LIST:
             fe_start    = str(int(RUN[17:22])*1e-3*1e-8/fe_canonical)
 
         # Time formatting
-        locale.setlocale(locale.LC_ALL, 'en_US') # http://stackoverflow.com/questions/1823058/how-to-print-number-with-commas-as-thousands-separators
+        locale.setlocale(locale.LC_ALL, 'en_GB') # http://stackoverflow.com/questions/1823058/how-to-print-number-with-commas-as-thousands-separators
         time_Myr        = float(Time)/1e6
         time_kyr        = float(Time)/1e3
         # t_current       = '%.3f' % time_kyr # str(round(Time/1e6,2))

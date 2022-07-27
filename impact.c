@@ -113,7 +113,7 @@ int impactsave()
         /* Current time [Ma] */ 
         /* Current hydrous fraction [non-dim.] */
 	fl1 = fopen("hydrous_silicates.t3c","a+");     /* a+ stands for adding new data at the end of preexistent file */
-	fprintf(fl1,"%f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %i\n",timesum/(3600.000*24.000*365.250*1.000e6),sol_frac,liq_frac,hydrous_frac,primitive_frac,n2co2_frac,cocl_frac,h2o_frac,phyllo1_frac,phyllo2_frac,phyllo3_frac,phyllo4_frac,perco_frac,melt1_frac,melt2_frac,maxtk,t_max_body,meantk,t_mean_body,count_toohot);
+	fprintf(fl1,"%.4e %.4e %.4e %.4e %.4e %.4e %.4e %.4e %.4e %.4e %.4e %.4e %.4e %.4e %.4e %.4e %.4e %.4e %.4e %i\n",timesum/(3600.000*24.000*365.250*1.000e6),sol_frac,liq_frac,hydrous_frac,primitive_frac,n2co2_frac,cocl_frac,h2o_frac,phyllo1_frac,phyllo2_frac,phyllo3_frac,phyllo4_frac,perco_frac,melt1_frac,melt2_frac,maxtk,t_max_body,meantk,t_mean_body,count_toohot);
 	fclose(fl1);
 /**/
 return 0;
