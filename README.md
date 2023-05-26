@@ -4,7 +4,7 @@ The simulation code hosted on this repository derives from the I2ELVIS code fami
 
 ## Contact
 
-For questions, help and notifications surrounding this code repository please contact [Tim Lichtenberg](https://timlichtenberg.net/) (tim.lichtenberg@physics.ox.ac.uk) or [Gregor J. Golabek](http://www.staff.uni-bayreuth.de/~bt303373/) (gregor.golabek@uni-bayreuth.de).
+For questions, help and notifications surrounding this code repository please contact [Tim Lichtenberg](https://www.formingworlds.space/) (tim.lichtenberg@rug.nl) or [Gregor J. Golabek](http://www.staff.uni-bayreuth.de/~bt303373/) (gregor.golabek@uni-bayreuth.de).
 
 ## References
 
@@ -19,8 +19,14 @@ For questions, help and notifications surrounding this code repository please co
 	> Gerya, T. V., & Yuen, D. A. (2003). Characteristics-based marker-in-cell method with conservative finite-differences schemes for modeling geological flows with strongly variable transport properties. Physics of the Earth and Planetary Interiors, 140(4), 293-318.
 
 - Research applications
+	 
+	> Lichtenberg, T., Schaefer L. K., Nakajima, M., Fischer, R. A. (2023). Geophysical Evolution During Rocky Planet Formation. Protostars and Planets VII, Chapter 25.
+
+	> Bonsor, A., Lichtenberg, T., Dra̧żkowska, J., Buchan, A. M. (2023). Rapid formation of exoplanetesimals revealed by white dwarfs. Nature Astronomy, 7, 39–48.
+
+	> Lichtenberg, T., Clement, M. S. (2022). Reduced Late Bombardment on Rocky Exoplanets around M Dwarfs. The Astrophysical Journal Letters, 938, L3.
 	
-	> Lichtenberg, T., Krijt, S. (2021). System-level fractionation of carbon from disk and planetesimal processing. Astrophysical Journal Letters.   
+	> Lichtenberg, T., Krijt, S. (2021). System-level fractionation of carbon from disk and planetesimal processing. The Astrophysical Journal Letters, 913, L20.   
 
 	> Lichtenberg, T., Drążkowska, J., Schönbächler, M., Golabek, G. J., Hands, T. O. (2021). Bifurcation of planetary building blocks during Solar System formation. Science, 371, 365–370.    
 
