@@ -1,0 +1,221 @@
+dpi: 600
+format: pdf
+height: 3
+width: 5
+simulations:
+- al_ratio: 0.1
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_3.00_c_0.00_al_0.10_fe_0.00
+  mantle_r: 3
+  plot_col: '#1f77b4'
+  plot_label: $r_p$ = 0
+  plot_line: solid
+- al_ratio: 0.18
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_3.00_c_0.00_al_0.18_fe_0.00
+  mantle_r: 3
+  plot_col: '#ff7f0e'
+  plot_label: $r_p$ = 0
+  plot_line: solid
+- al_ratio: 0.32
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_3.00_c_0.00_al_0.32_fe_0.00
+  mantle_r: 3
+  plot_col: '#2ca02c'
+  plot_label: $r_p$ = 0
+  plot_line: solid
+- al_ratio: 0.56
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_3.00_c_0.00_al_0.56_fe_0.00
+  mantle_r: 3
+  plot_col: '#d62728'
+  plot_label: $r_p$ = 0
+  plot_line: solid
+- al_ratio: 1.0
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_3.00_c_0.00_al_1.00_fe_0.00
+  mantle_r: 3
+  plot_col: '#9467bd'
+  plot_label: $r_p$ = 0
+  plot_line: solid
+- al_ratio: 1.78
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_3.00_c_0.00_al_1.78_fe_0.00
+  mantle_r: 3
+  plot_col: '#8c564b'
+  plot_label: $r_p$ = 0
+  plot_line: solid
+- al_ratio: 3.16
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_3.00_c_0.00_al_3.16_fe_0.00
+  mantle_r: 3
+  plot_col: '#e377c2'
+  plot_label: $r_p$ = 0
+  plot_line: solid
+- al_ratio: 5.62
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_3.00_c_0.00_al_5.62_fe_0.00
+  mantle_r: 3
+  plot_col: '#7f7f7f'
+  plot_label: $r_p$ = 0
+  plot_line: solid
+- al_ratio: 10.0
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_3.00_c_0.00_al_10.00_fe_0.00
+  mantle_r: 3
+  plot_col: '#bcbd22'
+  plot_label: $r_p$ = 0
+  plot_line: solid
+- al_ratio: 0.1
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_10.00_c_0.00_al_0.10_fe_0.00
+  mantle_r: 10
+  plot_col: '#1f77b4'
+  plot_label: $r_p$ = 0
+  plot_line: dashed
+- al_ratio: 0.18
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_10.00_c_0.00_al_0.18_fe_0.00
+  mantle_r: 10
+  plot_col: '#ff7f0e'
+  plot_label: $r_p$ = 0
+  plot_line: dashed
+- al_ratio: 0.32
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_10.00_c_0.00_al_0.32_fe_0.00
+  mantle_r: 10
+  plot_col: '#2ca02c'
+  plot_label: $r_p$ = 0
+  plot_line: dashed
+- al_ratio: 0.56
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_10.00_c_0.00_al_0.56_fe_0.00
+  mantle_r: 10
+  plot_col: '#d62728'
+  plot_label: $r_p$ = 0
+  plot_line: dashed
+- al_ratio: 1.0
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_10.00_c_0.00_al_1.00_fe_0.00
+  mantle_r: 10
+  plot_col: '#9467bd'
+  plot_label: $r_p$ = 0
+  plot_line: dashed
+- al_ratio: 1.78
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_10.00_c_0.00_al_1.78_fe_0.00
+  mantle_r: 10
+  plot_col: '#8c564b'
+  plot_label: $r_p$ = 0
+  plot_line: dashed
+- al_ratio: 3.16
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_10.00_c_0.00_al_3.16_fe_0.00
+  mantle_r: 10
+  plot_col: '#e377c2'
+  plot_label: $r_p$ = 0
+  plot_line: dashed
+- al_ratio: 5.62
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_10.00_c_0.00_al_5.62_fe_0.00
+  mantle_r: 10
+  plot_col: '#7f7f7f'
+  plot_label: $r_p$ = 0
+  plot_line: dashed
+- al_ratio: 10.0
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_10.00_c_0.00_al_10.00_fe_0.00
+  mantle_r: 10
+  plot_col: '#bcbd22'
+  plot_label: $r_p$ = 0
+  plot_line: dashed
+- al_ratio: 0.1
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_50.00_c_0.00_al_0.10_fe_0.00
+  mantle_r: 50
+  plot_col: '#1f77b4'
+  plot_label: $r_p$ = 0
+  plot_line: dotted
+- al_ratio: 0.18
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_50.00_c_0.00_al_0.18_fe_0.00
+  mantle_r: 50
+  plot_col: '#ff7f0e'
+  plot_label: $r_p$ = 0
+  plot_line: dotted
+- al_ratio: 0.32
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_50.00_c_0.00_al_0.32_fe_0.00
+  mantle_r: 50
+  plot_col: '#2ca02c'
+  plot_label: $r_p$ = 0
+  plot_line: dotted
+- al_ratio: 0.56
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_50.00_c_0.00_al_0.56_fe_0.00
+  mantle_r: 50
+  plot_col: '#d62728'
+  plot_label: $r_p$ = 0
+  plot_line: dotted
+- al_ratio: 1.0
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_50.00_c_0.00_al_1.00_fe_0.00
+  mantle_r: 50
+  plot_col: '#9467bd'
+  plot_label: $r_p$ = 0
+  plot_line: dotted
+- al_ratio: 1.78
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_50.00_c_0.00_al_1.78_fe_0.00
+  mantle_r: 50
+  plot_col: '#8c564b'
+  plot_label: $r_p$ = 0
+  plot_line: dotted
+- al_ratio: 3.16
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_50.00_c_0.00_al_3.16_fe_0.00
+  mantle_r: 50
+  plot_col: '#e377c2'
+  plot_label: $r_p$ = 0
+  plot_line: dotted
+- al_ratio: 5.62
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_50.00_c_0.00_al_5.62_fe_0.00
+  mantle_r: 50
+  plot_col: '#7f7f7f'
+  plot_label: $r_p$ = 0
+  plot_line: dotted
+- al_ratio: 10.0
+  core_r: 0.0
+  fe_ratio: 0.0
+  filename: sim_p_50.00_c_0.00_al_10.00_fe_0.00
+  mantle_r: 50
+  plot_col: '#bcbd22'
+  plot_label: $r_p$ = 0
+  plot_line: dotted
