@@ -3,8 +3,8 @@
        251-ynumy
          4-mnumx
          4-mnumy
-    500000-xsize(m)
-    500000-ysize(m)
+    $x_size
+    $y_size
      0.300-gamma_eff(0-1)
      0.300-memory_fe(0-1)
      0.300-memory_si(0-1)
@@ -20,7 +20,7 @@
   $exit_time
      $al_abun
      $fe_abun
- 0.000e+06-timesum(yr)
+ 0.100e+06-timesum(yr)
 100-nonstab 0.5-dx 0.5-dy
 
 /MARKERS_TYPES_FILE_NAME_Y(Name)_N(0)
@@ -91,12 +91,7 @@ T                  0             x              y            y              150 
 /ROCKS_BOXES_DESCRIPTION
 /AIR
  0     0     0         0         0         1          1         0         1         1
-/Iron_1
- 3     7     0.5       0.5       0.5       0.5       m$core_extent   m0         0         360
-/Wet_Silicates
- 3     6     0.5       0.5       0.5       0.5       m$mantle_extent   m$core_extent    0         360
-/AIR
- 3     0     0.5       0.5       0.5       0.5       m500000   m$mantle_extent    0         360
+$composition
 ~
 
 /T_BOXES_DESCRIPTION

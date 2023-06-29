@@ -28,10 +28,10 @@ import sys
 import argparse
 from tqdm import tqdm
 
-def main(mant_ext,core_ext,al,fe,work_dir):
+def gen_sim(mant_ext,core_ext,al,fe,exit_time,work_dir):
   # Quick checks for input conditions
-  if mant_ext <= 0. or core_ext <= 0.:
-    print("!!! Zero or negative mantle/core sizes! Check inputs !!!")
+  if mant_ext <= 0.:
+    print("!!! Zero or negative mantle size! Check inputs !!!")
     sys.exit()
   if al < 0 or fe < 0:
     print("!!! Cannot have negative abundance ratios !!!")
@@ -51,7 +51,6 @@ def main(mant_ext,core_ext,al,fe,work_dir):
   # Begin!
   print("! Initialising environment at {}".format(work_dir))
   repo_path = sys.path[0]
-  exit_time = 50e6
   # Copy files
   print("! Copying files")
   try:
@@ -91,22 +90,38 @@ def main(mant_ext,core_ext,al,fe,work_dir):
   init_params["al_abun"] = "{:.3f}-al2627_init(e-5,ss_0=5.250)".format(al26_abun)
   init_params["fe_abun"] = "{:.3f}-fe6056_init(e-8,ss_0=1.150)".format(fe60_abun)
   # Calculate core and mantle size
+  comp = ""
   core_ext_m = int(core_ext * 1000)
   mant_ext_m = int(mant_ext * 1000)
-  init_params["core_extent"]   = "{}".format(core_ext_m)
+  init_params["core_extent"] = "{}".format(core_ext_m)
   init_params["mantle_extent"] = "{}".format(mant_ext_m)
+  # Calculate simulation size, which is twice the diameter of the planetisemal
+  sim_ext_m = int(mant_ext_m * 4)
+  # Check to see if a core is included
+  if core_ext > 0:
+    comp += "/Iron_1\n"
+    comp += " 3 7 0.5 0.5 0.5 0.5 m{} m0 0 360\n".format(core_ext_m)
+  # Build mantle
+  comp += "/Wet_Silicates\n"
+  comp += " 3 6 0.5 0.5 0.5 0.5 m{} m{} 0 360\n".format(mant_ext_m,core_ext_m)
+  # Build surrounding vacuum, "air"
+  comp += "/AIR\n"
+  comp += " 3 0 0.5 0.5 0.5 0.5 m{} m{} 0 360".format(sim_ext_m,mant_ext_m)
+  init_params["composition"] = comp
+  # Format string for GRID_PARAMETERS_DESCRIPTIONS
+  init_params["x_size"] = "{}-xsize(m)".format(sim_ext_m)
+  init_params["y_size"] = "{}-ysize(m)".format(sim_ext_m)
   # Convert template and write
   init_data = template.substitute(init_params)
   init_filename = "{}/init.t3c".format(work_dir)
   with open(init_filename,"w") as init_file:
     init_file.write(init_data)
-
   print("! Done!\nRunning initialisation programme")
 
   # Execute in2mart
   in2elvis = "{}/in2mart".format(repo_path)
   initialise = Popen([in2elvis],cwd=work_dir)
-  initialise.wait()
+  # initialise.wait()
 
   print("!!! Environment setup in {} finished !!!".format(work_dir))
   return
@@ -117,18 +132,20 @@ if __name__ == "__main__":
   parse.add_argument("core_size",type=float,help="Core Size (km)")
   parse.add_argument("al26_ratio",type=float,help="Al26/Al27 ratio comparative to solar system ratio")
   parse.add_argument("fe60_ratio",type=float,help="Fe60/Fe56 ratio comparative to solar system ratio")
+  parse.add_argument("-e","--exit_time",type=float,default=15e6,help="Exit time in years, default is 15Myr")
   parse.add_argument("-f","--folder_name",type=str,help="Folder name, defaults to sim_p_<planet_size>_c_<core_size>_al_<al26_ratio>_fe_<fe60_ratio>")
   args = parse.parse_args()
   # Use argparse as a wrapper
-  mant_ext = args.planet_size
-  core_ext = args.core_size
-  al       = args.al26_ratio
-  fe       = args.fe60_ratio
+  mant_ext  = args.planet_size
+  core_ext  = args.core_size
+  al        = args.al26_ratio
+  fe        = args.fe60_ratio
+  exit_time = args.exit_time
   # Make folder name if none specified
   if args.folder_name == None:
     work_dir = "sim_p_{}_c_{}_al_{}_fe_{}".format(int(mant_ext),int(core_ext),al,fe)
   else:
-    work_dir = args["folder_name"]
+    work_dir = args.folder_name
   # Start
-  main(mant_ext,core_ext,al,fe,work_dir)
+  gen_sim(mant_ext,core_ext,al,fe,exit_time,work_dir)
 

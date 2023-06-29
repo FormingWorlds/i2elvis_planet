@@ -1481,6 +1481,23 @@ impactsave();
 /**/
 /**/
 printf("OK!\n");
+
+int nwets = 0;
+int ndrys = 0;
+int ntot  = 0;
+for (int mmmod = 0; mmmod < marknum; mmmod++) {
+	if (markt[mmmod] == 6) {
+		nwets +=1;
+	}
+	if (markt[mmmod] == 7) {
+		ndrys += 1;
+	}
+	ntot += 1;
+}
+float ironfrac = ((double)(ndrys) / (double)(ndrys+nwets)) * 100.0;
+float silfrac = ((double)(nwets) / (double)(ndrys+nwets)) * 100.0;
+printf("> %d total cells, %d silicate (%.2f), %d iron (%.2f)\n",ntot,nwets,silfrac,ndrys,ironfrac);
+
 return 0;
 }
 /* Formation of Data file for i2mart.c program */

@@ -161,6 +161,9 @@ for (n0=0;n0<cyc0max;n0++)
 	if(n0<cyc0max-1) saver(f0+1,n0);
 */
 	/* Print Results */
+	// Edit: JWEATSON
+	// I have moved impactsave() because I want to have more temporal resolution for hydrous_silicates.t3c
+	impactsave(); 
 	}
 /**/
 /**/
@@ -178,7 +181,7 @@ core();
 grain();
 /**/
 /* Save impact and core history */
-impactsave();
+
 /**/
 /**/
 /* Print Results */
